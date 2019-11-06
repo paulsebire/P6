@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Ma banque</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap.min.css.css" th:href="@{bootstrap.min.css}"/>
+</head>
+<body>
+    <div layout:fragment="content">
+
+        <div class="row">
+
+            <div class="bigspacer mx-auto ml-2" th:if="!${site}">
+                <div class="card-header card" ><h3 class="card-title" >Consultation d'un site</h3></div>
+                <div class="card-body">
+                    <form th:action="@{/consulterSite}" method="get">
+                        <label>Nom du site: </label>
+                        <input type="text" name="nameSite" th:value="${nameSite}"/>
+                        <button class="btn btn-primary" type="submit">Ok</button>
+
+                    </form>
+                    <div class="red" th:if="${exception}" th:text="${exception.getMessage()}"></div>
+                </div>
+            </div>
+            <div>
+                <div class="card mx-auto" th:if="${site}">
+                    <div class="card-header"><h3 class="card-title">Liste des voies</h3></br>
+                        <label>Nom du site: </label>
+                        <label th:text="${site.nameSite}"></label>
+                    </div>
+                    <div class="card-body" th:if="${site}">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Nom</th>
+                                <th>Secteur</th>
+                                <th>difficulté</th>
+                                <th>Hauteur</th>
+                            </tr>
+                            <tr th:each="v:${listVoie}">
+                                <td th:text="${v.nomVoie}"></td>
+                                <td th:text="${v.secteur}"></td>
+                                <td th:text="${v.difficulte}"></td>
+                                <td th:text="${v.hauteurVoie}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container">
+                        <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerVoie>1}">
+                            <li  th:class="${pageCourante}==${status.index}?'page-item active':'page-item'"
+                                 th:each="p,status:${pagesVoie}">
+                                <a class="page-link" th:href="@{/consulterSite(nameSite=${nameSite},pageVoie=${status.index})}"
+                                   th:text="${status.index}"></a>
+                            </li>
+                        </ul>
+                        <br/><br/>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="card mx-auto" th:if="${site}">
+                    <div class="card-header"><h3 class="card-title">Liste des longueurs</h3></br>
+                        <label>Nom du site: </label>
+                        <label th:text="${site.nameSite}"></label>
+                    </div>
+                    <div class="card-body" th:if="${site}">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Nom</th>
+                                <th>Hauteur</th>
+                            </tr>
+                            <tr th:each="l:${listLongueur}">
+                                <td th:text="${l.nomLongueur}"></td>
+                                <td th:text="${l.hauteurLongueur}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container">
+                        <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerLongueur>1}">
+                            <li  th:class="${pageCourante}==${status.index}?'page-item active':'page-item'"
+                                 th:each="p,status:${pagesLongueur}">
+                                <a class="page-link" th:href="@{/consulterSite(nameSite=${nameSite},pageLongueur=${status.index})}"
+                                   th:text="${status.index}"></a>
+                            </li>
+                        </ul>
+                        <br/><br/>
+                    </div>
+                </div>
+            </div>
+         <div/>
+
+
+
+     <div/>
+
+
+</body>
+</html>
