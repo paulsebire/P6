@@ -7,8 +7,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.persistence.TypedQuery;
+
 
 public interface LongueurRepository extends JpaRepository<Longueur,Long> {
-    @Query("select l from Longueur l where l.site.nameSite =:x order by l.site desc ")
-    public Page<Longueur> listLongueur(@Param("x") String nomSite, Pageable pageable);
+    @Query("select l from Longueur l where l.voie.idVoie =:x order by l.voie.idVoie desc ")
+    public Page<Longueur> listLongueur(@Param("x") Long idVoie, Pageable pageable);
+
+    /*
+    @Query
+    public void longueurWithMultipleJoinOnVoieAndSite(){
+    TypedQuery<Longueur> query=entityManager.createQuery(
+    "SELECT l from Longueur l
+    JOIN voie v
+    JOIN site s
+    WHERE
+    )
+
+*/
 }

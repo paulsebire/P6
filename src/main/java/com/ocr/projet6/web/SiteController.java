@@ -22,15 +22,15 @@ public class SiteController {
     }
 
     @RequestMapping(value = "/consulterSite")
-    public String consulter(Model model, String nameSite,
+    public String consulter(Model model, Long idSite,
                             @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                             @RequestParam(name = "sizevoie",defaultValue = "4") int sizeVoie,
     @RequestParam(name="pageLongueur",defaultValue = "0") int pageLongueur,
     @RequestParam(name = "sizeLongueur",defaultValue = "2") int sizeLongueur){
-        model.addAttribute("nameSite",nameSite);
+        model.addAttribute("idSite",idSite);
         try {
-            Site site = iClimbMetier.consulterSite(nameSite);
-            Page<Voie> pageVoies= iClimbMetier.listVoie(nameSite,pageVoie,sizeVoie);
+            Site site = iClimbMetier.consulterSite(idSite);
+            Page<Voie> pageVoies= iClimbMetier.listVoie(idSite,pageVoie,sizeVoie);
             model.addAttribute("listVoie",pageVoies.getContent());
             int[] pagesVoie=new int[pageVoies.getTotalPages()];
             model.addAttribute("paginationEnablerVoie",pagesVoie.length);
@@ -38,18 +38,23 @@ public class SiteController {
             model.addAttribute("pageCouranteVoie",pageVoie);
             model.addAttribute("site", site);
 
-            Page<Longueur> pageLongueurs= iClimbMetier.listLongueur(nameSite,pageLongueur,sizeLongueur);
+            /*Page<Longueur> pageLongueurs= iClimbMetier.listLongueur(XXX,pageLongueur,sizeLongueur);
             model.addAttribute("listLongueur",pageLongueurs.getContent());
             int[] pagesLongueur=new int[pageLongueurs.getTotalPages()];
             model.addAttribute("paginationEnablerLongueur",pagesLongueur.length);
             model.addAttribute("pagesLongueur",pagesLongueur);
-            model.addAttribute("pageCourante",pageLongueur);
+            model.addAttribute("pageCourante",pageLongueur);*/
 
         }catch (Exception e){
             model.addAttribute("exception",e);
         }
 
         return "sites";
+    }
+
+    @RequestMapping(value = "/inscription")
+    public String inscriptionform(){
+        return "inscription";
     }
 
 }

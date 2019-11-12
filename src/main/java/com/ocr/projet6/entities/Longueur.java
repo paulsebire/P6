@@ -11,17 +11,17 @@ public class Longueur implements Serializable {
     private String nomLongueur;
     @NotNull
     private int hauteurLongueur;
-
+    @NotNull
     @ManyToOne
-    @JoinColumn(name ="ID_SITE" )
-    private Site site;
+    @JoinColumn(name = "ID_VOIE")
+    private Voie voie;
 
     public Longueur() { super();}
 
-    public Longueur(@NotNull String nomLongueur, @NotNull int hauteurLongueur, Site site) {
+    public Longueur(@NotNull String nomLongueur, @NotNull int hauteurLongueur, Voie voie) {
         this.nomLongueur = nomLongueur;
         this.hauteurLongueur = hauteurLongueur;
-        this.site=site;
+        this.voie=voie;
 
     }
 
@@ -49,11 +49,12 @@ public class Longueur implements Serializable {
         this.hauteurLongueur = hauteurLongueur;
     }
 
-    public Site getSite() {
-        return site;
+
+    public Voie getVoie() {
+        return voie;
     }
 
-    public void setSite(Site site) {
-        this.site = site;
+    public void setVoie(Voie voie) {
+        this.voie = voie;
     }
 }

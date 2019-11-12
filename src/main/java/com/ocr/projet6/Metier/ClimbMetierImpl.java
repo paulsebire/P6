@@ -23,18 +23,18 @@ public class ClimbMetierImpl implements IClimbMetier {
 
 
     @Override
-    public Page<Voie> listVoie(String nameSite, int page, int size) {
-        return voieRepository.listVoie(nameSite,PageRequest.of(page,size));
+    public Page<Voie> listVoie(Long idSite, int page, int size) {
+        return voieRepository.listVoie(idSite,PageRequest.of(page,size));
     }
 
     @Override
-    public Page<Longueur> listLongueur(String nameSite, int page, int size) {
-        return longueurRepository.listLongueur(nameSite,PageRequest.of(page,size));
+    public Page<Longueur> listLongueur(Long idVoie, int page, int size) {
+        return longueurRepository.listLongueur(idVoie,PageRequest.of(page,size));
     }
 
     @Override
-    public Site consulterSite(String nameSite) {
-        Optional<Site> site = siteRepository.findById(nameSite);
+    public Site consulterSite(Long idSite) {
+        Optional<Site> site = siteRepository.findById(idSite);
         Site sit =null;
         if (site.isPresent()){
             sit=site.get();

@@ -4,12 +4,14 @@ package com.ocr.projet6.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Collection;
 
 
 @Entity
 public class Voie implements Serializable {
 
-    @Id
+    @Id @GeneratedValue
+    private Long idVoie;
     @NotNull
     private String nomVoie;
     @NotNull
@@ -23,6 +25,8 @@ public class Voie implements Serializable {
     @JoinColumn(name ="ID_SITE" )
     private Site site;
 
+    @OneToMany(mappedBy = "voie", fetch = FetchType.LAZY)
+    private Collection<Longueur> longueurs;
 
     public Voie() { super();}
 
@@ -32,6 +36,14 @@ public class Voie implements Serializable {
         this.difficulte = difficulte;
         this.hauteurVoie = hauteurVoie;
         this.site=site;
+    }
+
+    public Long getIdVoie() {
+        return idVoie;
+    }
+
+    public void setIdVoie(Long idVoie) {
+        this.idVoie = idVoie;
     }
 
     public String getNomVoie() {
@@ -72,5 +84,13 @@ public class Voie implements Serializable {
 
     public void setSite(Site site) {
         this.site = site;
+    }
+
+    public Collection<Longueur> getLongueurs() {
+        return longueurs;
+    }
+
+    public void setLongueurs(Collection<Longueur> longueurs) {
+        this.longueurs = longueurs;
     }
 }

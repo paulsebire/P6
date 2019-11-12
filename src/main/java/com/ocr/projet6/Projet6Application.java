@@ -38,13 +38,13 @@ public class Projet6Application implements CommandLineRunner {
         Voie voie3 = voieRepository.save(new Voie("voie3","secteur1","5C",70,site2));
         Voie voie4 = voieRepository.save(new Voie("voie4","secteur2","6C",80,site2));
 
-       Longueur lg1 = longueurRepository.save(new Longueur("lg1",10,site1));
-        Longueur lg2 = longueurRepository.save(new Longueur("lg2",20,site1));
-        Longueur lg3 = longueurRepository.save(new Longueur("lg3",30,site1));
-        Longueur lg4 = longueurRepository.save(new Longueur("lg4",40,site1));
-        Longueur lg5 = longueurRepository.save(new Longueur("lg5",50,site2));
-        Longueur lg6 = longueurRepository.save(new Longueur("lg6",60,site2));
-        Longueur lg7 = longueurRepository.save(new Longueur("lg7",70,site2));
-        Longueur lg8 = longueurRepository.save(new Longueur("lg8",80,site2));
+       Longueur lg1 = longueurRepository.save(new Longueur("lg1",10,voie1));
+        Longueur lg2 = longueurRepository.save(new Longueur("lg2",20,voie1));
+        Longueur lg3 = longueurRepository.save(new Longueur("lg3",30,voie2));
+        Longueur lg4 = longueurRepository.save(new Longueur("lg4",40,voie2));
+        Longueur lg5 = longueurRepository.save(new Longueur("lg5",50,voie3));
+        Longueur lg6 = longueurRepository.save(new Longueur("lg6",60,voie3));
+        Longueur lg7 = longueurRepository.save(new Longueur("lg7",70,voie4));
+        Longueur lg8 = longueurRepository.save(new Longueur("lg8",80,voie4));
     }
 }

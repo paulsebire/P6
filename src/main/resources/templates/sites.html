@@ -22,11 +22,11 @@
                 <div class="card-body">
                     <form th:action="@{/consulterSite}" method="get">
                         <label>Nom du site: </label>
-                        <input type="text" name="nameSite" th:value="${nameSite}"/>
+                        <input type="text" name="nameSite" th:value="${site.nameSite}"/>
                         <button class="btn btn-primary" type="submit">Ok</button>
 
                     </form>
-                    <div class="red" th:if="${exception}" th:text="${exception.getMessage()}"></div>
+                    <div class="red" th:if="${exception}"><label>Site introuvable</label></div>
                 </div>
             </div>
             <div>
@@ -55,7 +55,7 @@
                         <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerVoie>1}">
                             <li  th:class="${pageCourante}==${status.index}?'page-item active':'page-item'"
                                  th:each="p,status:${pagesVoie}">
-                                <a class="page-link" th:href="@{/consulterSite(nameSite=${nameSite},pageVoie=${status.index})}"
+                                <a class="page-link" th:href="@{/consulterSite(idSite=${idSite},pageVoie=${status.index})}"
                                    th:text="${status.index}"></a>
                             </li>
                         </ul>
