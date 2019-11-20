@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <title>confirmation</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap.min.css.css" th:href="@{bootstrap.min.css}"/>
+    <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous" />
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+    <div class="container bigspacer col-md-6 mx-auto" layout:fragment="content">
+        <div class="card bigspacer">
+          <div class="card-header" ><h3 class="card-title">Confirmation</h3></div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Nom de la voie:</label>
+                    <label th:text="${voie.nomVoie}"/><br/>
+                    <label>Secteur:</label>
+                    <label th:text="${voie.secteur}"/><br/>
+                    <label>Difficulté:</label>
+                    <label th:text="${voie.difficulte}"/><br/>
+                    <label>Hauteur:</label>
+                    <label th:text="${voie.hauteurVoie}"/>
+                </div>
+                <div>
+                    <a class="btn btn-primary float-right" th:href="@{/consulterSite(nameSite=${voie.site.nameSite})}">Retour au site</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

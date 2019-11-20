@@ -1,24 +1,24 @@
 package com.ocr.projet6.entities;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.DecimalMin;
+
 import java.io.Serializable;
 @Entity
 public class Longueur implements Serializable {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idLongueur;
-    @NotNull
+
     private String nomLongueur;
-    @NotNull
-    private int hauteurLongueur;
-    @NotNull
+
+    private double hauteurLongueur;
     @ManyToOne
     @JoinColumn(name = "ID_VOIE")
     private Voie voie;
 
     public Longueur() { super();}
 
-    public Longueur(@NotNull String nomLongueur, @NotNull int hauteurLongueur, Voie voie) {
+    public Longueur( String nomLongueur, double hauteurLongueur, Voie voie) {
         this.nomLongueur = nomLongueur;
         this.hauteurLongueur = hauteurLongueur;
         this.voie=voie;
@@ -41,11 +41,11 @@ public class Longueur implements Serializable {
         this.nomLongueur = nomLongueur;
     }
 
-    public int getHauteurLongueur() {
+    public double getHauteurLongueur() {
         return hauteurLongueur;
     }
 
-    public void setHauteurLongueur(int hauteurLongueur) {
+    public void setHauteurLongueur(double hauteurLongueur) {
         this.hauteurLongueur = hauteurLongueur;
     }
 

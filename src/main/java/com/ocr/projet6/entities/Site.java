@@ -1,17 +1,17 @@
 package com.ocr.projet6.entities;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
 public class Site implements Serializable {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idSite;
-    @NotNull
+
     private String nameSite;
-    @NotNull
+
     private String localisation;
 
     @OneToMany (mappedBy = "site",fetch = FetchType.LAZY)

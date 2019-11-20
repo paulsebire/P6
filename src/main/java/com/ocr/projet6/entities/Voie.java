@@ -2,7 +2,7 @@ package com.ocr.projet6.entities;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -10,16 +10,16 @@ import java.util.Collection;
 @Entity
 public class Voie implements Serializable {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idVoie;
-    @NotNull
+
     private String nomVoie;
-    @NotNull
+
     private String secteur;
-    @NotNull
+
     private  String difficulte;
-    @NotNull
-    private int hauteurVoie;
+
+    private double hauteurVoie;
 
     @ManyToOne
     @JoinColumn(name ="ID_SITE" )
@@ -30,7 +30,7 @@ public class Voie implements Serializable {
 
     public Voie() { super();}
 
-    public Voie(@NotNull String nomVoie, @NotNull String secteur, @NotNull String difficulte, @NotNull int hauteurVoie, Site site) {
+    public Voie(String nomVoie,String secteur,String difficulte, double hauteurVoie, Site site) {
         this.nomVoie = nomVoie;
         this.secteur = secteur;
         this.difficulte = difficulte;
@@ -70,11 +70,11 @@ public class Voie implements Serializable {
         this.difficulte = difficulte;
     }
 
-    public int getHauteurVoie() {
+    public double getHauteurVoie() {
         return hauteurVoie;
     }
 
-    public void setHauteurVoie(int hauteurVoie) {
+    public void setHauteurVoie(double hauteurVoie) {
         this.hauteurVoie = hauteurVoie;
     }
 

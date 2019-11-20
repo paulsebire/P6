@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 
 public interface VoieRepository extends JpaRepository<Voie,Long> {
-    @Query("select v from Voie v where v.site.idSite =:x order by v.site.nameSite desc ")
+    @Query("select v from Voie v where v.site.idSite =:x order by v.idVoie asc ")
     public Page<Voie> listVoie(@Param("x") Long idSite, Pageable pageable);
+
+
 }
