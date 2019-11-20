@@ -39,7 +39,7 @@ public class SiteController {
     @RequestMapping(value = "/consulterSite")
     public String consulter(Model model, String nameSite,
                             @RequestParam(name="pageVoie",defaultValue = "0") Integer pageVoie,
-                            @RequestParam(name = "sizevoie",defaultValue = "4") Integer sizeVoie,
+                            @RequestParam(name = "sizevoie",defaultValue = "2") Integer sizeVoie,
     @RequestParam(name="pageLongueur",defaultValue = "0") Integer pageLongueur,
     @RequestParam(name = "sizeLongueur",defaultValue = "2") Integer sizeLongueur){
 
@@ -78,7 +78,9 @@ public class SiteController {
     }
 
     @RequestMapping(value = "/addFormSite")
-    public String formulaireSite(){
+    public String formulaireSite(Model model){
+        Site site=new Site();
+        model.addAttribute("site",site);
         return "addFormSite";
     }
 
@@ -130,4 +132,26 @@ public class SiteController {
         model.addAttribute("voie",v);
         return "addFormVoie";
     }
+
+
+    @RequestMapping(value = "/saveSite",method = RequestMethod.POST)
+    public String saveSite(Model model,@Valid Site site, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "addFormSite";
+        }
+        siteRepository.save(site);
+        return "confirmationSite";
+    }
+
+    @RequestMapping(value = "/editSite")
+    public String editSite(Model model,Long idSite){
+        Optional<Site> s=siteRepository.findById(idSite);
+        Site sit=null;
+        if(s.isPresent()) {
+            sit=s.get();
+            model.addAttribute("site",sit);
+        }
+        return "editFormSite";
+    }
+
 }

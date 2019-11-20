@@ -16,7 +16,7 @@
     <div layout:fragment="content">
         <div class=" container h-100 ">
             <div>
-                <div class="mx-auto col-lg-4 h-100" th:if="!${site}" >
+                <div class="mx-auto col-lg-4 h-100 bigspacer" th:if="!${site}" >
                     <div class="card-header card border-dark mt-4" ><h3 class="card-title" >Consultation d'un site</h3></div>
                     <div class="card-body border-dark">
                         <form th:action="@{/consulterSite}" method="get">
@@ -27,23 +27,24 @@
                         <div class="red" th:if="${exception}"><label>Site introuvable</label></div>
                     </div>
                 </div>
-                <div class="spacer card  mx-auto " th:if="${site}">
-                    <div class="card-header"><h3 class="card-title">Informations sur le site</h3></div>
+                <div class="bigspacer card  mx-auto col-md-6 " th:if="${site}">
+                    <div class="card-header "><h3 class="card-title">Informations sur le site</h3></div>
                     <div class="card-body">
                         <div>
                             <label>Site:</label>
                             <label th:text="${site.nameSite}" class="mr-2"></label>
                             <label>Localisation:</label>
                             <label th:text="${site.localisation}"></label>
+                            <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/editSite(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Modifier le site</a>
                         </div>
                     </div>
                 </div>
-                <div class="row mx-auto justify-content-center spacer">
-                    <div class="card mx-auto" th:if="${site}">
+                <div class="row justify-content-center spacer">
+                    <div class="card" th:if="${site}">
                         <div class="card-header"><h3 class="card-title">Liste des voies</h3></br>
                             <label>Nom du site: </label>
                             <label th:text="${site.nameSite}"></label>
-                            <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/addFormVoie(idSite=${site.idSite})}">Ajouter une voie</a>
+                            <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/addFormVoie(idSite=${site.idSite})}"><i class="fa fa-plus"></i> Ajouter une voie</a>
                         </div>
                         <div class="card-body justify-content-center" th:if="${site}">
                             <table class="table table-striped">
@@ -70,18 +71,18 @@
                             <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerVoie>1}">
                                 <li  th:class="${pageCouranteVoie}==${status.index}?'page-item active':'page-item'"
                                      th:each="p,status:${pagesVoie}">
-                                    <a class="page-link" th:href="@{/consulterSite(idSite=${idSite},pageVoie=${status.index})}"
+                                    <a class="page-link" th:href="@{/consulterSite(nameSite=${nameSite},pageVoie=${status.index})}"
                                        th:text="${status.index}"></a>
                                 </li>
                             </ul>
                             <br/>
                         </div>
                     </div>
-                    <div class="card mx-auto" th:if="${site}">
+                    <div class="card" th:if="${site}">
                         <div class="card-header"><h3 class="card-title">Liste des longueurs</h3></br>
                             <label>Nom du site: </label>
                             <label th:text="${site.nameSite}"></label>
-                            <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/addLongueur}">Ajouter une longueur</a>
+                            <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/addLongueur}" th:if="${paginationEnablerVoie>0}"><i class="fa fa-plus"></i> Ajouter une longueur</a>
                         </div>
                         <div class="card-body" th:if="${site}">
                             <table class="table table-striped">
