@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin().loginPage("/login");
         http.authorizeRequests().antMatchers("/monProfil","/addFormSite","/deleteVoie","/deleteLongueur","/editVoie",
-                "/saveVoie","/addFormVoie","/saveSite","/editSite").hasRole("USER");
+                "/saveVoie","/addFormVoie","/saveSite","/editSite","/editLongueur").hasRole("USER");
         http.authorizeRequests().antMatchers("/administration").hasRole("ADMIN");
         http.exceptionHandling().accessDeniedPage("/403");
     }

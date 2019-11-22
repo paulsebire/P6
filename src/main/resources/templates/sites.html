@@ -41,10 +41,10 @@
                 </div>
                 <div class="row justify-content-center spacer">
                     <div class="card" th:if="${site}">
-                        <div class="card-header"><h3 class="card-title">Liste des voies</h3></br>
-                            <label>Nom du site: </label>
-                            <label th:text="${site.nameSite}"></label>
-                            <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/addFormVoie(idSite=${site.idSite})}"><i class="fa fa-plus"></i> Ajouter une voie</a>
+                        <div class="card-header">
+                            <h3 class="card-title">Liste des voies
+                                <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/addFormVoie(idSite=${site.idSite})}"><i class="fa fa-plus"></i> Ajouter une voie</a>
+                            </h3>
                         </div>
                         <div class="card-body justify-content-center" th:if="${site}">
                             <table class="table table-striped">
@@ -79,11 +79,11 @@
                         </div>
                     </div>
                     <div class="card" th:if="${site}">
-                        <div class="card-header"><h3 class="card-title">Liste des longueurs</h3></br>
-                            <label>Nom du site: </label>
-                            <label th:text="${site.nameSite}"></label>
-                            <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/addLongueur}" th:if="${paginationEnablerVoie>0}"><i class="fa fa-plus"></i> Ajouter une longueur</a>
-                        </div>
+                        <div class="card-header"><h3 class="card-title">Liste des longueurs
+                            <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')" th:href="@{/addLongueur}" th:if="${paginationEnablerVoie>0}"><i class="fa fa-plus"></i> Ajouter une longueur</a>
+                        </h3>
+
+                            </div>
                         <div class="card-body" th:if="${site}">
                             <table class="table table-striped">
                                 <tr>
@@ -97,9 +97,9 @@
                                     <td align="center" th:text="${l.voie.nomVoie}"></td>
                                     <td align="center" th:text="${l.nomLongueur}"></td>
                                     <td align="center" th:text="${l.hauteurLongueur}"></td>
-                                    <td align="center" sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/edit(idVoie=${l.idLongueur})}"><i class="fa fa-edit"></i></a></td>
+                                    <td align="center" sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/editLongueur(idLongueur=${l.idLongueur},nameSite=${nameSite})}"><i class="fa fa-edit"></i></a></td>
                                     <td align="center" sec:authorize="hasRole('ROLE_USER')"><a onclick="return confirm('Etes vous sûre?')"
-                                           th:href="@{/deleteLongueur(idLongueur=${l.idLongueur},pageLongueur=${pageCouranteLongueur},sizeLongueur=${sizeLongueur})}"> <i class="fa fa-trash"></i></a></td>
+                                           th:href="@{/deleteLongueur(idLongueur=${l.idLongueur},pageLongueur=${pageCouranteLongueur},sizeLongueur=${sizeLongueur},nameSite=${nameSite})}"> <i class="fa fa-trash"></i></a></td>
 
                                 </tr>
                             </table>

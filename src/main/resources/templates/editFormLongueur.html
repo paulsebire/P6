@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8"/>
@@ -12,6 +13,9 @@
             rel="stylesheet"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
             crossorigin="anonymous" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -23,39 +27,30 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<div  class="bigspacer col-md-6 mx-auto" layout:fragment="content">
+<div  class="bigspacer col-md-4 mx-auto align-self-center" layout:fragment="content">
     <div class="card">
-      <br/> <div class="card-header"><h3 class="card-title">Edition d'une voie</h3></div>
+      <div class="card-header"><h3 class="card-title">Edition d'une longueur</h3></div>
         <div class="card-body">
-            <form th:action="@{/saveVoie(idSite=${site.idSite},idVoie=${voie.idVoie})}" method="post">
-
+            <form th:action="@{/saveLongueur(idSite=${site.idSite},idVoie=${XXXX},idLongueur=${longueur.idLongueur})}" method="post">
                 <div class="form-group">
-                    <label class="control-label">Nom de la voie:
-                        <span class="red" th:errors=" ${voie.nomVoie}">
-                        </span>
-                    </label>
-                    <input class="form-control" type="text" name="nomVoie" th:value="${voie.nomVoie}"/>
+                    <label class="control-label" th:name="idVoie">Nom de la voie:</label>
+                    <select class="form-control" id="selectVoie" th:name="idVoie">
+                        <option th:each="l:${listVoie}" th:name="idVoie" th:value="${l.idVoie}" th:text="${l.nomVoie}"></option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label class="control-label " th:name="Secteur">Secteur:
-                        <span class="red" th:errors="${voie.secteur}">
+                    <label class="control-label" th:name="nomLongueur">Nom de la longueur:
+                        <span class="red" th:errors=" ${longueur.nomLongueur}">
                         </span>
                     </label>
-                    <input class="form-control" type="text" name="secteur" th:value="${voie.secteur}"/>
+                    <input class="form-control" type="text" name="nomLongueur" th:value="${longueur.nomLongueur}"/>
                 </div>
                 <div class="form-group">
-                    <label class="control-label " th:name="difficulte">Difficulté:
-                        <span class="red" th:errors="${voie.difficulte}">
+                    <label class="control-label " th:name="hauteurLongueur">Hauteur de la Longueur:
+                        <span class="red" th:errors="${longueur.hauteurLongueur}">
                         </span>
                     </label>
-                    <input class="form-control" type="text" name="difficulte" th:value="${voie.difficulte}"/>
-                </div>
-                <div class="form-group">
-                    <label class="control-label " th:name="hauteurVoie">Hauteur:
-                        <span class="red" th:errors="${voie.hauteurVoie}">
-                        </span>
-                    </label>
-                    <input class="form-control" type="number" name="hauteurVoie" th:value="${voie.hauteurVoie}"/>
+                    <input class="form-control" type="number" name="hauteurVoie" th:value="${longueur.hauteurLongueur}"/>
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary">Enregistrer</button>

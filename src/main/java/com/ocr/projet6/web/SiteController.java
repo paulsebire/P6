@@ -90,9 +90,13 @@ public class SiteController {
         voieRepository.deleteById(idVoie);
         return "redirect:/consulterSite?pageVoie="+pageVoie+"&sizeVoie="+sizeVoie+"&nameSite="+nameSite;}
     @RequestMapping(value = "/deleteLongueur",method = RequestMethod.GET)
-    public String deleteLongueur(Long id,@RequestParam(name="pageLongueur",defaultValue = "0") int pageLongueur,@RequestParam(name = "sizeLongueur",defaultValue = "2") int sizeLongueur,String nameSite){
-        longueurRepository.deleteById(id);
-        return "redirect:/sites?pageVoie="+pageLongueur+"&sizeVoie="+sizeLongueur+"&nameSite="+nameSite;}
+    public String deleteLongueur(Long idLongueur,
+                                 @RequestParam(name="pageLongueur",defaultValue = "0") int pageLongueur,
+                                 @RequestParam(name = "sizeLongueur",defaultValue = "2") int sizeLongueur,
+                                 String nameSite){
+        System.out.println("idLongueur="+idLongueur);
+        longueurRepository.deleteById(idLongueur);
+        return "redirect:/consulterSite?pageVoie="+pageLongueur+"&sizeVoie="+sizeLongueur+"&nameSite="+nameSite;}
 
     @RequestMapping(value = "/editVoie",method = RequestMethod.GET)
     public String editVoie(Model model, Long idVoie,Long idSite) {
@@ -152,6 +156,22 @@ public class SiteController {
             model.addAttribute("site",sit);
         }
         return "editFormSite";
+    }
+
+    @RequestMapping(value = "/editLongueur")
+    public  String  editLongueur(Model model, Long idLongueur , String nameSite, @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
+                                 @RequestParam(name = "sizevoie",defaultValue = "2") int sizeVoie){
+        Site site = iClimbMetier.consulterSite(nameSite);
+        model.addAttribute("site",site);
+        Page<Voie> pageVoies= iClimbMetier.listVoie(site.getIdSite(),pageVoie,sizeVoie);
+        model.addAttribute("listVoie",pageVoies.getContent());
+        Optional<Longueur> l=longueurRepository.findById(idLongueur);
+        Longueur lg=null;
+        if(l.isPresent()) {
+            lg=l.get();
+            model.addAttribute("longueur",lg);
+        }
+        return "editFormLongueur";
     }
 
 }
