@@ -42,4 +42,9 @@ public class ClimbMetierImpl implements IClimbMetier {
         return site;
     }
 
+
+    @Override
+    public Long biggestIdVoie(){
+        return voieRepository.biggestIdVoie();
+    }
 }

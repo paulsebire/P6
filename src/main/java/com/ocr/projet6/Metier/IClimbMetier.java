@@ -10,4 +10,5 @@ public interface IClimbMetier {
     public Page<Voie> listVoie(Long idSite, int page, int size);
     public Page<Longueur> listLongueur(Long idSite, int page, int size);
     Site  consulterSite(String nameSite);
+    public Long biggestIdVoie();
 }

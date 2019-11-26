@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 public interface LongueurRepository extends JpaRepository<Longueur,Long> {
-    @Query(value = "select l from Longueur l inner join fetch l.voie v inner join fetch v.site s where s.idSite=:idSite order by l.idLongueur",
+    @Query(value = "select l from Longueur l inner join fetch l.voie v inner join fetch v.site s where s.idSite=:idSite order by l.voie.nomVoie,l.idLongueur  asc",
     countQuery = "select count (l) from Longueur l inner join l.voie v inner join v.site s where s.idSite=:idSite")
     public Page<Longueur> listLongueur(@Param("idSite") Long idSite, Pageable pageable);
 

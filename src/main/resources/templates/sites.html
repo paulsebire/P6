@@ -9,25 +9,37 @@
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{style.css}"/>
-    <link rel="stylesheet" type="text/css" href="../static/bootstrap.min.css.css" th:href="@{bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{/style.css}"/>
+    <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous" />
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+            crossorigin="anonymous"></script>
 </head>
 <body>
-    <div layout:fragment="content">
+    <div layout:fragment="content" class="vbigspacer">
         <div class=" container h-100 ">
             <div>
-                <div class="mx-auto col-lg-4 h-100 bigspacer" th:if="!${site}" >
-                    <div class="card-header card border-dark mt-4" ><h3 class="card-title" >Consultation d'un site</h3></div>
+                <div class="mx-auto col-lg-4 h-100 vbigspacer" th:if="!${site}" >
+                    <div class="bigspacer card-header card border-dark mt-4" ><h3 class="card-title" >Consultation d'un site</h3></div>
                     <div class="card-body border-dark">
-                        <form th:action="@{/consulterSite}" method="get">
+                        <form th:action="@{/sites/consult/nomDuSite}">
                             <label>Nom du site: </label>
-                            <input type="text" name="nameSite"  />
+                            <input type="text" name="nameSite"/>
                             <button class="btn btn-primary" type="submit">Ok</button>
                         </form>
                         <div class="red" th:if="${exception}"><label>Site introuvable</label></div>
                     </div>
                 </div>
-                <div class="bigspacer card  mx-auto col-md-6 " th:if="${site}">
+                <div class="vbigspacer card  mx-auto col-md-6 " th:if="${site}">
                     <div class="card-header "><h3 class="card-title">Informations sur le site</h3></div>
                     <div class="card-body">
                         <div>
@@ -35,7 +47,7 @@
                             <label th:text="${site.nameSite}" class="mr-2"></label>
                             <label>Localisation:</label>
                             <label th:text="${site.localisation}"></label>
-                            <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/editSite(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Modifier le site</a>
+                            <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/sites/id/{idSite}/edit(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Modifier le site</a>
                         </div>
                     </div>
                 </div>
@@ -43,7 +55,7 @@
                     <div class="card" th:if="${site}">
                         <div class="card-header">
                             <h3 class="card-title">Liste des voies
-                                <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/addFormVoie(idSite=${site.idSite})}"><i class="fa fa-plus"></i> Ajouter une voie</a>
+                                <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')" th:href="@{/sites/id/{idSite}/voies/add(idSite=${site.idSite})}"><i class="fa fa-plus"></i> Ajouter une voie</a>
                             </h3>
                         </div>
                         <div class="card-body justify-content-center" th:if="${site}">
@@ -61,9 +73,9 @@
                                     <td align="center" th:text="${v.secteur}"></td>
                                     <td align="center" th:text="${v.difficulte}"></td>
                                     <td align="center" th:text="${v.hauteurVoie}"></td>
-                                    <td align="center" sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/editVoie(idVoie=${v.idVoie},idSite=${site.idSite})}">    <i class="fa fa-edit "></i></a></td>
+                                    <td align="center" sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/sites/id/{idSite}/voies/id/{idVoie}/edit(idSite=${site.idSite},idVoie=${v.idVoie})}">    <i class="fa fa-edit "></i></a></td>
                                     <td align="center" sec:authorize="hasRole('ROLE_USER')"><a onclick="return confirm('Etes vous sûr de vouloir supprimer la voie'+' ? \n Vous allez supprimer toutes les longueurs associées')"
-                                           th:href="@{/deleteVoie(idVoie=${v.idVoie},pageVoie=${pageCouranteVoie},sizeVoie=${sizeVoie},nameSite=${nameSite})}">     <i class="fa fa-trash"></i></a></td>
+                                           th:href="@{/voies/id/{idVoie}/delete(idVoie=${v.idVoie},pageVoie=${pageCouranteVoie},sizeVoie=${sizeVoie},nameSite=${site.nameSite})}"><i class="fa fa-trash"></i></a></td>
                                 </tr>
                             </table>
                         </div>
@@ -71,7 +83,7 @@
                             <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerVoie>1}">
                                 <li  th:class="${pageCouranteVoie}==${status.index}?'page-item active':'page-item'"
                                      th:each="p,status:${pagesVoie}">
-                                    <a class="page-link" th:href="@{/consulterSite(nameSite=${nameSite},pageVoie=${status.index})}"
+                                    <a class="page-link" th:href="@{/sites/consult/nomDuSite(nameSite=${site.nameSite},pageVoie=${status.index})}"
                                        th:text="${status.index}"></a>
                                 </li>
                             </ul>
@@ -93,13 +105,13 @@
                                     <th sec:authorize="hasRole('ROLE_USER')">Editer</th>
                                     <th sec:authorize="hasRole('ROLE_USER')">Supprimer</th>
                                 </tr>
-                                <tr th:each="l:${listLongueur}">
-                                    <td align="center" th:text="${l.voie.nomVoie}"></td>
-                                    <td align="center" th:text="${l.nomLongueur}"></td>
-                                    <td align="center" th:text="${l.hauteurLongueur}"></td>
-                                    <td align="center" sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/editLongueur(idLongueur=${l.idLongueur},nameSite=${nameSite})}"><i class="fa fa-edit"></i></a></td>
+                                <tr th:each="ll:${listLongueur}">
+                                    <td align="center" th:text="${ll.voie.nomVoie}"></td>
+                                    <td align="center" th:text="${ll.nomLongueur}"></td>
+                                    <td align="center" th:text="${ll.hauteurLongueur}"></td>
+                                    <td align="center" sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/sites/id/{idSite}/longueurs/id/{idLongueur}/edit(idSite=${ll.voie.site.idSite},idLongueur=${ll.idLongueur})}"><i class="fa fa-edit"></i></a></td>
                                     <td align="center" sec:authorize="hasRole('ROLE_USER')"><a onclick="return confirm('Etes vous sûre?')"
-                                           th:href="@{/deleteLongueur(idLongueur=${l.idLongueur},pageLongueur=${pageCouranteLongueur},sizeLongueur=${sizeLongueur},nameSite=${nameSite})}"> <i class="fa fa-trash"></i></a></td>
+                                           th:href="@{/longueurs/id/{idLongueur}/delete(idLongueur=${ll.idLongueur},pageLongueur=${pageCouranteLongueur},sizeLongueur=${sizeLongueur},nameSite=${site.nameSite})}"> <i class="fa fa-trash"></i></a></td>
 
                                 </tr>
                             </table>
@@ -108,7 +120,7 @@
                             <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerLongueur>1}">
                                 <li  th:class="${pageCouranteLongueur}==${status.index}?'page-item active':'page-item'"
                                      th:each="p,status:${pagesLongueur}">
-                                    <a class="page-link" th:href="@{/consulterSite(nameSite=${nameSite},pageLongueur=${status.index})}"
+                                    <a class="page-link" th:href="@{/sites/consult/nomDuSite(nameSite=${site.nameSite},pageLongueur=${status.index})}"
                                        th:text="${status.index}"></a>
                                 </li>
                             </ul>

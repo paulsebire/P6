@@ -5,8 +5,9 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Formulaire</title>
-    <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{style.css}"/>
-    <link rel="stylesheet" type="text/css" href="../static/bootstrap.min.css.css" th:href="@{bootstrap.min.css}"/>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{/style.css}"/>
     <link
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             rel="stylesheet"
@@ -20,14 +21,14 @@
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
             integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 </head>
 <body>
 <div  class="spacer col-md-6 mx-auto bigspacer" layout:fragment="content">
     <div class="card">
       <br/> <div class="card-header"><h3 class="card-title">Ajout d'une voie</h3></div>
         <div class="card-body">
-            <form th:action="@{/saveVoie(idSite=${voie.site.idSite},idVoie=${voie.idVoie})}" method="post">
+            <form th:action="@{/sites/id/{idSite}/voie/save(idSite=${voie.site.idSite})}" method="post">
 
                 <div class="form-group">
                     <label class="control-label">Nom de la voie:

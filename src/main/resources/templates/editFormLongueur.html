@@ -6,16 +6,14 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Formulaire</title>
-    <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{style.css}"/>
-    <link rel="stylesheet" type="text/css" href="../static/bootstrap.min.css.css" th:href="@{bootstrap.min.css}"/>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{/style.css}"/>
     <link
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             rel="stylesheet"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
             crossorigin="anonymous" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -24,33 +22,33 @@
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
             integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 </head>
 <body>
 <div  class="bigspacer col-md-4 mx-auto align-self-center" layout:fragment="content">
     <div class="card">
       <div class="card-header"><h3 class="card-title">Edition d'une longueur</h3></div>
         <div class="card-body">
-            <form th:action="@{/saveLongueur(idSite=${site.idSite},idVoie=${XXXX},idLongueur=${longueur.idLongueur})}" method="post">
+            <form th:action="@{/longueurs/id/{idLongueur}/save(idLongueur=${longueur.idLongueur})}" method="post">
                 <div class="form-group">
-                    <label class="control-label" th:name="idVoie">Nom de la voie:</label>
-                    <select class="form-control" id="selectVoie" th:name="idVoie">
-                        <option th:each="l:${listVoie}" th:name="idVoie" th:value="${l.idVoie}" th:text="${l.nomVoie}"></option>
+                    <label class="control-label">Nom de la voie:</label>
+                    <select class="form-control" id="idVoieNew"  selected="selected" name="idVoieNew">
+                        <option th:each="lv:${listVoie}"  th:value="${lv.idVoie}" th:text="${lv.nomVoie}"></option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" th:name="nomLongueur">Nom de la longueur:
+                    <label class="control-label">Nom de la longueur:
                         <span class="red" th:errors=" ${longueur.nomLongueur}">
                         </span>
                     </label>
                     <input class="form-control" type="text" name="nomLongueur" th:value="${longueur.nomLongueur}"/>
                 </div>
                 <div class="form-group">
-                    <label class="control-label " th:name="hauteurLongueur">Hauteur de la Longueur:
+                    <label class="control-label ">Hauteur de la Longueur:
                         <span class="red" th:errors="${longueur.hauteurLongueur}">
                         </span>
                     </label>
-                    <input class="form-control" type="number" name="hauteurVoie" th:value="${longueur.hauteurLongueur}"/>
+                    <input class="form-control" type="number" name="hauteurLongueur" th:value="${longueur.hauteurLongueur}"/>
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary">Enregistrer</button>

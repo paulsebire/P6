@@ -6,6 +6,8 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Connexion</title>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{/style.css}"/>
     <link
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -20,7 +22,7 @@
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
             integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 </head>
 <body>
 <div  class=" col-md-4 mx-auto">
@@ -37,7 +39,7 @@
                     vous avez été déconnecté
                 </span>
             </div>
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/utilisateurs/login}" method="post">
                 <div class="form-group">
                     <label class="control-label">Login:</label>
                     <input class="form-control" type="text" name="username"/>
@@ -48,7 +50,7 @@
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary">Se connecter</button>
-                    <a class="btn btn-primary float-right" th:href="@{/inscription}">Créer un compte</a>
+                    <a class="btn btn-primary float-right" th:href="@{/utilisateurs/inscription}">Créer un compte</a>
                 </div>
             </form>
         </div>

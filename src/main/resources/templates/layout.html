@@ -5,6 +5,9 @@
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8"/>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{/style.css}"/>
     <link
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             rel="stylesheet"
@@ -18,11 +21,7 @@
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
             integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="/css/style.css" th:href="@{/css/style.css}"/>
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-          rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-          crossorigin="anonymous">
-    <link href="/css/all.css" rel="stylesheet">
+</head>
     <title>les amis de l'escalade</title>
 </head>
 <body>
@@ -30,16 +29,16 @@
     <div class="navbar-inverse navbar navbar-default bg-dark fixed-top" >
         <div class="container-fluid">
             <ul class="nav ml-1">
-                <li class="justify-content-center mr-1"><a class="btn btn-primary "  th:href="@{/sites}" ><i class="fa fa-search"></i> Trouver<br/>un site</a></li>
-                <li class="justify-content-center mr-1"><a class=" btn btn-primary " th:href="@{/addFormSite}" sec:authorize="hasRole('ROLE_USER')" th:if="${#request.userPrincipal != null}"><i class="fa fa-plus"></i>  Ajouter<br/>nouveau site</a></li>
-                <li class="justify-content-center mr-1"><a class=" btn btn-primary " th:href="@{/monProfil}" th:if="${#request.userPrincipal != null}" sec:authorize="hasRole('ROLE_USER')" ><i class="fa fa-user"></i><br/>Mon Profil</a></li>
+                <li class="justify-content-center mr-1"><a class="btn btn-primary "  th:href="@{/sites/search}" ><i class="fa fa-search"></i> Trouver<br/>un site</a></li>
+                <li class="justify-content-center mr-1"><a class=" btn btn-primary " th:href="@{/sites/add}" sec:authorize="hasRole('ROLE_USER')" th:if="${#request.userPrincipal != null}"><i class="fa fa-plus"></i>  Ajouter<br/>nouveau site</a></li>
+                <li class="justify-content-center mr-1"><a class=" btn btn-primary " th:href="@{/utilisateurs/id/{idUtilisateur}/monProfil}" th:if="${#request.userPrincipal != null}" sec:authorize="hasRole('ROLE_USER')" ><i class="fa fa-user"></i><br/>Mon Profil</a></li>
                 <div sec:authorize="hasRole('ROLE_ADMIN')" th:if="${#request.userPrincipal}" access="hasRole('ROLE_ADMIN')">
                 <li class="justify-content-center" ><a class="btn btn-primary" th:href="@{/administration}" ><i class="fa fa-users"></i><br/>Administration</a></li>
                 </div>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="justify-content-center" th:if="${#request.userPrincipal == null}"><a class="btn btn-primary" th:href="@{/login}" th:inline="text"><i class="fa fa-user-circle"></i><br/>Connexion </a></li>
-                <li class="justify-content-center" th:if="${#request.userPrincipal != null}"><a class="btn btn-primary" th:href="@{/login?logout}" th:inline="text"><i class="fa fa-user-circle"></i>  [[${#httpServletRequest.remoteUser}]]<br/>Déconnexion </a></li>
+                <li class="justify-content-center" th:if="${#request.userPrincipal == null}"><a class="btn btn-primary" th:href="@{/utilisateurs/login}" th:inline="text"><i class="fa fa-user-circle"></i><br/>Connexion </a></li>
+                <li class="justify-content-center" th:if="${#request.userPrincipal != null}"><a class="btn btn-primary" th:href="@{/utilisateurs/login?logout}" th:inline="text"><i class="fa fa-user-circle"></i>  [[${#httpServletRequest.remoteUser}]]<br/>Déconnexion </a></li>
             </ul>
         </div>
     </div>
