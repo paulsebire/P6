@@ -29,7 +29,7 @@
     <div class="card">
       <div class="card-header"><h3 class="card-title">Ajout d'une longueur</h3></div>
         <div class="card-body">
-            <form th:action="@{/sites/id/{idSite}/voies/longueurs/save(idSite=${site.idSite})}" method="post">
+            <form th:action="@{/sites/{idSite}/voies/longueurs/save(idSite=${site.idSite})}" method="post">
                 <div class="form-group">
                     <label class="control-label">Nom de la voie:</label>
                     <select class="form-control" id="idVoieNew"  selected="selected" name="idVoieNew">

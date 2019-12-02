@@ -29,7 +29,7 @@
     <div class="card">
       <div class="card-header"><h3 class="card-title">Edition d'une longueur</h3></div>
         <div class="card-body">
-            <form th:action="@{/longueurs/id/{idLongueur}/save(idLongueur=${longueur.idLongueur})}" method="post">
+            <form th:action="@{/longueurs/{idLongueur}/save(idLongueur=${longueur.idLongueur})}" method="post">
                 <div class="form-group">
                     <label class="control-label">Nom de la voie:</label>
                     <select class="form-control" id="idVoieNew"  selected="selected" name="idVoieNew">

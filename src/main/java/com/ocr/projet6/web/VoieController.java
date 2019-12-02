@@ -28,7 +28,7 @@ public class VoieController {
     @Autowired
     private IClimbMetier iClimbMetier;
 
-    @GetMapping(value = "/sites/id/{idSite}/voies/add")
+    @GetMapping(value = "/sites/{idSite}/voies/add")
     public String addVoie(Model model,@PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
         Site sit=s.get();
@@ -38,7 +38,7 @@ public class VoieController {
         return "addFormVoie";
     }
 
-    @GetMapping(value = "/voies/id/{idVoie}/delete")
+    @GetMapping(value = "/voies/{idVoie}/delete")
     public String deleteVoie(@PathVariable("idVoie")Long idVoie,
                              @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                              @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie,
@@ -48,7 +48,7 @@ public class VoieController {
         return "redirect:/sites/consult/nomDuSite?nameSite="+nameSite+"&pageVoie="+pageVoie+"&sizeVoie="+sizeVoie;}
 
 
-    @GetMapping(value = "/sites/id/{idSite}/voies/id/{idVoie}/edit")
+    @GetMapping(value = "/sites/{idSite}/voies/{idVoie}/edit")
     public String editVoie(Model model,
                            @PathVariable("idSite") Long idSite,
                            @PathVariable("idVoie") Long idVoie) {
@@ -65,7 +65,7 @@ public class VoieController {
         return "editFormVoie";
     }
 
-    @PostMapping(value = "/sites/id/{idSite}/voie/id/{idVoie}/save")
+    @PostMapping(value = "/sites/{idSite}/voie/{idVoie}/save")
     public String saveEditedVoie(Model model, @Valid Voie voie,
                            @PathVariable("idSite") Long idSite,
                            @PathVariable("idVoie") Long idVoie,
@@ -81,7 +81,7 @@ public class VoieController {
         model.addAttribute("voie",voie);
         return "confirmationVoie";
     }
-    @PostMapping(value = "/sites/id/{idSite}/voie/save")
+    @PostMapping(value = "/sites/{idSite}/voie/save")
     public String saveNewVoie(Model model, @Valid Voie voie,
                            @PathVariable("idSite") Long idSite,
                            BindingResult bindingResult){

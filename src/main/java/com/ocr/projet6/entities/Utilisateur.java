@@ -1,10 +1,12 @@
 package com.ocr.projet6.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 @Entity
 public class Utilisateur implements Serializable {
-
+    @Id @GeneratedValue
     private Long idUtilisateur;
 
     private String nomUtilisateur;
@@ -15,9 +17,7 @@ public class Utilisateur implements Serializable {
 
     private String emailUtilisateur;
 
-    public Utilisateur() {
-        super();
-    }
+    public Utilisateur() { super(); }
 
     public Utilisateur(String nomUtilisateur, String prenomUtilisateur, String password, String emailUtilisateur) {
         this.nomUtilisateur = nomUtilisateur;

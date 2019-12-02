@@ -110,10 +110,7 @@ public class SiteController {
         return "sitesDisplay";
     }
 
-    @GetMapping(value = "/utilisateurs/inscription")
-    public String inscriptionForm(){
-        return "inscription";
-    }
+
 
     @GetMapping(value = "/sites/add")
     public String addSite(Model model){
