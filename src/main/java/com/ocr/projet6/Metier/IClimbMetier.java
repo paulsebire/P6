@@ -7,8 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 
 public interface IClimbMetier {
+    public Page<Site> listSite( int page, int size);
     public Page<Voie> listVoie(Long idSite, int page, int size);
     public Page<Longueur> listLongueur(Long idSite, int page, int size);
-    Site  consulterSite(String nameSite);
-    public Long biggestIdVoie();
 }

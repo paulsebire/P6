@@ -24,6 +24,11 @@ public class ClimbMetierImpl implements IClimbMetier {
 
 
     @Override
+    public Page<Site> listSite(int page, int size) {
+        return siteRepository.listSite(PageRequest.of(page,size));
+    }
+
+    @Override
     public Page<Voie> listVoie(Long idSite, int page, int size) {
         return voieRepository.listVoie(idSite,PageRequest.of(page,size));
     }
@@ -33,18 +38,5 @@ public class ClimbMetierImpl implements IClimbMetier {
         return longueurRepository.listLongueur(idSite,PageRequest.of(page,size));
     }
 
-    @Override
-    public Site consulterSite(String nameSite) {
-        Site site = siteRepository.findSiteByNameSite(nameSite);
-        if (site==null){
-            throw new RuntimeException("Site Introuvable");
-        }
-        return site;
-    }
 
-
-    @Override
-    public Long biggestIdVoie(){
-        return voieRepository.biggestIdVoie();
-    }
 }

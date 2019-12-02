@@ -13,8 +13,6 @@ public interface VoieRepository extends JpaRepository<Voie,Long> {
     @Query("select v from Voie v where v.site.idSite =:x order by v.idVoie asc ")
     public Page<Voie> listVoie(@Param("x") Long idSite, Pageable pageable);
 
-    @Query(" select v from Voie v where v.idVoie = (select max(v.idVoie) from Voie v)")
-    public Long biggestIdVoie();
 
 
 }

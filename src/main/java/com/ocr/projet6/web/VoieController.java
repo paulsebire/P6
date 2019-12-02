@@ -33,7 +33,6 @@ public class VoieController {
         Optional<Site> s=siteRepository.findById(idSite);
         Site sit=s.get();
         Voie voie=new Voie();
-        System.out.println("voieID= "+voie.getIdVoie());
         voie.setSite(sit);
         model.addAttribute("voie",voie);
         return "addFormVoie";
@@ -42,7 +41,7 @@ public class VoieController {
     @GetMapping(value = "/voies/id/{idVoie}/delete")
     public String deleteVoie(@PathVariable("idVoie")Long idVoie,
                              @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
-                             @RequestParam(name = "sizevoie",defaultValue = "2") int sizeVoie,
+                             @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie,
                              @RequestParam(name = "nameSite",defaultValue = "") String nameSite){
         longueurRepository.deleteByVoie(idVoie);
         voieRepository.deleteById(idVoie);

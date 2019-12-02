@@ -9,6 +9,7 @@ import com.ocr.projet6.entities.Site;
 import com.ocr.projet6.entities.Voie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,20 +30,61 @@ public class SiteController {
     private IClimbMetier iClimbMetier;
 
     @RequestMapping(value = "/sites/search")
-    public String sites(Model model){
+    public String sites(Model model,
+                        @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
+                        @RequestParam(name = "sizeSite",defaultValue = "4") int sizeSite){
+        Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
+        model.addAttribute("listSite",pageSites.getContent());
+        int[] pagesSite=new int[pageSites.getTotalPages()];
+        int paginationEnablerSite=pagesSite.length;
+        model.addAttribute("paginationEnablerSite",paginationEnablerSite);
+        model.addAttribute("pagesSite",pagesSite);
+        model.addAttribute("pageCouranteSite",pageSite);
+        model.addAttribute("sizeSite",sizeSite);
         return "sites";
     }
 
-    @GetMapping(path = "/sites/consult/nomDuSite")
-    public String consulter(Model model,
-                            @RequestParam(name = "nameSite", defaultValue = "") String nameSite,
-                            @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
-                            @RequestParam(name = "sizevoie",defaultValue = "2") int sizeVoie,
-                            @RequestParam(name="pageLongueur",defaultValue = "0") int pageLongueur,
-                            @RequestParam(name = "sizeLongueur",defaultValue = "2") int sizeLongueur){
+
+    @GetMapping(path = "/sites/find")
+    public String find(Model model,
+                       @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
+                       @RequestParam(name = "sizeSite",defaultValue = "2") int sizeSite,
+                       @RequestParam(name = "motCle", defaultValue = "")String mc){
         try {
-            Site site = iClimbMetier.consulterSite(nameSite);
-            model.addAttribute("idSite",site.getIdSite());
+            Page<Site> pageSites = siteRepository.chercher("%" + mc + "%", PageRequest.of(pageSite, sizeSite));
+            model.addAttribute("listSite", pageSites.getContent());
+
+            int[] pagesSites = new int[pageSites.getTotalPages()];
+            System.out.println("nbSites=" + pagesSites.length);
+            model.addAttribute("pagesSite", pagesSites);
+            int paginationEnablerSite = pagesSites.length;
+            model.addAttribute("paginationEnablerSite", paginationEnablerSite);
+            model.addAttribute("pagesSite", pagesSites);
+            model.addAttribute("pageCouranteSite", pageSites);
+            model.addAttribute("sizeSite", sizeSite);
+            model.addAttribute("motCle", mc);
+        }catch (Exception e){
+            model.addAttribute("exception",e);
+            throw new RuntimeException("Site Introuvable");
+        }
+        return "sites";
+    }
+
+    @GetMapping(path = "/sites/{idSite}/consult")
+    public String consulter(Model model,
+                            @PathVariable(name = "idSite") Long idSite,
+                            @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
+                            @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie,
+                            @RequestParam(name="pageLongueur",defaultValue = "0") int pageLongueur,
+                            @RequestParam(name = "sizeLongueur",defaultValue = "2") int sizeLongueur
+                            ){
+        try {
+            Optional<Site> s=siteRepository.findById(idSite);
+            Site site=null;
+            if(s.isPresent()) {
+                site=s.get();
+            }
+            model.addAttribute("site", site);
             Page<Voie> pageVoies= iClimbMetier.listVoie(site.getIdSite(),pageVoie,sizeVoie);
             model.addAttribute("listVoie",pageVoies.getContent());
             int[] pagesVoie=new int[pageVoies.getTotalPages()];
@@ -51,8 +93,9 @@ public class SiteController {
             model.addAttribute("paginationEnablerVoie",paginationEnablerVoie);
             model.addAttribute("pagesVoie",pagesVoie);
             model.addAttribute("pageCouranteVoie",pageVoie);
-            model.addAttribute("site", site);
             model.addAttribute("sizeVoie",sizeVoie);
+
+
             Page<Longueur> pageLongueurs= iClimbMetier.listLongueur(site.getIdSite(),pageLongueur,sizeLongueur);
             model.addAttribute("listLongueur",pageLongueurs.getContent());
             int[] pagesLongueur=new int[pageLongueurs.getTotalPages()];
@@ -64,7 +107,7 @@ public class SiteController {
             model.addAttribute("exception",e);
         }
 
-        return "sites";
+        return "sitesDisplay";
     }
 
     @GetMapping(value = "/utilisateurs/inscription")

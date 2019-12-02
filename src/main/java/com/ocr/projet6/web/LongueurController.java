@@ -28,32 +28,20 @@ public class LongueurController {
     @Autowired
     private IClimbMetier iClimbMetier;
 
-    @GetMapping(value = "/sites/id/{idSite}/voies/id/{idVoie}/longueurs/add")
+    @GetMapping(value = "/sites/id/{idSite}/voies/longueurs/add")
     public String addLongueur(Model model,@PathVariable("idSite") Long idSite,
-                              @PathVariable("idVoie") Long idVoie,
                               @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
-                              @RequestParam(name = "sizevoie",defaultValue = "2") int sizeVoie){
-
-        /*Optional<Site> s=siteRepository.findById(idSite);
-        Site sit=s.get();
-        //model.addAttribute("site",sit);
-        Page<Voie> pageVoies= iClimbMetier.listVoie(idSite,pageVoie,sizeVoie);
-        model.addAttribute("listVoie",pageVoies.getContent());
-        Long idVoieNew=null;
-        model.addAttribute("idVoieNew",idVoieNew);
-        Optional<Longueur> l=longueurRepository.findById(idLongueur);
-        Longueur lg=null;
-        if(l.isPresent()) {
-            lg=l.get();
-            model.addAttribute("longueur",lg);
-        }
+                              @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie){
 
         Optional<Site> s=siteRepository.findById(idSite);
         Site sit=s.get();
-        Voie voie=new Voie();
-        System.out.println("voieID= "+voie.getIdVoie());
-        voie.setSite(sit);
-        model.addAttribute("voie",voie);*/
+        model.addAttribute("site",sit);
+        Page<Voie> pageVoies= iClimbMetier.listVoie(idSite,pageVoie,sizeVoie);
+        model.addAttribute("listVoie",pageVoies.getContent());
+        Longueur longueur=new Longueur();
+        model.addAttribute("longueur",longueur);
+        Long idVoieNew=null;
+        model.addAttribute("idVoieNew",idVoieNew);
         return "addFormLongueur";
     }
 
@@ -90,7 +78,7 @@ public class LongueurController {
     }
 
     @PostMapping(value = "/longueurs/id/{idLongueur}/save")
-    public String saveLongueur(Model model,
+    public String saveEditedLongueur(Model model,
                                @Valid Longueur longueur,
                                @RequestParam("idVoieNew") Long idVoieNew,
                                @PathVariable("idLongueur") Long idLongueur,
@@ -107,5 +95,26 @@ public class LongueurController {
         model.addAttribute("longueur",longueur);
         return "confirmationLongueur";
     }
+
+    @PostMapping(value = "/sites/id/{idSite}/voies/longueurs/save")
+    public String saveNewLongueur(Model model,
+                                     @Valid Longueur longueur,
+                                     @RequestParam("idVoieNew") Long idVoieNew,
+                                     @PathVariable("idSite") Long idSite,
+                                     BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "editFormLongueur";
+        }
+        Optional<Site> s=siteRepository.findById(idSite);
+        Site sit=s.get();
+        Optional<Voie> v=voieRepository.findById(idVoieNew);
+        Voie voi=v.get();
+        voi.setSite(sit);
+        longueur.setVoie(voi);
+        longueurRepository.save(longueur);
+        model.addAttribute("longueur",longueur);
+        return "confirmationLongueur";
+    }
+
 
 }
