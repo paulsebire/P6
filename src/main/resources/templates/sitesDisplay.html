@@ -63,7 +63,7 @@
                                     <td align="center" th:text="${v.hauteurVoie}"></td>
                                     <td align="center" sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/site/{idSite}/voies/{idVoie}/edit(idSite=${site.idSite},idVoie=${v.idVoie})}">    <i class="fa fa-edit "></i></a></td>
                                     <td align="center" sec:authorize="hasRole('ROLE_USER')"><a onclick="return confirm('Etes vous sûr de vouloir supprimer la voie'+' ? \n Vous allez supprimer toutes les longueurs associées')"
-                                           th:href="@{/voies/{idVoie}/delete(idVoie=${v.idVoie},pageVoie=${pageCouranteVoie},sizeVoie=${sizeVoie},nameSite=${site.nameSite})}"><i class="fa fa-trash"></i></a></td>
+                                           th:href="@{/site/{idSite}/voies/{idVoie}/delete(idSite=${v.site.idSite} ,idVoie=${v.idVoie},pageVoie=${pageCouranteVoie},sizeVoie=${sizeVoie},nameSite=${site.nameSite})}"><i class="fa fa-trash"></i></a></td>
                                 </tr>
                             </table>
                         </div>

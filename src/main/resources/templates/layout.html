@@ -37,8 +37,8 @@
                 </div>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="justify-content-center" th:if="${#request.userPrincipal == null}"><a class="btn btn-primary" th:href="@{/utilisateurs/login}" th:inline="text"><i class="fa fa-user-circle"></i><br/>Connexion </a></li>
-                <li class="justify-content-center" th:if="${#request.userPrincipal != null}"><a class="btn btn-primary" th:href="@{/utilisateurs/login?logout}" onclick="return confirm('Etes vous sûr de vouloir vous déconnecter')" th:inline="text"><i class="fa fa-user-circle"></i>  [[${#httpServletRequest.remoteUser}]]<br/>Déconnexion </a></li>
+                <li class="justify-content-center" th:if="${#request.userPrincipal == null}"><a class="btn btn-primary" th:href="@{/utilisateur/login}" th:inline="text"><i class="fa fa-user-circle"></i><br/>Connexion </a></li>
+                <li class="justify-content-center" th:if="${#request.userPrincipal != null}"><a class="btn btn-primary" th:href="@{/utilisateur/login?logout}" onclick="return confirm('Etes vous sûr de vouloir vous déconnecter')" th:inline="text"><i class="fa fa-user-circle"></i>  [[${#httpServletRequest.remoteUser}]]<br/>Déconnexion </a></li>
             </ul>
         </div>
     </div>

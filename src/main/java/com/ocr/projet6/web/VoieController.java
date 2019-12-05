@@ -38,14 +38,14 @@ public class VoieController {
         return "addFormVoie";
     }
 
-    @GetMapping(value = "/voies/{idVoie}/delete")
+    @GetMapping(value = "/site/{idSite}/voies/{idVoie}/delete")
     public String deleteVoie(@PathVariable("idVoie")Long idVoie,
+                             @PathVariable("idSite")Long idSite,
                              @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
-                             @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie,
-                             @RequestParam(name = "nameSite",defaultValue = "") String nameSite){
-        longueurRepository.deleteByVoie(idVoie);
-        voieRepository.deleteById(idVoie);
-        return "redirect:/sites/consult/nomDuSite?nameSite="+nameSite+"&pageVoie="+pageVoie+"&sizeVoie="+sizeVoie;}
+                             @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie){
+            longueurRepository.deleteByVoie(idVoie);
+            voieRepository.deleteById(idVoie);
+        return "redirect:/sites/"+idSite+"/consult?pageVoie="+pageVoie+"&sizeVoie="+sizeVoie;}
 
 
     @GetMapping(value = "/sites/{idSite}/voies/{idVoie}/edit")

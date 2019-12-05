@@ -28,11 +28,11 @@
     <div layout:fragment="content" class="vbigspacer">
         <div class=" container h-100 ">
             <div>
-                <div class="mx-auto col-lg-4 h-100 vbigspacer" th:if="!${site}" >
-                    <div class="bigspacer card-header card border-dark mt-4" ><h3 class="card-title" >Consultation d'un site</h3></div>
+                <div class="mx-auto col-lg-4 h-100 vbigspacer">
+                    <div class="bigspacer card-header card border-dark mt-4" ><h3 class="card-title" >Recherche sur critères</h3></div>
                     <div class="card-body border-dark">
                         <form th:action="@{/sites/find}">
-                            <label>Nom du site: </label>
+                            <label>Mot clé: </label><br/>
                             <input type="text" name="motCle"/>
                             <button class="btn btn-primary" type="submit">Ok</button>
                         </form>

@@ -10,9 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import com.ocr.projet6.Metier.RoleDefinition;
 
 import javax.validation.Valid;
 
+import static com.ocr.projet6.Metier.RoleDefinition.userRole;
 
 
 @Controller
@@ -32,6 +34,7 @@ public class UtilisateurController {
         if (bindingResult.hasErrors()){
             return "inscription";
         }
+        utilisateur.setRoles(userRole);
         utilisateurRepository.save(utilisateur);
         model.addAttribute("utilisateur",utilisateur);
         return "confirmationUtilisateur";

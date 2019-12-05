@@ -28,23 +28,29 @@
         <div class="card-body">
             <form th:action="@{/utilisateur/create}" method="post">
                 <div class="form-group">
+                    <label class="control-label">Nom d'utilisateur:
+                        <!--<span class="red" th:errors=" ${utilisateur.nom}"></span>-->
+                    </label>
+                    <input class="form-control" type="text" name="username" />
+                </div>
+                <div class="form-group">
                     <label class="control-label">Nom:
                         <!--<span class="red" th:errors=" ${utilisateur.nom}"></span>-->
                     </label>
-                    <input class="form-control" type="text" name="nom" />
+                    <input class="form-control" type="text" name="lastname" />
                 </div>
                 <div class="form-group">
                     <label class="control-label ">Prénom:
                         <!--<span class="red" th:errors="${utilisateur.prenom}"></span>-->
                     </label>
-                    <input class="form-control" type="text" name="prenom" />
+                    <input class="form-control" type="text" name="firstname" />
                 </div>
                 <div class="form-group">
-                    <label class="control-label">login:
+                    <label class="control-label">email:
                         <!-- <span  class="red" th:errors="${utilisateur.login}">
                          </span>-->
                      </label>
-                     <input class="form-control" type="email" name="login" />
+                     <input class="form-control" type="email" name="email" />
                  </div>
                  <div class="form-group">
                      <label class="control-label">Password:
