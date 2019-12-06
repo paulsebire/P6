@@ -29,7 +29,7 @@ public class SiteController {
     @Autowired
     private IClimbMetier iClimbMetier;
 
-    @RequestMapping(value = "/sites/search")
+    @RequestMapping(value = "/search")
     public String sites(Model model,
                         @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
                         @RequestParam(name = "sizeSite",defaultValue = "4") int sizeSite){
@@ -45,7 +45,7 @@ public class SiteController {
     }
 
 
-    @GetMapping(path = "/sites/find")
+    @GetMapping(path = "/site/find")
     public String find(Model model,
                        @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
                        @RequestParam(name = "sizeSite",defaultValue = "2") int sizeSite,
@@ -70,7 +70,7 @@ public class SiteController {
         return "sites";
     }
 
-    @GetMapping(path = "/sites/{idSite}/consult")
+    @GetMapping(path = "/site/{idSite}/consult")
     public String consulter(Model model,
                             @PathVariable(name = "idSite") Long idSite,
                             @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
@@ -112,7 +112,7 @@ public class SiteController {
 
 
 
-    @GetMapping(value = "/sites/add")
+    @GetMapping(value = "/site/add")
     public String addSite(Model model){
         Site site=new Site();
         System.out.println("idSite"+site.getIdSite());
@@ -120,7 +120,7 @@ public class SiteController {
         return "addFormSite";
     }
 
-    @PostMapping(value = "/sites/save")
+    @PostMapping(value = "/site/save")
     public String saveSite(Model model,@Valid Site site, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return "addFormSite";
@@ -130,7 +130,7 @@ public class SiteController {
         return "confirmationSite";
     }
 
-    @RequestMapping(value = "/sites/id/{idSite}/edit")
+    @RequestMapping(value = "/site/id/{idSite}/edit")
     public String editSite(Model model,
                            @PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);

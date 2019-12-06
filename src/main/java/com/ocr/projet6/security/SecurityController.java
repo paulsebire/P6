@@ -13,7 +13,7 @@ public class SecurityController {
 
     @RequestMapping(value = "/")
     public String home(){
-        return "redirect:/sites/search";
+        return "redirect:/search";
     }
 
     @RequestMapping(value = "/403")

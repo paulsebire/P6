@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,16 +36,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(BCryptManagerUtil.passwordencoder());
     }
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/auth**").authenticated()
-                .antMatchers("/auth/admin**").hasAuthority(adminRole)
-                .anyRequest().permitAll()
-                .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/auth").failureUrl("/login")
-                .usernameParameter("username").passwordParameter("password")
-                .and()
+        http.formLogin().loginPage("/login")
+                .usernameParameter("username").passwordParameter("password").and()
                 .logout().invalidateHttpSession(true)
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
@@ -52,5 +49,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .and()
                 .sessionManagement().maximumSessions(1).expiredUrl("/login");
+
+        http.authorizeRequests().antMatchers("/resources/static").permitAll();
+
+        http.authorizeRequests().antMatchers("/operations","/consulterCompte").hasRole("USER");
+        http.authorizeRequests().antMatchers("/saveOperation").hasRole("ADMIN");
     }
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(userDetailsService);
+        auth.setPasswordEncoder(passwordEncoder());
+        return auth;
+    }
+
 }

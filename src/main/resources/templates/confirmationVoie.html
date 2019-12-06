@@ -40,7 +40,7 @@
                     <label th:text="${voie.hauteurVoie}"/>
                 </div>
                 <div>
-                    <a class="btn btn-primary float-right" th:href="@{/sites/consult/nomDuSite(nameSite=${voie.site.nameSite})}">Retour au site</a>
+                    <a class="btn btn-primary float-right" th:href="@{/sites/{idSite}/consult(idSite=${voie.site.idSite})}">Retour au site</a>
                 </div>
             </div>
         </div>

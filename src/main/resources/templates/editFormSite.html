@@ -28,7 +28,7 @@
     <div class="card">
       <br/> <div class="card-header"><h3 class="card-title">Edition d'un site</h3></div>
         <div class="card-body">
-            <form th:action="@{/saveSite(idSite=${site.idSite})}" method="post">
+            <form th:action="@{/site/{idSite}/save(idSite=${site.idSite})}" method="post">
                 <div class="form-group">
                     <label class="control-label">Id:
                         <span class="red" th:errors=" ${site.idSite}">

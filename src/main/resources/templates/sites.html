@@ -25,13 +25,13 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-    <div layout:fragment="content" class="vbigspacer">
-        <div class=" container h-100 ">
+    <div layout:fragment="content">
+        <div class=" container h-100">
             <div>
                 <div class="mx-auto col-lg-4 h-100 vbigspacer">
                     <div class="bigspacer card-header card border-dark mt-4" ><h3 class="card-title" >Recherche sur critères</h3></div>
                     <div class="card-body border-dark">
-                        <form th:action="@{/sites/find}">
+                        <form th:action="@{/site/find}">
                             <label>Mot clé: </label><br/>
                             <input type="text" name="motCle"/>
                             <button class="btn btn-primary" type="submit">Ok</button>
@@ -52,7 +52,7 @@
                                     <th class="text-center">Localisation</th>
                                 </tr>
                                 <tr th:each="ls:${listSite}">
-                                    <td align="center" ><a th:text="${ls.nameSite}"  th:href="@{/sites/{idSite}/consult(idSite=${ls.idSite})}"></a></td>
+                                    <td align="center" ><a th:text="${ls.nameSite}"  th:href="@{/site/{idSite}/consult(idSite=${ls.idSite})}"></a></td>
                                     <td align="center" th:text="${ls.localisation}"></td>
                                 </tr>
                             </table>

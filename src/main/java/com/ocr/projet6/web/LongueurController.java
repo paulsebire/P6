@@ -28,7 +28,7 @@ public class LongueurController {
     @Autowired
     private IClimbMetier iClimbMetier;
 
-    @GetMapping(value = "/sites{idSite}/voies/longueurs/add")
+    @GetMapping(value = "/site/{idSite}/voie/longueur/add")
     public String addLongueur(Model model,@PathVariable("idSite") Long idSite,
                               @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                               @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie){
@@ -45,7 +45,7 @@ public class LongueurController {
         return "addFormLongueur";
     }
 
-    @GetMapping(value = "/longueurs/{idLongueur}/delete")
+    @GetMapping(value = "/longueur/{idLongueur}/delete")
     public String deleteLongueur(@PathVariable("idLongueur") Long idLongueur,
                                  @RequestParam(name="pageLongueur",defaultValue = "0") int pageLongueur,
                                  @RequestParam(name = "sizeLongueur",defaultValue = "2") int sizeLongueur,
@@ -55,7 +55,7 @@ public class LongueurController {
 
 
 
-    @RequestMapping(value = "/sites/{idSite}/longueurs/{idLongueur}/edit")
+    @RequestMapping(value = "/site/{idSite}/longueur/{idLongueur}/edit")
     public  String  editLongueur(Model model,@PathVariable("idSite") Long idSite,
                                  @PathVariable("idLongueur") Long idLongueur ,
                                  @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
@@ -76,7 +76,7 @@ public class LongueurController {
         return "editFormLongueur";
     }
 
-    @PostMapping(value = "/longueurs/{idLongueur}/save")
+    @PostMapping(value = "/longueur/{idLongueur}/save")
     public String saveEditedLongueur(Model model,
                                @Valid Longueur longueur,
                                @RequestParam("idVoieNew") Long idVoieNew,
@@ -95,7 +95,7 @@ public class LongueurController {
         return "confirmationLongueur";
     }
 
-    @PostMapping(value = "/sites/{idSite}/voies/longueurs/save")
+    @PostMapping(value = "/site/{idSite}/voie/longueur/save")
     public String saveNewLongueur(Model model,
                                      @Valid Longueur longueur,
                                      @RequestParam("idVoieNew") Long idVoieNew,

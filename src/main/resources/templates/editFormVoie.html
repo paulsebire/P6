@@ -28,7 +28,7 @@
     <div class="card">
       <br/> <div class="card-header"><h3 class="card-title">Edition d'une voie</h3></div>
         <div class="card-body">
-            <form th:action="@{/sites/{idSite}/voie/{idVoie}/save(idSite=${voie.site.idSite},idVoie=${voie.idVoie})}" method="post">
+            <form th:action="@{/site/{idSite}/voie/{idVoie}/save(idSite=${voie.site.idSite},idVoie=${voie.idVoie})}" method="post">
 
                 <div class="form-group">
                     <label class="control-label">Nom de la voie:

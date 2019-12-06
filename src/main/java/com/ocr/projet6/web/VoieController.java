@@ -28,7 +28,7 @@ public class VoieController {
     @Autowired
     private IClimbMetier iClimbMetier;
 
-    @GetMapping(value = "/sites/{idSite}/voies/add")
+    @GetMapping(value = "/site/{idSite}/voies/add")
     public String addVoie(Model model,@PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
         Site sit=s.get();
@@ -48,7 +48,7 @@ public class VoieController {
         return "redirect:/sites/"+idSite+"/consult?pageVoie="+pageVoie+"&sizeVoie="+sizeVoie;}
 
 
-    @GetMapping(value = "/sites/{idSite}/voies/{idVoie}/edit")
+    @GetMapping(value = "/site/{idSite}/voies/{idVoie}/edit")
     public String editVoie(Model model,
                            @PathVariable("idSite") Long idSite,
                            @PathVariable("idVoie") Long idVoie) {
@@ -65,7 +65,7 @@ public class VoieController {
         return "editFormVoie";
     }
 
-    @PostMapping(value = "/sites/{idSite}/voie/{idVoie}/save")
+    @PostMapping(value = "/site/{idSite}/voie/{idVoie}/save")
     public String saveEditedVoie(Model model, @Valid Voie voie,
                            @PathVariable("idSite") Long idSite,
                            @PathVariable("idVoie") Long idVoie,
@@ -81,7 +81,7 @@ public class VoieController {
         model.addAttribute("voie",voie);
         return "confirmationVoie";
     }
-    @PostMapping(value = "/sites/{idSite}/voie/save")
+    @PostMapping(value = "/site/{idSite}/voie/save")
     public String saveNewVoie(Model model, @Valid Voie voie,
                            @PathVariable("idSite") Long idSite,
                            BindingResult bindingResult){
