@@ -8,6 +8,6 @@ import java.util.List;
 
 public class RoleDefinition {
 
-   static public List<RoleEnum> userRole = Collections.singletonList(RoleEnum.USER);
-   static public List<RoleEnum> adminRole = Arrays.asList(RoleEnum.USER, RoleEnum.ADMINISTRATOR);
+   static public List<RoleEnum> userRole = Collections.singletonList(RoleEnum.ROLE_USER);
+   static public List<RoleEnum> adminRole = Arrays.asList(RoleEnum.ROLE_USER, RoleEnum.ROLE_ADMIN);
 }

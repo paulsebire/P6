@@ -17,12 +17,24 @@ public class Site implements Serializable {
     @OneToMany (mappedBy = "site",fetch = FetchType.LAZY)
     private Collection<Voie> voies;
 
+    @ManyToOne
+    @JoinColumn(name ="ID_UTILISATEUR" )
+    private Utilisateur utilisateur;
 
     public Site() { super(); }
 
-    public Site(String nameSite, String localisation) {
+    public Site(String nameSite, String localisation, Utilisateur utilisateur) {
         this.nameSite = nameSite;
         this.localisation = localisation;
+        this.utilisateur = utilisateur;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
     }
 
     public Long getIdSite() {

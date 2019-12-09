@@ -10,19 +10,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Collections;
@@ -80,12 +68,21 @@ public class Utilisateur implements UserDetails {
     @Column(name = "enabled")
     private boolean enabled;
 
+    @OneToMany(mappedBy = "utilisateur",fetch = FetchType.LAZY)
+    private Collection<Site> sites;
+
+
+    @OneToMany(mappedBy = "utilisateur",fetch = FetchType.LAZY)
+    private Collection<Topo> topos;
+
+
+
     public Utilisateur() {
         this.accountNonExpired = true;
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;
         this.enabled = true;
-        this.roles = Collections.singletonList(RoleEnum.USER);
+        this.roles = Collections.singletonList(RoleEnum.ROLE_USER);
     }
 
     public Utilisateur(String username, String password, String firstname, String lastname,String email, Collection<RoleEnum> roles) {
@@ -99,6 +96,22 @@ public class Utilisateur implements UserDetails {
         this.credentialsNonExpired = true;
         this.enabled = true;
         this.roles = roles;
+    }
+
+    public Collection<Site> getSites() {
+        return sites;
+    }
+
+    public void setSites(Collection<Site> sites) {
+        this.sites = sites;
+    }
+
+    public Collection<Topo> getTopos() {
+        return topos;
+    }
+
+    public void setTopos(Collection<Topo> topos) {
+        this.topos = topos;
     }
 
     public Long getIdUser() {
@@ -170,32 +183,32 @@ public class Utilisateur implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return accountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return accountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return credentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return enabled;
     }
 
     public void setPassword(String password) {

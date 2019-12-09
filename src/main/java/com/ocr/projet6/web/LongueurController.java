@@ -1,5 +1,6 @@
 package com.ocr.projet6.web;
 
+import com.ocr.projet6.Metier.ClimbMetierImpl;
 import com.ocr.projet6.Metier.IClimbMetier;
 import com.ocr.projet6.dao.LongueurRepository;
 import com.ocr.projet6.dao.SiteRepository;
@@ -90,6 +91,7 @@ public class LongueurController {
         Voie voi=v.get();
         longueur.setVoie(voi);
         longueur.setIdLongueur(idLongueur);
+        formatField(longueur);
         longueurRepository.save(longueur);
         model.addAttribute("longueur",longueur);
         return "confirmationLongueur";
@@ -110,10 +112,17 @@ public class LongueurController {
         Voie voi=v.get();
         voi.setSite(sit);
         longueur.setVoie(voi);
+        formatField(longueur);
         longueurRepository.save(longueur);
         model.addAttribute("longueur",longueur);
         return "confirmationLongueur";
     }
 
+
+    public void formatField(Longueur longueur){
+        String formatedName= ClimbMetierImpl.formatString(longueur.getNomLongueur());
+        longueur.setNomLongueur(formatedName);
+        return;
+    }
 
 }

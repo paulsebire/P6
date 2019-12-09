@@ -1,11 +1,8 @@
 package com.ocr.projet6;
 
-import com.ocr.projet6.dao.LongueurRepository;
-import com.ocr.projet6.dao.SiteRepository;
-import com.ocr.projet6.dao.VoieRepository;
-import com.ocr.projet6.entities.Longueur;
-import com.ocr.projet6.entities.Site;
-import com.ocr.projet6.entities.Voie;
+import com.ocr.projet6.dao.*;
+import com.ocr.projet6.entities.*;
+import com.ocr.projet6.security.WebMvcConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +17,10 @@ public class Projet6Application implements CommandLineRunner {
     private LongueurRepository longueurRepository;
     @Autowired
     private VoieRepository voieRepository;
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
+    @Autowired
+    private TopoRepository topoRepository;
 
 
 
@@ -30,8 +31,11 @@ public class Projet6Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Site site1 = siteRepository.save(new Site("site1","nord"));
-        Site site2 = siteRepository.save(new Site("site2","Sud"));
+        Utilisateur admin = utilisateurRepository.findByUsername("admin");
+        Utilisateur user = utilisateurRepository.findByUsername("user");
+
+        Site site1 = siteRepository.save(new Site("site1","nord",admin));
+        Site site2 = siteRepository.save(new Site("site2","sud",user));
 
         Voie voie1 = voieRepository.save(new Voie("voie1","secteur1","3C",50,site1));
         Voie voie2 = voieRepository.save(new Voie("voie2","secteur2","4C",60,site1));
@@ -46,5 +50,12 @@ public class Projet6Application implements CommandLineRunner {
         Longueur lg6 = longueurRepository.save(new Longueur("lg6",60,voie3));
         Longueur lg7 = longueurRepository.save(new Longueur("lg7",70,voie4));
         Longueur lg8 = longueurRepository.save(new Longueur("lg8",80,voie4));
+
+
+        Topo topo1=topoRepository.save(new Topo("topo1","nord",true,admin));
+        Topo topo2=topoRepository.save(new Topo("topo2","nord2",false,admin));
+        Topo topo3=topoRepository.save(new Topo("topo3","sud",true,user));
+        Topo topo4=topoRepository.save(new Topo("topo4","sud2",false,user));
+
     }
 }

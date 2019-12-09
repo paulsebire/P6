@@ -15,13 +15,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final String adminRole = RoleEnum.ADMINISTRATOR.name();
 
     private final UserDetailsService userDetailsService;
 
@@ -50,10 +49,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().maximumSessions(1).expiredUrl("/login");
 
-        http.authorizeRequests().antMatchers("/resources/static").permitAll();
 
-        http.authorizeRequests().antMatchers("/operations","/consulterCompte").hasRole("USER");
-        http.authorizeRequests().antMatchers("/saveOperation").hasRole("ADMIN");
+        http.authorizeRequests().antMatchers("/static/**").permitAll();
+
+        http.authorizeRequests().antMatchers("/site/*","/voie/*","/longueur/*","/utilisateur/*").hasRole("USER");
+        http.authorizeRequests().antMatchers("/administration").hasRole("ADMIN");
     }
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

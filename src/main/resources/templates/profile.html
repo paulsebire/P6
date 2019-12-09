@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Les spots</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/static/css/style.css}"/>
+    <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous" />
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+    <div layout:fragment="content" class="vbigspacer">
+        <div class=" container h-100 ">
+                <div class="vbigspacer card  mx-auto col-md-6 ">
+                    <div class="card-header "><h3 class="card-title">Mon Profil:</h3></div>
+                        <div class="card-body">
+                            <div>
+                                <label>Nom:</label>
+                                <label th:text="${utilisateur.lastname}" class="mr-2"></label>
+                                <label>Prénom:</label>
+                                <label th:text="${utilisateur.firstname}"></label>
+                                <label>Nom d'utilisateur:</label>
+                                <label th:text="${utilisateur.username}"></label>
+                                <label>em@il de contact:</label>
+                                <label th:text="${utilisateur.email}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <div class="row justify-content-center spacer">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title" >Liste de vos topos</h3>
+                </div>
+                <div class="card-body justify-content-center">
+                    <table class="table table-striped">
+                        <tr>
+                            <th class="text-center">Nom</th>
+                            <th class="text-center">Description</th>
+                            <th class="text-center">Disponibilité</th>
+                            <th/>
+                            <th class="text-center">Sauver</th>
+                        </tr>
+                        <tr th:each="lto:${listTopo}">
+                            <td align="center" ><a th:text="${lto.nom}"  th:href="@{/topo/{id}/consult(id=${lto.id})}"></a></td>
+                            <td align="center" th:text="${lto.description}"></td>
+                            <td align="center" th:if="${lto.disponibilite}==true"><i class="fa fa-check-circle" style="color: green"></i></td>
+                            <td align="center" th:if="${lto.disponibilite}==false"><i class="fa fa-times-circle" style="color: red"></i></i></td>
+                            <td><input type="checkbox" checked data-toggle="toggle" data-on="Disponible" data-off="Réservé"
+                                       data-onstyle="success" data-offstyle="danger" name="disponibilite"
+                                        th:value=""></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="container">
+                    <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerTopo>1}">
+                        <li  th:class="${pageCouranteTopo}==${status.index}?'page-item active':'page-item'"
+                             th:each="p,status:${pagesTopo}">
+                            <a class="page-link" th:href="@{/topo/search(pageTopo=${status.index})}"
+                               th:text="${status.index}"></a>
+                        </li>
+                    </ul>
+                    <br/>
+                </div>
+            </div>
+        </div>
+        </div>
+</body>
+</html>

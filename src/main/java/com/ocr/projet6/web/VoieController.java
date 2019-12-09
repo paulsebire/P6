@@ -1,5 +1,6 @@
 package com.ocr.projet6.web;
 
+import com.ocr.projet6.Metier.ClimbMetierImpl;
 import com.ocr.projet6.Metier.IClimbMetier;
 import com.ocr.projet6.dao.LongueurRepository;
 import com.ocr.projet6.dao.SiteRepository;
@@ -77,6 +78,9 @@ public class VoieController {
         Site sit=s.get();
         voie.setSite(sit);
         if (idVoie!=null) voie.setIdVoie(idVoie);
+
+        formatField(voie);
+
         voieRepository.save(voie);
         model.addAttribute("voie",voie);
         return "confirmationVoie";
@@ -91,11 +95,21 @@ public class VoieController {
         Optional<Site> s=siteRepository.findById(idSite);
         Site sit=s.get();
         voie.setSite(sit);
+
+
         voieRepository.save(voie);
         model.addAttribute("voie",voie);
         return "confirmationVoie";
     }
 
+    public void formatField(Voie voie){
+        String formatedName= ClimbMetierImpl.formatString(voie.getNomVoie());
+        voie.setNomVoie(formatedName);
+
+        String formatedSecteur= ClimbMetierImpl.formatString(voie.getSecteur());
+        voie.setSecteur(formatedSecteur);
+        return;
+    }
 
 
 
