@@ -4,10 +4,7 @@ import com.ocr.projet6.dao.LongueurRepository;
 import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.TopoRepository;
 import com.ocr.projet6.dao.VoieRepository;
-import com.ocr.projet6.entities.Longueur;
-import com.ocr.projet6.entities.Site;
-import com.ocr.projet6.entities.Topo;
-import com.ocr.projet6.entities.Voie;
+import com.ocr.projet6.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,7 +50,7 @@ public class ClimbMetierImpl implements IClimbMetier {
     }
 
     @Override
-    public Page<Topo> listTopoByUtilisateur(Long utlisateurId, int page, int size){
-        return topoRepository.listTopoByUtilisateur(utlisateurId,PageRequest.of(page,size));
+    public Page<Topo> listTopoByUtilisateur(Long idUser, int page, int size){
+        return topoRepository.listTopoByUtilisateur(idUser,PageRequest.of(page,size));
     }
 }

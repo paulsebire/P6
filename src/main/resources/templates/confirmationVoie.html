@@ -6,8 +6,8 @@
     <meta charset="UTF-8"/>
     <title>confirmation</title>
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/static/css/style.css}"/>
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
     <link
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             rel="stylesheet"
@@ -40,7 +40,7 @@
                     <label th:text="${voie.hauteurVoie}"/>
                 </div>
                 <div>
-                    <a class="btn btn-primary float-right" th:href="@{/sites/{idSite}/consult(idSite=${voie.site.idSite})}">Retour au site</a>
+                    <a class="btn btn-primary float-right" th:href="@{/site/{idSite}/consult(idSite=${voie.site.idSite})}">Retour au site</a>
                 </div>
             </div>
         </div>

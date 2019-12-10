@@ -32,6 +32,8 @@ public class UtilisateurController {
     private UtilisateurService utilisateurService;
     @Autowired
     private IClimbMetier iClimbMetier;
+    @Autowired
+    private TopoRepository topoRepository;
 
     @GetMapping(value = "/utilisateurs/inscription")
     public String inscriptionForm(Model model){
@@ -60,7 +62,10 @@ public class UtilisateurController {
         String userName = principal.getName();
         Utilisateur utilisateurConnecte=(Utilisateur)utilisateurService.loadUserByUsername(userName);
         model.addAttribute("utilisateur",utilisateurConnecte);
-        Page<Topo> pageTopos=iClimbMetier.listTopoByUtilisateur(utilisateurConnecte.getIdUser(),pageTopo,sizeTopo);
+
+
+        Page<Topo> pageTopos = iClimbMetier.listTopoByUtilisateur(utilisateurConnecte.getIdUser(),pageTopo,sizeTopo);
+        System.out.println("listtopos = " + pageTopos.getContent());
         model.addAttribute("listTopo",pageTopos.getContent());
         int[] pagesTopo=new int[pageTopos.getTotalPages()];
         int paginationEnablerTopo=pagesTopo.length;

@@ -8,8 +8,8 @@
     <title>Les spots</title>
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/static/css/style.css}"/>
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
     <link
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             rel="stylesheet"
@@ -65,12 +65,11 @@
                                     <td align="center" th:text="${v.secteur}"></td>
                                     <td align="center" th:text="${v.difficulte}"></td>
                                     <td align="center" th:text="${v.hauteurVoie}"></td>
-                                    <td align="center" sec:authorize="hasRole('ROLE_USER')"><a
-                                            th:if="${v.site.utilisateur.idUser}==${utilisateurConnecte.idUser}"
+                                    <td align="center" sec:authorize="hasRole('ROLE_USER')" th:if="${v.site.utilisateur.idUser==utilisateurConnecte.idUser}"><a
                                             th:href="@{/site/{idSite}/voie/{idVoie}/edit(idSite=${site.idSite},idVoie=${v.idVoie})}">    <i class="fa fa-edit "></i></a>
                                     </td>
-                                    <td align="center" sec:authorize="hasRole('ROLE_USER')"><a onclick="return confirm('Etes vous sûr de vouloir supprimer la voie'+' ? \n Vous allez supprimer toutes les longueurs associées')"
-                                        th:if="${v.site.utilisateur.idUser}==${utilisateurConnecte.idUser}"
+                                    <td align="center" sec:authorize="hasRole('ROLE_USER')" th:if="${v.site.utilisateur.idUser==utilisateurConnecte.idUser}">
+                                        <a onclick="return confirm('Etes vous sûr(e) de vouloir supprimer la voie'+'? \n Vous allez supprimer toutes les longueurs associées')"
                                         th:href="@{/site/{idSite}/voie/{idVoie}/delete(idSite=${v.site.idSite} ,idVoie=${v.idVoie},pageVoie=${pageCouranteVoie},sizeVoie=${sizeVoie})}"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
@@ -88,11 +87,13 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header"><h3 class="card-title">Liste des longueurs
-                            <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
-                               th:href="@{/site/{idSite}/voie/longueur/add(idSite=${site.idSite})}"
-                               th:if="${paginationEnablerVoie>0}"><i class="fa fa-plus"></i> Ajouter une longueur</a>
-                        </h3>
+                        <div class="card-header">
+                            <h3 class="card-title">Liste des longueurs
+                                <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
+                                    th:href="@{/site/{idSite}/voie/longueur/add(idSite=${site.idSite})}"
+                                    th:if="${utilisateurConnecte.idUser==site.utilisateur.idUser and paginationEnablerVoie>0}"
+                                   ><i class="fa fa-plus"></i> Ajouter une longueur</a>
+                            </h3>
                         </div>
                         <div class="card-body">
                             <table class="table table-striped">
@@ -102,18 +103,18 @@
                                     <th>Hauteur</th>
                                     <th sec:authorize="hasRole('ROLE_USER')" th:if="${utilisateurConnecte.idUser}==${site.utilisateur.idUser}">Editer</th>
                                     <th sec:authorize="hasRole('ROLE_USER')" th:if="${utilisateurConnecte.idUser}==${site.utilisateur.idUser}">Supprimer</th>
+
                                 </tr>
                                 <tr th:each="ll:${listLongueur}">
                                     <td align="center" th:text="${ll.voie.nomVoie}"></td>
                                     <td align="center" th:text="${ll.nomLongueur}"></td>
                                     <td align="center" th:text="${ll.hauteurLongueur}"></td>
-                                    <td align="center" sec:authorize="hasRole('ROLE_USER')"><a
-                                            th:if="${ll.voie.site.utilisateur.idUser}==${utilisateurConnecte.idUser}"
+                                    <td align="center" sec:authorize="hasRole('ROLE_USER')"th:if="${ll.voie.site.utilisateur.idUser}==${utilisateurConnecte.idUser}"><a
                                             th:href="@{/site/{idSite}/longueur/{idLongueur}/edit(idSite=${ll.voie.site.idSite},idLongueur=${ll.idLongueur})}"><i class="fa fa-edit"></i></a>
                                     </td>
-                                    <td align="center" sec:authorize="hasRole('ROLE_USER')"><a onclick="return confirm('Etes vous sûre?')"
-                                           th:if="${ll.voie.site.utilisateur.idUser}==${utilisateurConnecte.idUser}"
-                                           th:href="@{/longueurs/{idLongueur}/delete(idLongueur=${ll.idLongueur},pageLongueur=${pageCouranteLongueur},sizeLongueur=${sizeLongueur},nameSite=${site.nameSite})}"> <i class="fa fa-trash"></i></a>
+                                    <td align="center" sec:authorize="hasRole('ROLE_USER')" th:if="${ll.voie.site.utilisateur.idUser}==${utilisateurConnecte.idUser}">
+                                        <a onclick="return confirm('Etes vous sûr(e)?')"
+                                           th:href="@{/site/{idSite}/longueur/{idLongueur}/delete(idLongueur=${ll.idLongueur},pageLongueur=${pageCouranteLongueur},sizeLongueur=${sizeLongueur},nameSite=${site.nameSite})}"> <i class="fa fa-trash"></i></a>
                                     </td>
 
                                 </tr>

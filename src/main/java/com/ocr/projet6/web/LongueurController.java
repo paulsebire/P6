@@ -46,13 +46,13 @@ public class LongueurController {
         return "addFormLongueur";
     }
 
-    @GetMapping(value = "/longueur/{idLongueur}/delete")
+    @GetMapping(value = "/site/{idSite}/longueur/{idLongueur}/delete")
     public String deleteLongueur(@PathVariable("idLongueur") Long idLongueur,
                                  @RequestParam(name="pageLongueur",defaultValue = "0") int pageLongueur,
                                  @RequestParam(name = "sizeLongueur",defaultValue = "2") int sizeLongueur,
-                                 String nameSite){
+                                 @PathVariable("idSite") Long idSite){
         longueurRepository.deleteById(idLongueur);
-        return "redirect:/sites/consult/nomDuSite?nameSite="+nameSite+"&pageLongueur="+pageLongueur+"&sizeLongueur="+sizeLongueur;}
+        return "redirect:/site/"+idSite+"/consult&pageLongueur="+pageLongueur+"&sizeLongueur="+sizeLongueur;}
 
 
 

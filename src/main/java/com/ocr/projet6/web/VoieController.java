@@ -29,7 +29,7 @@ public class VoieController {
     @Autowired
     private IClimbMetier iClimbMetier;
 
-    @GetMapping(value = "/site/{idSite}/voies/add")
+    @GetMapping(value = "/site/{idSite}/voie/add")
     public String addVoie(Model model,@PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
         Site sit=s.get();
@@ -39,17 +39,17 @@ public class VoieController {
         return "addFormVoie";
     }
 
-    @GetMapping(value = "/site/{idSite}/voies/{idVoie}/delete")
+    @GetMapping(value = "/site/{idSite}/voie/{idVoie}/delete")
     public String deleteVoie(@PathVariable("idVoie")Long idVoie,
                              @PathVariable("idSite")Long idSite,
                              @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                              @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie){
             longueurRepository.deleteByVoie(idVoie);
             voieRepository.deleteById(idVoie);
-        return "redirect:/sites/"+idSite+"/consult?pageVoie="+pageVoie+"&sizeVoie="+sizeVoie;}
+        return "redirect:/site/"+idSite+"/consult?pageVoie="+pageVoie+"&sizeVoie="+sizeVoie;}
 
 
-    @GetMapping(value = "/site/{idSite}/voies/{idVoie}/edit")
+    @GetMapping(value = "/site/{idSite}/voie/{idVoie}/edit")
     public String editVoie(Model model,
                            @PathVariable("idSite") Long idSite,
                            @PathVariable("idVoie") Long idVoie) {

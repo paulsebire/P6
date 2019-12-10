@@ -10,7 +10,7 @@ public class Topo implements Serializable {
     private String description;
     private boolean disponibilite;
     @ManyToOne
-    @JoinColumn(name ="ID_UTILISATEUR" )
+    @JoinColumn(name ="id_user" )
     private Utilisateur utilisateur;
 
     public Topo() { super(); }
