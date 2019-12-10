@@ -114,7 +114,7 @@
                                     </td>
                                     <td align="center" sec:authorize="hasRole('ROLE_USER')" th:if="${ll.voie.site.utilisateur.idUser}==${utilisateurConnecte.idUser}">
                                         <a onclick="return confirm('Etes vous sûr(e)?')"
-                                           th:href="@{/site/{idSite}/longueur/{idLongueur}/delete(idLongueur=${ll.idLongueur},pageLongueur=${pageCouranteLongueur},sizeLongueur=${sizeLongueur},nameSite=${site.nameSite})}"> <i class="fa fa-trash"></i></a>
+                                           th:href="@{/longueur/{idLongueur}/delete(idLongueur=${ll.idLongueur},pageLongueur=${pageCouranteLongueur},sizeLongueur=${sizeLongueur},nameSite=${site.nameSite})}"> <i class="fa fa-trash"></i></a>
                                     </td>
 
                                 </tr>

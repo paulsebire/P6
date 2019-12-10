@@ -44,7 +44,6 @@ public class VoieController {
                              @PathVariable("idSite")Long idSite,
                              @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                              @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie){
-            longueurRepository.deleteByVoie(idVoie);
             voieRepository.deleteById(idVoie);
         return "redirect:/site/"+idSite+"/consult?pageVoie="+pageVoie+"&sizeVoie="+sizeVoie;}
 

@@ -52,10 +52,26 @@ public class Projet6Application implements CommandLineRunner {
         Longueur lg8 = longueurRepository.save(new Longueur("lg8",80,voie4));
 
 
-        Topo topo1=topoRepository.save(new Topo("topo1","nord",true,admin));
-        Topo topo2=topoRepository.save(new Topo("topo2","nord2",false,admin));
-        Topo topo3=topoRepository.save(new Topo("topo3","sud",true,user));
-        Topo topo4=topoRepository.save(new Topo("topo4","sud2",false,user));
+        Topo topo1=new Topo("topo1","nord");
+        topo1.setSite(site1);
+        topo1.setUtilisateur(admin);
+        topoRepository.save(topo1);
 
+        Topo topo2=new Topo("topo2","nord2");
+        topo2.setSite(site1);
+        topo2.setUtilisateur(admin);
+        topo2.setDisponibilite(false);
+        topoRepository.save(topo2);
+
+        Topo topo3=new Topo("topo3","sud");
+        topo3.setSite(site2);
+        topo3.setUtilisateur(user);
+        topoRepository.save(topo3);
+
+        Topo topo4=new Topo("topo4","sud2");
+        topo4.setSite(site2);
+        topo4.setUtilisateur(user);
+        topo4.setDisponibilite(false);
+        topoRepository.save(topo4);
     }
 }

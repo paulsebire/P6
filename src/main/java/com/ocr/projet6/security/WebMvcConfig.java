@@ -26,8 +26,10 @@ public class WebMvcConfig extends WebMvcAutoConfiguration {
         List<RoleEnum> userRole = Collections.singletonList(RoleEnum.ROLE_USER);
         List<RoleEnum> adminRole = Arrays.asList(RoleEnum.ROLE_USER, RoleEnum.ROLE_ADMIN);
         Utilisateur user = new Utilisateur("user", "user", "User", "USER","user@email.com", userRole);
+        Utilisateur test = new Utilisateur("test", "test", "Test", "TEST","test@email.com", userRole);
         Utilisateur adminUser = new Utilisateur("admin", "admin", "Admin", "ADMIN","admin@email.com", adminRole);
         utilisateurRepository.save(user);
+        utilisateurRepository.save(test);
         utilisateurRepository.save(adminUser);
     }
 

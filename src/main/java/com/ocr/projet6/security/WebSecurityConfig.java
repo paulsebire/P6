@@ -49,7 +49,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().maximumSessions(1).expiredUrl("/login");
 
-
         http.authorizeRequests().antMatchers("/static/**").permitAll();
 
         http.authorizeRequests().antMatchers("/site/*","/voie/*","/longueur/*","/utilisateur/*").hasRole("USER");

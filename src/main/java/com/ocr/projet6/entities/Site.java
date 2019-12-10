@@ -14,7 +14,7 @@ public class Site implements Serializable {
 
     private String localisation;
 
-    @OneToMany (mappedBy = "site",fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "site",fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Collection<Voie> voies;
 
     @ManyToOne

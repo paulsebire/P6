@@ -2,16 +2,24 @@ package com.ocr.projet6.web;
 
 import com.ocr.projet6.Metier.ClimbMetierImpl;
 import com.ocr.projet6.Metier.IClimbMetier;
+import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.TopoRepository;
+import com.ocr.projet6.entities.Site;
 import com.ocr.projet6.entities.Topo;
+import com.ocr.projet6.entities.Utilisateur;
+import com.ocr.projet6.security.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 public class TopoController {
@@ -19,6 +27,8 @@ public class TopoController {
     private IClimbMetier iClimbMetier;
     @Autowired
     private TopoRepository topoRepository;
+    @Autowired
+    private SiteRepository siteRepository;
 
     @RequestMapping(value = "/topo/search")
     public String topos(Model model,
@@ -58,5 +68,66 @@ public class TopoController {
             throw new RuntimeException("Topo Introuvable");
         }
         return "topos";
+    }
+
+    @GetMapping (value = "/topo/add")
+    public String addTopo(Model model,
+                          @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
+                          @RequestParam(name = "sizeSite",defaultValue = "2") int sizeSite){
+        Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
+        model.addAttribute("listSite",pageSites.getContent());
+        Topo topo=new Topo();
+        model.addAttribute("topo",topo);
+        return "addFormTopo";
+    }
+
+    @PostMapping(value = "/topo/save")
+    public String saveTopo(Model model, @Valid Topo topo,@RequestParam("idSite") Long idSite, BindingResult bindingResult){
+
+        if (bindingResult.hasErrors()){
+            return "addFormTopo";
+        }
+        Optional<Site> s=siteRepository.findById(idSite);
+        Site sit=s.get();
+        topo.setSite(sit);
+        topo.setDisponibilite(true);
+        Utilisateur utilisateur=userConnected();
+        topo.setUtilisateur(utilisateur);
+        formatField(topo);
+        topoRepository.save(topo);
+        model.addAttribute("topo",topo);
+        return "confirmationTopo";
+    }
+
+    @GetMapping(path = "/topo/{idTopo}/consult")
+    public String consulter(Model model,
+                            @PathVariable(name = "idTopo") Long idTopo,
+                            @RequestParam(name="pageTopo",defaultValue = "0") int pageTopo,
+                            @RequestParam(name = "sizeTopo",defaultValue = "2") int sizeTopo){
+        try {
+            Optional<Topo> t=topoRepository.findById(idTopo);
+            Topo topo=null;
+            if(t.isPresent()) {
+                topo=t.get();
+            }
+            model.addAttribute("topo", topo);
+        }catch (Exception e){
+            model.addAttribute("exception",e);
+        }
+        return "topoDisplay";
+    }
+
+    public static Utilisateur userConnected(){
+        Utilisateur utilisateurConnecte= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return utilisateurConnecte;
+    }
+
+    public  void formatField(Topo topo){
+        String formatedName= ClimbMetierImpl.formatString(topo.getNom());
+        topo.setNom(formatedName);
+
+        String formatedDescription= ClimbMetierImpl.formatString(topo.getDescription());
+        topo.setDescription(formatedDescription);
+        return;
     }
 }

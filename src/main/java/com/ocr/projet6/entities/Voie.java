@@ -25,7 +25,7 @@ public class Voie implements Serializable {
     @JoinColumn(name ="ID_SITE" )
     private Site site;
 
-    @OneToMany(mappedBy = "voie", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "voie", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Collection<Longueur> longueurs;
 
     public Voie() { super();}

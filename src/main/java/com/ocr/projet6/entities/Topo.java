@@ -1,5 +1,8 @@
 package com.ocr.projet6.entities;
 
+import net.bytebuddy.implementation.bind.annotation.Default;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import javax.persistence.*;
 import java.io.Serializable;
 @Entity
@@ -8,18 +11,28 @@ public class Topo implements Serializable {
     private Long id;
     private String nom;
     private String description;
-    private boolean disponibilite;
+    private boolean disponibilite = true;
     @ManyToOne
     @JoinColumn(name ="id_user" )
     private Utilisateur utilisateur;
 
+    @ManyToOne
+    @JoinColumn(name ="id_site" )
+    private Site site;
+
     public Topo() { super(); }
 
-    public Topo(String nom, String description, boolean disponibilite, Utilisateur utilisateur) {
+    public Topo(String nom, String description) {
         this.nom = nom;
         this.description = description;
-        this.disponibilite = disponibilite;
-        this.utilisateur = utilisateur;
+    }
+
+    public Site getSite() {
+        return site;
+    }
+
+    public void setSite(Site site) {
+        this.site = site;
     }
 
     public Long getId() {

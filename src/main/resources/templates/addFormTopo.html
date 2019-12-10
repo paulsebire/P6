@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Nouveau Topo</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous" />
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+            crossorigin="anonymous"></script>
+</head>
+</head>
+<body  layout:fragment="content">
+<div  class="col-md-4 mx-auto h-100 align-self-center" >
+    <div class="card">
+        <br/> <div class="card-header"><h3 class="card-title">Ajout d'un nouveau topo</h3></div>
+        <div class="card-body">
+            <form th:action="@{/topo/save}" method="post">
+                <div class="form-group">
+                    <label class="control-label">Site:</label>
+                    <select class="form-control" id="idSite"  selected="selected" name="idSite">
+                        <option th:each="ls:${listSite}"  th:value="${ls.idSite}" th:text="${ls.nameSite}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Nom du topo:
+                    </label>
+                    <input class="form-control" type="text" name="nom" th:value="${topo.nom}" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Description:
+                    </label>
+                    <input class="form-control" type="text" name="description" th:value="${topo.description}" />
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
