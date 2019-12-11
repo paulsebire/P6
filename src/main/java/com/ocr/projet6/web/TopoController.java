@@ -151,6 +151,7 @@ public class TopoController {
         }
         Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
         model.addAttribute("listSite",pageSites.getContent());
+        System.out.println("topo.site.nameSite="+topo.getSite().getNameSite());
         return "editFormTopo";
     }
 

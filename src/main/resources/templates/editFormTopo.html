@@ -31,7 +31,8 @@
             <form th:action="@{/topo/{id}/save(id=${topo.id})}" method="post">
                 <div class="form-group">
                     <label class="control-label">Nom du site:</label>
-                    <select class="form-control" id="idSite"  selected="selected" name="idSite">
+                    <select class="form-control" id="idSite"  name="idSite">
+                        <option th:value="${topo.site.idSite}" th:text="${topo.site.nameSite}" selected style="display: none"></option>
                         <option th:each="ls:${listSite}"  th:value="${ls.idSite}" th:text="${ls.nameSite}"></option>
                     </select>
                 </div>

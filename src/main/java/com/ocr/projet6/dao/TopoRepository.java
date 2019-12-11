@@ -13,7 +13,7 @@ public interface TopoRepository extends JpaRepository <Topo,Long> {
     @Query("select t from Topo t order by t.id asc ")
     public Page<Topo> listTopo(Pageable pageable);
 
-    @Query("select t from Topo t where t.nom like:x or t.description  like:x order by t.id")
+    @Query("select t from Topo t  where t.nom like:x or t.description like:x order by t.id")
     public Page<Topo> chercherTopo(@Param("x") String motCle, Pageable pageable);
 
     @Query(value = "select t from Topo t inner join fetch t.utilisateur u  where u.idUser=:idUser order by t.id  asc",
