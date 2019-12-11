@@ -34,8 +34,14 @@ public class Projet6Application implements CommandLineRunner {
         Utilisateur admin = utilisateurRepository.findByUsername("admin");
         Utilisateur user = utilisateurRepository.findByUsername("user");
 
-        Site site1 = siteRepository.save(new Site("site1","nord",admin));
-        Site site2 = siteRepository.save(new Site("site2","sud",user));
+        Site site1 = new Site("site1","nord");
+        site1.setUtilisateur(admin);
+        siteRepository.save(site1);
+
+        Site site2 = new Site("site2","sud");
+        site2.setUtilisateur(admin);
+        siteRepository.save(site2);
+
 
         Voie voie1 = voieRepository.save(new Voie("voie1","secteur1","3C",50,site1));
         Voie voie2 = voieRepository.save(new Voie("voie2","secteur2","4C",60,site1));

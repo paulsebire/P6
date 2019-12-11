@@ -23,10 +23,9 @@ public class Site implements Serializable {
 
     public Site() { super(); }
 
-    public Site(String nameSite, String localisation, Utilisateur utilisateur) {
+    public Site(String nameSite, String localisation) {
         this.nameSite = nameSite;
         this.localisation = localisation;
-        this.utilisateur = utilisateur;
     }
 
     public Utilisateur getUtilisateur() {

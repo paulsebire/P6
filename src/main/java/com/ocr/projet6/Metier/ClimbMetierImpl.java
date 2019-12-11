@@ -53,4 +53,9 @@ public class ClimbMetierImpl implements IClimbMetier {
     public Page<Topo> listTopoByUtilisateur(Long idUser, int page, int size){
         return topoRepository.listTopoByUtilisateur(idUser,PageRequest.of(page,size));
     }
+
+    @Override
+    public Page<Topo> listTopoBySite(Long idSite, int page, int size){
+        return topoRepository.listTopoBySite(idSite,PageRequest.of(page,size));
+    }
 }

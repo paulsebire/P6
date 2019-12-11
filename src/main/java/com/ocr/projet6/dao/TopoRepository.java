@@ -19,4 +19,8 @@ public interface TopoRepository extends JpaRepository <Topo,Long> {
     @Query(value = "select t from Topo t inner join fetch t.utilisateur u  where u.idUser=:idUser order by t.id  asc",
             countQuery = "select count (t) from Topo t inner join t.utilisateur u where u.idUser=:idUser")
     public Page<Topo> listTopoByUtilisateur(@Param("idUser")Long idUser, Pageable pageable);
+
+    @Query(value = "select t from Topo t inner join fetch t.site s  where s.idSite=:idSite order by t.id  asc",
+            countQuery = "select count (t) from Topo t inner join t.site s where s.idSite=:idSite")
+    public Page<Topo> listTopoBySite(@Param("idSite")Long idSite, Pageable pageable);
 }

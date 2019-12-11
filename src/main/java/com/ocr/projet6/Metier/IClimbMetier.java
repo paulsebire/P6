@@ -11,5 +11,5 @@ public interface IClimbMetier {
     public Page<Longueur> listLongueur(Long idSite, int page, int size);
     public Page<Topo> listTopo(int page, int size);
     public Page<Topo> listTopoByUtilisateur(Long idUser, int page, int size);
-
+    public Page<Topo> listTopoBySite(Long idSite, int page, int size);
 }

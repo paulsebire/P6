@@ -30,7 +30,7 @@ public class TopoController {
     @Autowired
     private SiteRepository siteRepository;
 
-    @RequestMapping(value = "/topo/search")
+    @GetMapping(value = "/topo/search")
     public String topos(Model model,
                         @RequestParam(name="pageTopo",defaultValue = "0") int pageTopo,
                         @RequestParam(name = "sizeTopo",defaultValue = "2") int sizeTopo){
@@ -44,6 +44,30 @@ public class TopoController {
         model.addAttribute("sizeTopo",sizeTopo);
         return "topos";
     }
+
+    @GetMapping(value = "/site/{idSite}/topo/search")
+    public String topoBySite (Model model,
+                              @PathVariable(value = "idSite")Long idSite,
+                              @RequestParam(name="pageTopo",defaultValue = "0") int pageTopo,
+                              @RequestParam(name = "sizeTopo",defaultValue = "2") int sizeTopo){
+        Page<Topo> pageTopos= iClimbMetier.listTopoBySite(idSite,pageTopo,sizeTopo);
+        model.addAttribute("listTopo",pageTopos.getContent());
+        int[] pagesTopo=new int[pageTopos.getTotalPages()];
+        int paginationEnablerTopo=pagesTopo.length;
+        model.addAttribute("paginationEnablerTopo",paginationEnablerTopo);
+        model.addAttribute("pagesTopo",pagesTopo);
+        model.addAttribute("pageCouranteTopo",pageTopo);
+        model.addAttribute("sizeTopo",sizeTopo);
+
+        Optional<Site> s=siteRepository.findById(idSite);
+        Site site=null;
+        if(s.isPresent()) {
+            site=s.get();
+        }
+        model.addAttribute("site",site);
+        return "topoBySite";
+    }
+
 
     @GetMapping(path = "/topo/find")
     public String findTopo(Model model,
