@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.ocr.projet6.Metier.RoleDefinition;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 
 import java.security.Principal;
+import java.util.Optional;
 
 import static com.ocr.projet6.Metier.RoleDefinition.userRole;
 
@@ -32,8 +34,7 @@ public class UtilisateurController {
     private UtilisateurService utilisateurService;
     @Autowired
     private IClimbMetier iClimbMetier;
-    @Autowired
-    private TopoRepository topoRepository;
+
 
     @GetMapping(value = "/utilisateur/inscription")
     public String inscriptionForm(Model model){
@@ -46,13 +47,7 @@ public class UtilisateurController {
     public String saveNewUtilisateur(Model model, @Valid Utilisateur utilisateur, BindingResult bindingResult){
 
         if (bindingResult.hasErrors()){
-            try{
-
-            }catch (Exception e){
-                model.addAttribute("error",e);
-                return "inscription"+"&error="+e.getMessage();
-            }
-
+                return "inscription"+"&error="+bindingResult.getGlobalError();
         }
         utilisateur.setRoles(userRole);
         System.out.println("usernameController= "+utilisateur.getUsername());
@@ -81,6 +76,32 @@ public class UtilisateurController {
         model.addAttribute("pageCouranteTopo",pageTopo);
         model.addAttribute("sizeTopo",sizeTopo);
         return "profile";
+    }
+
+
+    @GetMapping(value = "/utilisateur/{idUser}/edit")
+    public String editUser(Model model,
+                           @PathVariable(value = "idUser")Long idUser){
+        Optional<Utilisateur> u=utilisateurRepository.findById(idUser);
+        Utilisateur utilisateur=null;
+        if(u.isPresent()) {
+            utilisateur=u.get();
+            model.addAttribute("utilisateur",utilisateur);
+        }
+        return "editFormUtilisateur";
+    }
+
+    @PostMapping(value = "/utilisateur/{idUser}/save")
+    public String saveEditedSite(Model model, @Valid Utilisateur utilisateur,
+                                 @PathVariable("idUser") Long idUser,
+                                 BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "editFormUtilisateur";
+        }
+        utilisateur.setIdUser(idUser);
+        model.addAttribute("utilisateur",utilisateur);
+        utilisateurRepository.save(utilisateur);
+        return "confirmationEditedUtilisateur";
     }
 
 }

@@ -28,17 +28,20 @@
 </head>
 <body>
     <div layout:fragment="content" class="vbigspacer">
-        <div class=" container h-100 ">
-                <div class="vbigspacer card  mx-auto col-md-6 ">
-                    <div class="card-header "><h3 class="card-title">Mon Profil:</h3></div>
+        <div class=" row justify-content-center">
+                <div class=" card">
+                    <div class="card-header "><h3 class="card-title">Mon Profil:
+                        <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
+                           th:href="@{/utilisateur/{idUser}/edit(idUser=${utilisateur.idUser})}"><i class="fa fa-edit"></i> Modifier</a>
+                    </h3></div>
                         <div class="card-body">
                             <div>
                                 <label>Nom:</label>
-                                <label th:text="${utilisateur.lastname}" class="mr-2"></label>
+                                <label th:text="${utilisateur.lastname}" class="mr-2"></label><br/>
                                 <label>Prénom:</label>
-                                <label th:text="${utilisateur.firstname}"></label>
+                                <label th:text="${utilisateur.firstname}"></label><br/>
                                 <label>Nom d'utilisateur:</label>
-                                <label th:text="${utilisateur.username}"></label>
+                                <label th:text="${utilisateur.username}"></label><br/>
                                 <label>email de contact:</label>
                                 <label th:text="${utilisateur.email}"></label>
                             </div>
@@ -56,17 +59,19 @@
                 <div class="card-body justify-content-center" th:if="${paginationEnablerTopo>0}">
                     <table class="table table-striped">
                         <tr>
+                            <th class="text-center">Site</th>
                             <th class="text-center">Nom</th>
                             <th class="text-center">Description</th>
                             <th class="text-center">Disponibilité</th>
                             <th class="text-center">Modifier</th>
                         </tr>
                         <tr th:each="lto:${listTopo}">
+                            <td align="center" th:text="${lto.site.nameSite}"></td>
                             <td align="center" ><a th:text="${lto.nom}"  th:href="@{/topo/{id}/consult(id=${lto.id})}"></a></td>
                             <td align="center" th:text="${lto.description}"></td>
                             <td align="center" th:if="${lto.disponibilite}==true"><i class="fa fa-check-circle" style="color: green"></i></td>
                             <td align="center" th:if="${lto.disponibilite}==false"><i class="fa fa-times-circle" style="color: red"></i></i></td>
-                            <td align="center" ><a class="btn btn-primary" sec:authorize="hasRole('ROLE_USER')" th:href="@{/topo/{id}/edit(id=${lto.id})}">
+                            <td align="center" ><a sec:authorize="hasRole('ROLE_USER')" th:href="@{/topo/{id}/edit(id=${lto.id})}">
                                 <i class="fa fa-edit "></i></a></td>
                         </tr>
                     </table>

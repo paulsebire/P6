@@ -31,33 +31,33 @@
                     <label class="control-label">Nom d'utilisateur:
                         <span class="red" th:errors=" ${utilisateur.username}"></span>
                     </label>
-                    <input class="form-control" type="text" name="username" />
+                    <input class="form-control" type="text" name="username" required/>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Nom:
                         <!--<span class="red" th:errors=" ${utilisateur.nom}"></span>-->
                     </label>
-                    <input class="form-control" type="text" name="lastname" />
+                    <input class="form-control" type="text" name="lastname" required/>
                 </div>
                 <div class="form-group">
                     <label class="control-label ">Prénom:
                         <!--<span class="red" th:errors="${utilisateur.prenom}"></span>-->
                     </label>
-                    <input class="form-control" type="text" name="firstname" />
+                    <input class="form-control" type="text" name="firstname" required/>
                 </div>
                 <div class="form-group">
                     <label class="control-label">email:
                         <!-- <span  class="red" th:errors="${utilisateur.login}">
                          </span>-->
                      </label>
-                     <input class="form-control" type="email" name="email" />
+                     <input class="form-control" type="email" name="email" required/>
                  </div>
                  <div class="form-group">
                      <label class="control-label">Password:
                          <!--<span  class="red" th:errors="${utilisateur.password}">
                          </span>-->
                      </label>
-                     <input class="form-control" type="password" name="password" />
+                     <input class="form-control" type="password" name="password" required/>
                  </div>
                  <div>
                      <button type="submit" class="btn btn-primary">Enregistrer</button>

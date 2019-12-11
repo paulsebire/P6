@@ -40,23 +40,23 @@
                         <span class="red" th:errors=" ${topo.nom}">
                         </span>
                     </label>
-                    <input class="form-control" type="text" name="nameSite" th:value="${topo.nom}"/>
+                    <input class="form-control" type="text" name="nom" th:value="${topo.nom}"/>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Description:
                         <span class="red" th:errors=" ${topo.description}">
                         </span>
                     </label>
-                    <input class="form-control" type="text" name="localisation" th:value="${topo.description}"/>
+                    <input class="form-control" type="text" name="description" th:value="${topo.description}"/>
                 </div>
-                <div class="form-group">
-                    <label>disponibilité du topo:</label><br/>
-                    <input class="form-check-input" type="radio" name="disponibilite" id="Radio1" value="true" checked>
-                    <label class="form-check-label" for="Radio1">
+                <div class="form-check form-check-inline">
+                    <label>disponibilité du topo:</label>
+                    <input class="form-check-input ml-3" align="center" type="radio" name="disponibilite" id="Radio1" value="true" checked>
+                    <label class="form-check-label  " align="center" for="Radio1">
                         Disponible
-                    </label><br/>
-                    <input class="form-check-input" type="radio" name="disponibilite" id="Radio2" value="false">
-                    <label class="form-check-label" for="Radio2">
+                    </label>
+                    <input class="form-check-input ml-3" align="center" type="radio" name="disponibilite" id="Radio2" value="false">
+                    <label class="form-check-label " align="center" for="Radio2">
                         Réservé
                     </label>
                 </div>

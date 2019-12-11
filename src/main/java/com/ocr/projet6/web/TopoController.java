@@ -123,11 +123,11 @@ public class TopoController {
         return "confirmationTopo";
     }
 
-    @GetMapping(path = "/topo/{idTopo}/consult")
+    @GetMapping(path = "/topo/{id}/consult")
     public String consulter(Model model,
-                            @PathVariable(name = "idTopo") Long idTopo){
+                            @PathVariable(name = "id") Long id){
         try {
-            Optional<Topo> t=topoRepository.findById(idTopo);
+            Optional<Topo> t=topoRepository.findById(id);
             Topo topo=null;
             if(t.isPresent()) {
                 topo=t.get();
@@ -167,6 +167,9 @@ public class TopoController {
         if(s.isPresent()) {
             site=s.get();
         }
+        topo.setSite(site);
+        Utilisateur utilisateur=userConnected();
+        topo.setUtilisateur(utilisateur);
         model.addAttribute("site", site);
         topo.setId(id);
         model.addAttribute("topo",topo);
