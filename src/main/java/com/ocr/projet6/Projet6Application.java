@@ -39,7 +39,7 @@ public class Projet6Application implements CommandLineRunner {
         siteRepository.save(site1);
 
         Site site2 = new Site("site2","sud");
-        site2.setUtilisateur(admin);
+        site2.setUtilisateur(user);
         siteRepository.save(site2);
 
 

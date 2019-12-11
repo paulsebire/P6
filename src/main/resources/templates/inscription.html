@@ -29,7 +29,7 @@
             <form th:action="@{/utilisateur/create}" method="post">
                 <div class="form-group">
                     <label class="control-label">Nom d'utilisateur:
-                        <!--<span class="red" th:errors=" ${utilisateur.nom}"></span>-->
+                        <span class="red" th:errors=" ${utilisateur.username}"></span>
                     </label>
                     <input class="form-control" type="text" name="username" />
                 </div>

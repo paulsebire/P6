@@ -59,16 +59,15 @@
                             <th class="text-center">Nom</th>
                             <th class="text-center">Description</th>
                             <th class="text-center">Disponibilité</th>
-                            <th/>
-                            <th class="text-center">Sauver</th>
+                            <th class="text-center">Modifier</th>
                         </tr>
                         <tr th:each="lto:${listTopo}">
                             <td align="center" ><a th:text="${lto.nom}"  th:href="@{/topo/{id}/consult(id=${lto.id})}"></a></td>
                             <td align="center" th:text="${lto.description}"></td>
                             <td align="center" th:if="${lto.disponibilite}==true"><i class="fa fa-check-circle" style="color: green"></i></td>
                             <td align="center" th:if="${lto.disponibilite}==false"><i class="fa fa-times-circle" style="color: red"></i></i></td>
-                            <td><input type="checkbox" name="disponibilite" th:checked="${lto.disponibilite}"></td>
-                            <td></td>
+                            <td align="center" ><a class="btn btn-primary" sec:authorize="hasRole('ROLE_USER')" th:href="@{/topo/{id}/edit(id=${lto.id})}">
+                                <i class="fa fa-edit "></i></a></td>
                         </tr>
                     </table>
                 </div>

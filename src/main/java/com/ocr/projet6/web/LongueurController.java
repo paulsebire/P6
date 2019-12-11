@@ -86,7 +86,6 @@ public class LongueurController {
         if (bindingResult.hasErrors()){
             return "editFormLongueur";
         }
-        System.out.println("idVoieNew= "+idVoieNew);
         Optional<Voie> v=voieRepository.findById(idVoieNew);
         Voie voi=v.get();
         longueur.setVoie(voi);

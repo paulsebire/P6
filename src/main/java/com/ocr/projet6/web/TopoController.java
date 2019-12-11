@@ -106,7 +106,7 @@ public class TopoController {
     }
 
     @PostMapping(value = "/topo/save")
-    public String saveTopo(Model model, @Valid Topo topo,@RequestParam("idSite") Long idSite, BindingResult bindingResult){
+    public String saveNewTopo(Model model, @Valid Topo topo,@RequestParam("idSite") Long idSite, BindingResult bindingResult){
 
         if (bindingResult.hasErrors()){
             return "addFormTopo";
@@ -125,9 +125,7 @@ public class TopoController {
 
     @GetMapping(path = "/topo/{idTopo}/consult")
     public String consulter(Model model,
-                            @PathVariable(name = "idTopo") Long idTopo,
-                            @RequestParam(name="pageTopo",defaultValue = "0") int pageTopo,
-                            @RequestParam(name = "sizeTopo",defaultValue = "2") int sizeTopo){
+                            @PathVariable(name = "idTopo") Long idTopo){
         try {
             Optional<Topo> t=topoRepository.findById(idTopo);
             Topo topo=null;
@@ -139,6 +137,41 @@ public class TopoController {
             model.addAttribute("exception",e);
         }
         return "topoDisplay";
+    }
+
+    @GetMapping (value = "/topo/{id}/edit")
+    public String topoEdit (Model model,@PathVariable(value = "id")Long id,
+                            @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
+                            @RequestParam(name = "sizeSite",defaultValue = "2") int sizeSite){
+        Optional<Topo> t=topoRepository.findById(id);
+        Topo topo=null;
+        if(t.isPresent()) {
+            topo=t.get();
+            model.addAttribute("topo",topo);
+        }
+        Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
+        model.addAttribute("listSite",pageSites.getContent());
+        return "editFormTopo";
+    }
+
+    @PostMapping(value = "/topo/{id}/save")
+    public String saveEditedSite(Model model, @Valid Topo topo,
+                                 @PathVariable("id") Long id,
+                                 @RequestParam(value = "idSite") Long idSite,
+                                 BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "editFormTopo";
+        }
+        Optional<Site> s=siteRepository.findById(idSite);
+        Site site=null;
+        if(s.isPresent()) {
+            site=s.get();
+        }
+        model.addAttribute("site", site);
+        topo.setId(id);
+        model.addAttribute("topo",topo);
+        topoRepository.save(topo);
+        return "confirmationTopo";
     }
 
     public static Utilisateur userConnected(){

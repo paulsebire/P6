@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/static/**").permitAll();
 
-        http.authorizeRequests().antMatchers("/site/*","/voie/*","/longueur/*","/utilisateur/*").hasRole("USER");
+        http.authorizeRequests().antMatchers("*/add*","*/edit*","*/delete*","/topo/*","*/profil*").hasRole("USER");
         http.authorizeRequests().antMatchers("/administration").hasRole("ADMIN");
     }
     @Bean

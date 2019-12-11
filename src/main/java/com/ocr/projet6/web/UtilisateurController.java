@@ -35,7 +35,7 @@ public class UtilisateurController {
     @Autowired
     private TopoRepository topoRepository;
 
-    @GetMapping(value = "/utilisateurs/inscription")
+    @GetMapping(value = "/utilisateur/inscription")
     public String inscriptionForm(Model model){
         Utilisateur utilisateur=new Utilisateur();
         model.addAttribute("utilisateur",utilisateur);
@@ -44,8 +44,15 @@ public class UtilisateurController {
 
     @PostMapping(value = "/utilisateur/create")
     public String saveNewUtilisateur(Model model, @Valid Utilisateur utilisateur, BindingResult bindingResult){
+
         if (bindingResult.hasErrors()){
-            return "inscription";
+            try{
+
+            }catch (Exception e){
+                model.addAttribute("error",e);
+                return "inscription"+"&error="+e.getMessage();
+            }
+
         }
         utilisateur.setRoles(userRole);
         System.out.println("usernameController= "+utilisateur.getUsername());
@@ -76,9 +83,4 @@ public class UtilisateurController {
         return "profile";
     }
 
-    /*public Utilisateur utilisateurConnecte (Model model, Principal principal ) {
-        String userName = principal.getName();
-        Utilisateur utilisateurConnecte=(Utilisateur)utilisateurService.loadUserByUsername(userName);
-        return utilisateurConnecte;
-    }*/
 }

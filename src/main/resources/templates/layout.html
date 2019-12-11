@@ -31,9 +31,9 @@
             <ul class="nav ml-1">
                 <li class="justify-content-center mr-1"><a class="btn btn-primary "  th:href="@{/site/search}" ><i class="fa fa-search"></i> Trouver<br/>un site</a></li>
                 <li class="justify-content-center mr-1"><a class=" btn btn-primary " th:href="@{/site/add}" sec:authorize="hasRole('ROLE_USER')" th:if="${#request.userPrincipal != null}"><i class="fa fa-plus"></i>  Ajouter<br/>nouveau site</a></li>
-                <li class="justify-content-center mr-1"><a class=" btn btn-primary " th:href="@{/topo/search}" ><i class="fa fa-search"></i>  Trouver<br/>un Topo</a></li>
+                <li class="justify-content-center mr-1"><a class=" btn btn-primary " th:href="@{/topo/search}" sec:authorize="hasRole('ROLE_USER')" ><i class="fa fa-search"></i>  Trouver<br/>un Topo</a></li>
                 <li class="justify-content-center mr-1"><a class=" btn btn-primary " th:href="@{/utilisateur/profil}" th:if="${#request.userPrincipal != null}" sec:authorize="hasRole('ROLE_USER')" ><i class="fa fa-user"></i><br/>Mon Profil</a></li>
-                <div sec:authorize="hasRole('ROLE_ADMIN')" th:if="${#request.userPrincipal}" access="hasRole('ROLE_ADMIN')">
+                <div sec:authorize="hasRole('ROLE_ADMIN')" >
                 <li class="justify-content-center" ><a class="btn btn-primary" th:href="@{/administration}" ><i class="fa fa-users"></i><br/>Administration</a></li>
                 </div>
             </ul>
