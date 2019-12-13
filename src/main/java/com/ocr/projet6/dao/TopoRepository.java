@@ -24,3 +24,4 @@ public interface TopoRepository extends JpaRepository <Topo,Long> {
             countQuery = "select count (t) from Topo t inner join t.site s where s.idSite=:idSite")
     public Page<Topo> listTopoBySite(@Param("idSite")Long idSite, Pageable pageable);
 }
+

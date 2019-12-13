@@ -171,7 +171,7 @@ public class SiteController {
         return "editFormSite";
     }
 
-    public static Utilisateur userConnected(){
+    public Utilisateur userConnected(){
         Utilisateur utilisateurConnecte= (Utilisateur)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return utilisateurConnecte;
     }

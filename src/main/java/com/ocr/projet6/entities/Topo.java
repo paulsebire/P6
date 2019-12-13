@@ -5,6 +5,8 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
+
 @Entity
 public class Topo implements Serializable {
     @Id @GeneratedValue
@@ -12,6 +14,7 @@ public class Topo implements Serializable {
     private String nom;
     private String description;
     private boolean disponibilite = true;
+    private Date date;
     @ManyToOne
     @JoinColumn(name ="id_user" )
     private Utilisateur utilisateur;
@@ -73,5 +76,13 @@ public class Topo implements Serializable {
 
     public void setUtilisateur(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
