@@ -83,6 +83,6 @@ public class Topo implements Serializable {
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date=date;
     }
 }

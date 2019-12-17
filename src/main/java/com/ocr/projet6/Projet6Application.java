@@ -2,11 +2,12 @@ package com.ocr.projet6;
 
 import com.ocr.projet6.dao.*;
 import com.ocr.projet6.entities.*;
-import com.ocr.projet6.security.WebMvcConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.Date;
 
 
 @SpringBootApplication
@@ -58,26 +59,34 @@ public class Projet6Application implements CommandLineRunner {
         Longueur lg8 = longueurRepository.save(new Longueur("lg8",80,voie4));
 
 
+
+
+
+
         Topo topo1=new Topo("topo1","nord");
         topo1.setSite(site1);
         topo1.setUtilisateur(admin);
+        topo1.setDate(new Date());
         topoRepository.save(topo1);
 
         Topo topo2=new Topo("topo2","nord2");
         topo2.setSite(site1);
         topo2.setUtilisateur(admin);
         topo2.setDisponibilite(false);
+        topo2.setDate(new Date());
         topoRepository.save(topo2);
 
         Topo topo3=new Topo("topo3","sud");
         topo3.setSite(site2);
         topo3.setUtilisateur(user);
+        topo3.setDate(new Date());
         topoRepository.save(topo3);
 
         Topo topo4=new Topo("topo4","sud2");
         topo4.setSite(site2);
         topo4.setUtilisateur(user);
         topo4.setDisponibilite(false);
+        topo4.setDate(new Date());
         topoRepository.save(topo4);
     }
 }

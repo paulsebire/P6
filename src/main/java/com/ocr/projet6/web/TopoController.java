@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Date;
 import java.util.Optional;
 
 @Controller
@@ -156,7 +157,7 @@ public class TopoController {
     }
 
     @PostMapping(value = "/topo/{id}/save")
-    public String saveEditedSite(Model model, @Valid Topo topo,
+    public String saveEditedTopo(Model model, @Valid Topo topo,
                                  @PathVariable("id") Long id,
                                  @RequestParam(value = "idSite") Long idSite,
                                  BindingResult bindingResult){
@@ -173,6 +174,7 @@ public class TopoController {
         topo.setUtilisateur(utilisateur);
         model.addAttribute("site", site);
         topo.setId(id);
+        topo.setDate(new Date());
         model.addAttribute("topo",topo);
         topoRepository.save(topo);
         return "confirmationTopo";

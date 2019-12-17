@@ -54,13 +54,20 @@
                         <tr>
                             <th class="text-center">Nom</th>
                             <th class="text-center">Description</th>
+                            <th class="text-center">Lieu</th>
                             <th class="text-center">Disponibilité</th>
+                            <th class="text-center">Date de<br/> parution</th>
+                            <th class="text-center">Propiétaire</th>
+
                         </tr>
                         <tr th:each="lto:${listTopo}">
                             <td align="center" ><a th:text="${lto.nom}"  th:href="@{/topo/{id}/consult(id=${lto.id})}"></a></td>
                             <td align="center" th:text="${lto.description}"></td>
+                            <td align="center" th:text="${lto.getSite().getLocalisation()}"></td>
                             <td align="center" th:if="${lto.disponibilite}==true"><i class="fa fa-check-circle" style="color: green"></i></td>
                             <td align="center" th:if="${lto.disponibilite}==false"><i class="fa fa-times-circle" style="color: red"></i></i></td>
+                            <td align="center" th:text="${lto.date.getDate()+'/'}+${lto.date.getMonth()+1+'/'}+${lto.date.getYear()+1900}"></td>
+                            <td align="center" th:text="${lto.getUtilisateur().getUsername()}"></td>
                         </tr>
                     </table>
                 </div>

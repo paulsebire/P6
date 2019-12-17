@@ -29,17 +29,23 @@
         <div class=" container h-100 ">
                 <div class="vbigspacer card  mx-auto col-md-6 ">
                     <div class="card-header "><h3 class="card-title">Informations sur le Topo</h3></div>
-                    <div class="card-body">
+                    <div class="card-body text-center" >
                         <div>
                             <label>Site:</label>
-                            <label th:text="${topo.site.nameSite}" class="mr-2"></label>
+                            <label th:text="${topo.site.getNameSite()}" class="mr-2"></label><br/>
+                            <label>Lieu:</label>
+                            <label th:text="${topo.site.getLocalisation()}" class="mr-2"></label><br/>
                             <label>Topo:</label>
-                            <label th:text="${topo.nom}" class="mr-2"></label>
-                            <label>Localisation:</label>
-                            <label th:text="${topo.description}"></label>
+                            <label th:text="${topo.getNom()}" class="mr-2"></label><br/>
+                            <label>Description:</label>
+                            <label th:text="${topo.description}"></label><br/>
+                            <label >Date de parution:</label>
+                            <label th:text="${topo.date.getDate()+'/'}+${topo.date.getMonth()+1+'/'}+${topo.date.getYear()+1900}"></label><br/>
                             <label>Disponibilité:</label>
                             <label align="center" th:if="${topo.disponibilite}==true"><i class="fa fa-check-circle" style="color: green"></i></label>
                             <label align="center" th:if="${topo.disponibilite}==false"><i class="fa fa-times-circle" style="color: red"></i></i></label>
+                            <br/><label>Propiétaire:</label>
+                            <label th:text="${topo.getUtilisateur().getUsername()}"></label><br/>
                         </div>
                     </div>
                 </div>

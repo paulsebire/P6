@@ -92,7 +92,7 @@ public class UtilisateurController {
     }
 
     @PostMapping(value = "/utilisateur/{idUser}/save")
-    public String saveEditedSite(Model model, @Valid Utilisateur utilisateur,
+    public String saveEditedUtilisateur(Model model, @Valid Utilisateur utilisateur,
                                  @PathVariable("idUser") Long idUser,
                                  BindingResult bindingResult){
         if (bindingResult.hasErrors()){
