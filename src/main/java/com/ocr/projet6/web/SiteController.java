@@ -6,10 +6,7 @@ import com.ocr.projet6.dao.LongueurRepository;
 import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.UtilisateurRepository;
 import com.ocr.projet6.dao.VoieRepository;
-import com.ocr.projet6.entities.Longueur;
-import com.ocr.projet6.entities.Site;
-import com.ocr.projet6.entities.Utilisateur;
-import com.ocr.projet6.entities.Voie;
+import com.ocr.projet6.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -82,7 +79,9 @@ public class SiteController {
                             @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                             @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie,
                             @RequestParam(name="pageLongueur",defaultValue = "0") int pageLongueur,
-                            @RequestParam(name = "sizeLongueur",defaultValue = "2") int sizeLongueur
+                            @RequestParam(name = "sizeLongueur",defaultValue = "2") int sizeLongueur,
+                            @RequestParam(name="pageCommentaire",defaultValue = "0") int pageCommentaire,
+                            @RequestParam(name = "sizeCommentaire",defaultValue = "2") int sizeCommentaire
                             ){
         try {
             Optional<Site> s=siteRepository.findById(idSite);
@@ -114,6 +113,16 @@ public class SiteController {
 
             Utilisateur utilisateur=userConnected();
             model.addAttribute("utilisateurConnecte",utilisateur);
+
+            Page<Commentaire> pageCommentaires= iClimbMetier.listCommentaireBySite(site.getIdSite(),pageCommentaire,sizeCommentaire);
+            model.addAttribute("listCommentaire",pageCommentaires.getContent());
+            int[] pagesCommentaire=new int[pageCommentaires.getTotalPages()];
+            int paginationEnablerCommentaire=pagesCommentaire.length;
+            if (paginationEnablerCommentaire<=1) pageCommentaire=0;
+            model.addAttribute("paginationEnablerCommentaire",paginationEnablerCommentaire);
+            model.addAttribute("pagesCommentaire",pagesCommentaire);
+            model.addAttribute("pageCouranteCommentaire",pageCommentaire);
+            model.addAttribute("sizeCommentaire",sizeCommentaire);
         }catch (Exception e){
             model.addAttribute("exception",e);
         }
@@ -126,6 +135,7 @@ public class SiteController {
     @GetMapping(value = "/site/add")
     public String addSite(Model model){
         Site site=new Site();
+        site.setOfficiel(false);
         model.addAttribute("site",site);
         return "addFormSite";
     }
@@ -157,6 +167,17 @@ public class SiteController {
         return "confirmationSite";
     }
 
+    @GetMapping(value = "/site/{idSite}/edit/officiel")
+    public String rendreOfficiel(@PathVariable("idSite") Long idSite){
+        Optional<Site> s=siteRepository.findById(idSite);
+        Site site=null;
+        if(s.isPresent()) {
+            site=s.get();
+        }
+        site.setOfficiel(!site.isOfficiel());
+        siteRepository.save(site);
+        return "redirect:/site/"+idSite+"/consult";
+    }
 
 
     @RequestMapping(value = "/site/{idSite}/edit")

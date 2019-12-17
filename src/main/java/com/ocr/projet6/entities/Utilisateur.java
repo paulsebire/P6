@@ -75,7 +75,8 @@ public class Utilisateur implements UserDetails {
     @OneToMany(mappedBy = "utilisateur",fetch = FetchType.LAZY)
     private Collection<Topo> topos;
 
-
+    @OneToMany(mappedBy = "utilisateur",fetch = FetchType.LAZY)
+    private Collection<Commentaire> commentaires;
 
     public Utilisateur() {
         this.accountNonExpired = true;
@@ -96,6 +97,14 @@ public class Utilisateur implements UserDetails {
         this.credentialsNonExpired = true;
         this.enabled = true;
         this.roles = roles;
+    }
+
+    public Collection<Commentaire> getCommentaires() {
+        return commentaires;
+    }
+
+    public void setCommentaires(Collection<Commentaire> commentaires) {
+        this.commentaires = commentaires;
     }
 
     public Collection<Site> getSites() {

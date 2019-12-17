@@ -1,9 +1,6 @@
 package com.ocr.projet6.Metier;
 
-import com.ocr.projet6.dao.LongueurRepository;
-import com.ocr.projet6.dao.SiteRepository;
-import com.ocr.projet6.dao.TopoRepository;
-import com.ocr.projet6.dao.VoieRepository;
+import com.ocr.projet6.dao.*;
 import com.ocr.projet6.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +19,8 @@ public class ClimbMetierImpl implements IClimbMetier {
     private LongueurRepository longueurRepository;
     @Autowired
     private TopoRepository topoRepository;
-
+    @Autowired
+    private CommentaireRepository commentaireRepository;
 
     @Override
     public Page<Site> listSite(int page, int size) {
@@ -57,5 +55,10 @@ public class ClimbMetierImpl implements IClimbMetier {
     @Override
     public Page<Topo> listTopoBySite(Long idSite, int page, int size){
         return topoRepository.listTopoBySite(idSite,PageRequest.of(page,size));
+    }
+
+    @Override
+    public Page<Commentaire> listCommentaireBySite(Long idSite, int page, int size){
+        return commentaireRepository.listCommentaireBySite(idSite,PageRequest.of(page,size));
     }
 }

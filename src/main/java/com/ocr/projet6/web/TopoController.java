@@ -7,7 +7,6 @@ import com.ocr.projet6.dao.TopoRepository;
 import com.ocr.projet6.entities.Site;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.entities.Utilisateur;
-import com.ocr.projet6.security.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
+
 import java.util.Date;
 import java.util.Optional;
 
@@ -107,18 +106,19 @@ public class TopoController {
     }
 
     @PostMapping(value = "/topo/save")
-    public String saveNewTopo(Model model, @Valid Topo topo,@RequestParam("idSite") Long idSite, BindingResult bindingResult){
+    public String saveNewTopo(Model model, @Valid Topo topo,@RequestParam("idSiteNew") Long idSiteNew, BindingResult bindingResult){
 
         if (bindingResult.hasErrors()){
             return "addFormTopo";
         }
-        Optional<Site> s=siteRepository.findById(idSite);
+        Optional<Site> s=siteRepository.findById(idSiteNew);
         Site sit=s.get();
         topo.setSite(sit);
         topo.setDisponibilite(true);
         Utilisateur utilisateur=userConnected();
         topo.setUtilisateur(utilisateur);
         formatField(topo);
+        topo.setDate(new Date());
         topoRepository.save(topo);
         model.addAttribute("topo",topo);
         return "confirmationTopo";

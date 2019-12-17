@@ -50,10 +50,13 @@
                                 <tr>
                                     <th class="text-center">Nom</th>
                                     <th class="text-center">Localisation</th>
+                                    <th class="text-center">Officiel</th>
                                 </tr>
                                 <tr th:each="ls:${listSite}">
                                     <td align="center" ><a th:text="${ls.nameSite}"  th:href="@{/site/{idSite}/consult(idSite=${ls.idSite})}"></a></td>
                                     <td align="center" th:text="${ls.localisation}"></td>
+                                    <td align="center" th:if="${ls.isOfficiel()}==true"><i class="fa fa-check-circle" style="color: green"></i></td>
+                                    <td align="center" th:if="${ls.isOfficiel()}==false"><i class="fa fa-times-circle" style="color: grey"></i></i></td>
                                 </tr>
                             </table>
                         </div>

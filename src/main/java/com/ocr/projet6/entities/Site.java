@@ -14,11 +14,13 @@ public class Site implements Serializable {
 
     private String localisation;
 
+    private boolean officiel;
+
     @OneToMany (mappedBy = "site",fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Collection<Voie> voies;
 
     @ManyToOne
-    @JoinColumn(name ="ID_UTILISATEUR" )
+    @JoinColumn(name ="id_user" )
     private Utilisateur utilisateur;
 
     public Site() { super(); }
@@ -26,6 +28,14 @@ public class Site implements Serializable {
     public Site(String nameSite, String localisation) {
         this.nameSite = nameSite;
         this.localisation = localisation;
+    }
+
+    public boolean isOfficiel() {
+        return officiel;
+    }
+
+    public void setOfficiel(boolean officiel) {
+        this.officiel = officiel;
     }
 
     public Utilisateur getUtilisateur() {

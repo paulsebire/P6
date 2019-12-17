@@ -31,17 +31,19 @@
             <div class="card-body">
                 <div class="form-group">
                     <label>site:</label>
-                    <label th:text="${site.nameSite}"/><br/>
+                    <label th:text="${topo.site.getNameSite()}"/><br/>
                     <label>Nom du topo:</label>
                     <label th:text="${topo.nom}"/><br/>
                     <label>Description:</label>
                     <label th:text="${topo.description}"/><br/>
+                    <label >Date de parution:</label>
+                    <label th:text="${topo.date.getDate()+'/'}+${topo.date.getMonth()+1+'/'}+${topo.date.getYear()+1900}"></label><br/>
                     <label>Disponibilité:</label>
                     <label th:if="${topo.disponibilite==true}"> Disponible</label>
                     <label th:if="${topo.disponibilite==false}"> Réservé</label>
                 </div>
                 <div>
-                    <a class="btn btn-primary float-right" th:href="@{/topo/{idTopo}/consult(idTopo=${topo.id})}">Aller sur le topo</a>
+                    <a class="btn btn-primary float-right" th:href="@{/topo/{idTopo}/consult(idTopo=${topo.getId()})}">Aller sur le topo</a>
                 </div>
             </div>
         </div>

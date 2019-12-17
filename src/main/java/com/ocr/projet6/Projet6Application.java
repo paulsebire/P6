@@ -22,6 +22,8 @@ public class Projet6Application implements CommandLineRunner {
     private UtilisateurRepository utilisateurRepository;
     @Autowired
     private TopoRepository topoRepository;
+    @Autowired
+    private CommentaireRepository commentaireRepository;
 
 
 
@@ -37,10 +39,12 @@ public class Projet6Application implements CommandLineRunner {
 
         Site site1 = new Site("site1","nord");
         site1.setUtilisateur(admin);
+        site1.setOfficiel(true);
         siteRepository.save(site1);
 
         Site site2 = new Site("site2","sud");
         site2.setUtilisateur(user);
+        site2.setOfficiel(false);
         siteRepository.save(site2);
 
 
@@ -88,5 +92,54 @@ public class Projet6Application implements CommandLineRunner {
         topo4.setDisponibilite(false);
         topo4.setDate(new Date());
         topoRepository.save(topo4);
+
+
+        Commentaire com1=new Commentaire("test1");
+        com1.setUtilisateur(admin);
+        com1.setDate(new Date());
+        com1.setSite(site1);
+        commentaireRepository.save(com1);
+
+        Commentaire com2=new Commentaire("test2");
+        com2.setUtilisateur(user);
+        com2.setDate(new Date());
+        com2.setSite(site1);
+        commentaireRepository.save(com2);
+
+        Commentaire com3=new Commentaire("test3");
+        com3.setUtilisateur(admin);
+        com3.setDate(new Date());
+        com3.setSite(site1);
+        commentaireRepository.save(com3);
+
+        Commentaire com4=new Commentaire("test4");
+        com4.setUtilisateur(user);
+        com4.setDate(new Date());
+        com4.setSite(site1);
+        commentaireRepository.save(com4);
+
+        Commentaire com5=new Commentaire("test5");
+        com5.setUtilisateur(admin);
+        com5.setDate(new Date());
+        com5.setSite(site2);
+        commentaireRepository.save(com5);
+
+        Commentaire com6=new Commentaire("test6");
+        com6.setUtilisateur(user);
+        com6.setDate(new Date());
+        com6.setSite(site2);
+        commentaireRepository.save(com6);
+
+        Commentaire com7=new Commentaire("test7");
+        com7.setUtilisateur(admin);
+        com7.setDate(new Date());
+        com7.setSite(site2);
+        commentaireRepository.save(com7);
+
+        Commentaire com8=new Commentaire("test8");
+        com8.setUtilisateur(user);
+        com8.setDate(new Date());
+        com8.setSite(site2);
+        commentaireRepository.save(com8);
     }
 }
