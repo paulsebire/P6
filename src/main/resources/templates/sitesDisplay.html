@@ -29,41 +29,44 @@
             <div class=" container h-100 botspacer">
                 <div class="row justify-content-center">
                     <div>
-                        <div class="bigspacer card  mx-auto col-md-6 " th:if="${site}">
-                            <div class="card-header "><h3 class="card-title">Informations
-                                <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
-                                   th:href="@{/site/{idSite}/topo/search(idSite=${site.idSite})}">
-                                    <i class="fa fa-search"></i> Les Topos </a><br/>
-                                sur le site
-                            </h3></div>
-                            <div class="card-body row ">
-                                <div class="justify-content-left" >
-                                    <label>Site:</label>
-                                    <label th:text="${site.nameSite}" class="mr-2"></label>
-                                    <label>Localisation:</label>
-                                    <label th:text="${site.localisation}"></label>
-
-                                    <br/>
-                                    <label>Officiel:</label>
-                                    <label align="center" th:if="${site.officiel}==true"><i class="fa fa-check-circle" style="color: green"></i></label>
-                                    <label align="center" th:if="${site.isOfficiel()}==false"><i class="fa fa-times-circle" style="color: grey"></i></i></label>
-
+                        <div class="bigspacer col-md-12 col-sm-12 col-lg-12">
+                            <div class="card" th:if="${site}">
+                                <div class="card-header ">
+                                    <h3 class="card-title">Informations sur le site
+                                        <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
+                                           th:href="@{/site/{idSite}/topo/search(idSite=${site.idSite})}">
+                                            <i class="fa fa-search"></i> Les Topos </a>
+                                    </h3>
                                 </div>
-                                <div class="ml-auto justify-content-right">
-                                    <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_ADMIN')"
-                                       th:if="${site.officiel==false}"
-                                       th:href="@{/site/{idSite}/edit/officiel(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Rendre officiel</a>
-                                    <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_ADMIN')"
-                                       th:if="${site.officiel==true}"
-                                       th:href="@{/site/{idSite}/edit/officiel(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Rendre non-officiel</a>
-                                    <br/><a class="btn btn-primary float-right mt-1" sec:authorize="hasRole('ROLE_USER')"
-                                            th:if="${utilisateurConnecte.idUser}==${site.utilisateur.idUser}"
-                                            th:href="@{/site/{idSite}/edit(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Modifier le site</a>
+                                <div class="card-body row ">
+                                    <div class="justify-content-left" >
+                                        <label>Site:</label>
+                                        <label th:text="${site.nameSite}" class="mr-2"></label>
+                                        <label>Localisation:</label>
+                                        <label th:text="${site.localisation}"></label>
+
+                                        <br/>
+                                        <label>Officiel:</label>
+                                        <label align="center" th:if="${site.officiel}==true"><i class="fa fa-check-circle" style="color: green"></i></label>
+                                        <label align="center" th:if="${site.isOfficiel()}==false"><i class="fa fa-times-circle" style="color: grey"></i></i></label>
+
+                                    </div>
+                                    <div class="ml-auto justify-content-right">
+                                        <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_ADMIN')"
+                                           th:if="${site.officiel==false}"
+                                           th:href="@{/site/{idSite}/edit/officiel(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Rendre officiel</a>
+                                        <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_ADMIN')"
+                                           th:if="${site.officiel==true}"
+                                           th:href="@{/site/{idSite}/edit/officiel(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Rendre non-officiel</a>
+                                        <br/><a class="btn btn-primary float-right mt-1" sec:authorize="hasRole('ROLE_USER')"
+                                                th:if="${utilisateurConnecte.idUser}==${site.utilisateur.idUser}"
+                                                th:href="@{/site/{idSite}/edit(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Modifier le site</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row justify-content-center spacer">
-                            <div class="card" th:if="${site}">
+                            <div class="card mr-2" th:if="${site}">
                                 <div class="card-header">
                                     <h3 class="card-title">Liste des voies
                                         <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')"
@@ -154,65 +157,66 @@
                             </div>
                         </div>
                     </div>
-                        <div sec:authorize="hasRole('ROLE_USER')">
-                            <div class="card" >
-                            <div class="card-header">
-                                <h3 class="card-title" >Liste des commentaires</h3>
-                            </div>
-                            <div class="card-body justify-content-center" th:if="${paginationEnablerCommentaire>0}">
-                                <table class="table table-striped">
-                                    <tr>
-                                        <th class="text-center">Site</th>
-                                        <th class="text-center">Utilisateur</th>
-                                        <th class="text-center">Date</th>
-                                        <th class="text-center">Contenu</th>
-                                        <th class="text-center">Modifier</th>
-                                        <th class="text-center">Supprimer</th>
-                                    </tr>
-                                    <tr th:each="lc:${listCommentaire}">
-                                        <td align="center" th:text="${lc.site.getNameSite()}"></td>
-                                        <td align="center" th:text="${lc.utilisateur.getUsername()}" ></td>
-                                        <td align="center" th:text="${lc.date.getDate()+'/'}+${lc.date.getMonth()+1+'/'}+${lc.date.getYear()+1900}"></td>
-                                        <td align="center text-justify-center" th:text="${lc.contenu}"></td>
-                                        <td align="center" ><a sec:authorize="hasRole('ROLE_USER')"><i class="fa fa-edit "></i></a></td>
-                                        <td align="center" sec:authorize="hasRole('ROLE_USER')">
-                                            <a onclick="return confirm('Etes vous sûr(e) de vouloir supprimer le commentaire')"><i class="fa fa-trash"></i></a>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="container">
-                                <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerCommentaire>1}">
-                                    <li  th:class="${pageCouranteCommentaire}==${status.index}?'page-item active':'page-item'"
-                                         th:each="p,status:${pagesCommentaire}">
-                                        <a class="page-link" th:href="@{/site/{idSite}/consult(idSite=${site.idSite},pageCommentaire=${status.index})}"
-                                           th:text="${status.index}"></a>
-                                    </li>
-                                </ul>
-                                <br/>
-                            </div>
-                            <div class="card-body justify-content-center" th:if="${paginationEnablerCommentaire==0}">
-                                <p>Il n'y a pas encore de commentaire, pensez à en ajouter.</p>
-                            </div>
+                </div>
+                <div sec:authorize="hasRole('ROLE_USER')">
+                    <div class="card spacer" >
+                        <div class="card-header">
+                            <h3 class="card-title" >Liste des commentaires</h3>
                         </div>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Laissez un commentaire</h3>
-                                </div>
-                                <div class="card-body">
-                                    <form th:action="@{/site/{idSite}/commentaire/save(idSite=${site.idSite})}" method="post">
-                                        <div class="form-group">
-                                            <label for="textarea">Votre commentaire :</label>
-                                            <textarea id="textarea" class="form-control" name="contenu" rows="4"></textarea>
-                                            <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
-                                        </div>
-                                        <button class="btn btn-primary" type="submit">Envoyer</button>
-                                        <br/>
-                                    </form>
-                                </div>
-                            </div>
+                        <div class="card-body justify-content-center" th:if="${paginationEnablerCommentaire>0}">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th class="text-center">Site</th>
+                                    <th class="text-center">Utilisateur</th>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Contenu</th>
+                                    <th class="text-center" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} or ${#authorization.expression('hasRole(''ROLE_USER'')')} and ${nbComByUser}>0">Modifier</th>
+                                    <th class="text-center" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} or ${#authorization.expression('hasRole(''ROLE_USER'')')} and ${nbComByUser}>0">Supprimer</th>
+                                </tr>
+                                <tr th:each="lc:${listCommentaire}">
+                                    <td align="center" th:text="${lc.site.getNameSite()}"></td>
+                                    <td align="center" th:text="${lc.utilisateur.getUsername()}" ></td>
+                                    <td align="center" th:text="${lc.date.getDate()+'/'}+${lc.date.getMonth()+1+'/'}+${lc.date.getYear()+1900}"></td>
+                                    <td align="center" th:text="${lc.contenu}"></td>
+                                    <td align="center" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} or ${#authorization.expression('hasRole(''ROLE_USER'')')} and ${lc.utilisateur.idUser}==${utilisateurConnecte.idUser}">
+                                        <a th:href="@{/site/{idSite}/commentaire/{idCommentaire}/edit(idSite=${site.idSite},idCommentaire=${lc.getId()})}"><i class="fa fa-edit "></i></a></td>
+                                    <td align="center" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} or ${#authorization.expression('hasRole(''ROLE_USER'')')} and ${lc.utilisateur.idUser}==${utilisateurConnecte.idUser}" >
+                                        <a onclick="return confirm('Etes vous sûr(e) de vouloir supprimer le commentaire')" th:href="@{/site/{idSite}/commentaire/{idCommentaire}/delete(idSite=${site.idSite},idCommentaire=${lc.getId()})}"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="container">
+                            <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerCommentaire>1}">
+                                <li  th:class="${pageCouranteCommentaire}==${status.index}?'page-item active':'page-item'"
+                                     th:each="p,status:${pagesCommentaire}">
+                                    <a class="page-link" th:href="@{/site/{idSite}/consult(idSite=${site.idSite},pageCommentaire=${status.index})}"
+                                       th:text="${status.index}"></a>
+                                </li>
+                            </ul>
+                            <br/>
+                        </div>
+                        <div class="card-body justify-content-center" th:if="${paginationEnablerCommentaire==0}">
+                            <p>Il n'y a pas encore de commentaire, pensez à en ajouter.</p>
                         </div>
                     </div>
+                    <div class="card spacer">
+                        <div class="card-header">
+                            <h3 class="card-title">Laissez un commentaire</h3>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/site/{idSite}/commentaire/save(idSite=${site.idSite})}" method="post">
+                                <div class="form-group">
+                                    <label for="textarea">Votre commentaire :</label>
+                                    <textarea id="textarea" class="form-control" name="contenu" rows="4"></textarea>
+                                    <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Envoyer</button>
+                                <br/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 </div>
              </div>
     </div>

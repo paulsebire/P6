@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -123,6 +124,10 @@ public class SiteController {
             model.addAttribute("pagesCommentaire",pagesCommentaire);
             model.addAttribute("pageCouranteCommentaire",pageCommentaire);
             model.addAttribute("sizeCommentaire",sizeCommentaire);
+
+            List<Commentaire> listComByUser = iClimbMetier.listCommentaireBySiteByUser(idSite,utilisateur.getIdUser());
+            int nbCombyUser = listComByUser.size();
+            model.addAttribute("nbComByUser",nbCombyUser);
         }catch (Exception e){
             model.addAttribute("exception",e);
         }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 public class ClimbMetierImpl implements IClimbMetier {
@@ -60,5 +61,10 @@ public class ClimbMetierImpl implements IClimbMetier {
     @Override
     public Page<Commentaire> listCommentaireBySite(Long idSite, int page, int size){
         return commentaireRepository.listCommentaireBySite(idSite,PageRequest.of(page,size));
+    }
+
+    @Override
+    public List<Commentaire> listCommentaireBySiteByUser(Long idSite, Long idUser){
+        return commentaireRepository.listCommentaireBySiteByUser(idSite,idUser);
     }
 }

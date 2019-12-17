@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Formulaire</title>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous" />
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+            crossorigin="anonymous"></script>
+</head>
+</head>
+<body>
+<div  class="vbigspacer col-md-6 mx-auto" layout:fragment="content">
+    <div class="card">
+      <br/> <div class="card-header"><h3 class="card-title">Edition d'un commentaire</h3></div>
+        <div class="card-body">
+            <form th:action="@{/site/{idSite}/commentaire/{idCommentaire}/save(idSite=${site.idSite},idCommentaire=${commentaire.id})}" method="post">
+                <div class="form-group">
+                    <label class="control-label">Id:
+                        <span class="red" th:errors=" ${commentaire.id}">
+                        </span>
+                    </label>
+                    <input class="form-control" readonly="readonly" type="number" name="id" th:value="${commentaire.id}"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Utilisateur:
+                        <span class="red" th:errors=" ${commentaire.utilisateur.username}">
+                        </span>
+                    </label>
+                    <input class="form-control" type="text" name="username" readonly="readonly" th:value="${commentaire.utilisateur.username}"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Ancien Contenu:<br/>
+                        <span class="red" th:errors=" ${commentaire.contenu}">
+                        </span>
+                    </label>
+                    <p th:text="${commentaire.contenu}"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Nouveau Contenu:
+                        <span class="red" th:errors=" ${commentaire.contenu}">
+                        </span>
+                    </label>
+                    <input class="form-control" type="text" name="contenu" th:value="${commentaire.contenu}"/>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
