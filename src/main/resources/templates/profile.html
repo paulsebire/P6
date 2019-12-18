@@ -15,6 +15,7 @@
             rel="stylesheet"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
             crossorigin="anonymous" />
+    <script src="https://kit.fontawesome.com/2fe189fad4.js" crossorigin="anonymous"></script>
     <script
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -26,70 +27,131 @@
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 </head>
-<body>
-    <div layout:fragment="content" class="vbigspacer">
-        <div class=" row justify-content-center">
+<body sec:authorize="hasRole('ROLE_USER')">
+
+    <div layout:fragment="content" class="vbigspacer" >
+        <aside>
+            <div class=" row justify-content-center ml-2">
                 <div class=" card">
                     <div class="card-header "><h3 class="card-title">Mon Profil:
                         <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
-                           th:href="@{/utilisateur/{idUser}/edit(idUser=${utilisateur.idUser})}"><i class="fa fa-edit"></i> Modifier</a>
+                           th:href="@{/utilisateur/{idUser}/edit(idUser=${utilisateurConnecte.idUser})}"><i class="fa fa-edit"></i> Modifier</a>
                     </h3></div>
-                        <div class="card-body">
-                            <div>
-                                <label>Nom:</label>
-                                <label th:text="${utilisateur.lastname}" class="mr-2"></label><br/>
-                                <label>Prénom:</label>
-                                <label th:text="${utilisateur.firstname}"></label><br/>
-                                <label>Nom d'utilisateur:</label>
-                                <label th:text="${utilisateur.username}"></label><br/>
-                                <label>email de contact:</label>
-                                <label th:text="${utilisateur.email}"></label>
-                            </div>
+                    <div class="card-body">
+                        <div>
+                            <label>Nom:</label>
+                            <label th:text="${utilisateurConnecte.lastname}" class="mr-2"></label><br/>
+                            <label>Prénom:</label>
+                            <label th:text="${utilisateurConnecte.firstname}"></label><br/>
+                            <label>Nom d'utilisateur:</label>
+                            <label th:text="${utilisateurConnecte.username}"></label><br/>
+                            <label>email de contact:</label>
+                            <label th:text="${utilisateurConnecte.email}"></label>
                         </div>
                     </div>
                 </div>
+            </div>
+        </aside>
         <div class="row justify-content-center spacer">
-            <div class="card" >
-                <div class="card-header">
-                    <h3 class="card-title" >Liste de vos topos
-                        <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
-                           th:href="@{/topo/add}"><i class="fa fa-plus"></i> Ajouter <br/> un Topo</a>
-                    </h3>
+            <div class="card text-center">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item" >
+                                <a class="nav-link" th:class="${topoBool}==true?'nav-link active':'nav-link'" th:href="@{/utilisateur/profil/topos}">Mes Topos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:class="${demandeResaBool}==true?'nav-link active':'nav-link'" th:href="@{/utilisateur/profil/reservations/emises}">Réservations de Topo émises</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link">Réservations de Topo reçues</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-body justify-content-center" th:if="${paginationEnablerTopo>0} and ${topoBool}==true">
+                        <a class="btn btn-primary float-left"
+                           th:href="@{/topo/add}"><i class="fa fa-plus"></i> Ajouter un Topo</a><br/>
+                        <table class="table table-striped spacer">
+                            <tr>
+                                <th class="text-center">Site</th>
+                                <th class="text-center">Nom</th>
+                                <th class="text-center">Description</th>
+                                <th class="text-center">Disponibilité</th>
+                                <th class="text-center">Modifier</th>
+                                <th class="text-center">Supprimer</th>
+                            </tr>
+                            <tr th:each="lto:${listTopo}">
+                                <td align="center" th:text="${lto.site.nameSite}"></td>
+                                <td align="center" ><a th:text="${lto.nom}"  th:href="@{/topo/{id}/consult(id=${lto.id})}"></a></td>
+                                <td align="center" th:text="${lto.description}"></td>
+                                <td align="center" th:if="${lto.disponibilite}==true"><i class="fa fa-check-circle" style="color: green"></i></td>
+                                <td align="center" th:if="${lto.disponibilite}==false"><i class="fa fa-times-circle" style="color: red"></i></i></td>
+                                <td align="center" ><a sec:authorize="hasRole('ROLE_USER')" th:href="@{/topo/{id}/edit(id=${lto.id})}">
+                                    <i class="fa fa-edit "></i></a></td>
+                                <td align="center" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')} and ${lto.utilisateur.idUser}==${utilisateurConnecte.idUser}" >
+                                    <a onclick="return confirm('Etes vous sûr(e) de vouloir supprimer le commentaire')" th:href="@{/topo/{idTopo}/delete(idTopo=${lto.id})}"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="container">
+                            <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerTopo>1}">
+                                <li  th:class="${pageCouranteTopo}==${status.index}?'page-item active':'page-item'"
+                                     th:each="p,status:${pagesTopo}">
+                                    <a class="page-link" th:href="@{/utilisateur/profil/topos(pageTopo=${status.index})}"
+                                       th:text="${status.index}"></a>
+                                </li>
+                            </ul>
+                            <br/>
+                        </div>
                 </div>
-                <div class="card-body justify-content-center" th:if="${paginationEnablerTopo>0}">
+                <div class="card-body justify-content-center" th:if="${paginationEnablerTopo==0} and ${topoBool}==true">
+                    <p>Vous n'avez pas encore de Topos, pensez à en ajouter.</p>
+                        <a class="btn btn-primary" sec:authorize="hasRole('ROLE_USER')"
+                           th:href="@{/topo/add}"><i class="fa fa-plus"></i> Ajouter un Topo</a>
+                </div>
+                <div class="card-body justify-content-center" th:if="${paginationEnablerResa>0} and ${demandeResaBool}==true">
+
+                        <a class=" btn btn-primary float-left" th:href="@{/topo/search}" ><i class="fa fa-search"></i>  Trouver un Topo</a><br/><br/>
+
+
                     <table class="table table-striped">
                         <tr>
+                            <th class="text-center">Reservation</th>
+                            <th class="text-center">Topo</th>
                             <th class="text-center">Site</th>
-                            <th class="text-center">Nom</th>
-                            <th class="text-center">Description</th>
-                            <th class="text-center">Disponibilité</th>
-                            <th class="text-center">Modifier</th>
+                            <th class="text-center">Lieu</th>
+                            <th class="text-center">En cours</th>
+                            <th class="text-center">Statut</th>
                         </tr>
-                        <tr th:each="lto:${listTopo}">
-                            <td align="center" th:text="${lto.site.nameSite}"></td>
-                            <td align="center" ><a th:text="${lto.nom}"  th:href="@{/topo/{id}/consult(id=${lto.id})}"></a></td>
-                            <td align="center" th:text="${lto.description}"></td>
-                            <td align="center" th:if="${lto.disponibilite}==true"><i class="fa fa-check-circle" style="color: green"></i></td>
-                            <td align="center" th:if="${lto.disponibilite}==false"><i class="fa fa-times-circle" style="color: red"></i></i></td>
-                            <td align="center" ><a sec:authorize="hasRole('ROLE_USER')" th:href="@{/topo/{id}/edit(id=${lto.id})}">
-                                <i class="fa fa-edit "></i></a></td>
+                        <tr th:each="lr:${listResaEmise}">
+                            <td align="center" th:text="${lr.id}"></td>
+                            <td align="center" ><a th:text="${lr.topo.nom}"  th:href="@{/topo/{id}/consult(id=${lr.topo.id})}"></a></td>
+                            <td align="center" ><a th:text="${lr.topo.site.nameSite}" th:href="@{/site/{idSite}/consult(idSite=${lr.topo.site.idSite})}"></a></td>
+                            <td align="center" th:text="${lr.topo.site.localisation}"></td>
+                            <td align="center" th:if="${lr.demandeEnCours}==true"><i class="far fa-clock" style="color: green"></i></td>
+                            <td align="center" th:if="${lr.demandeEnCours}==false">Terminée</td>
+                            <td align="center" th:if="${lr.acceptation}==true and ${lr.demandeEnCours}==false"><i class="fa fa-check-circle" style="color: green"></i></td>
+                            <td align="center" th:if="${lr.acceptation}==false and ${lr.demandeEnCours}==false"><i class="fa fa-times-circle" style="color: red"></i></td>
+                            <td align="center" th:if="${lr.demandeEnCours}==true"><i class="far fa-clock" style="color: green"></i></td>
                         </tr>
                     </table>
+                    <div class="container">
+                        <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerResa>1}">
+                            <li  th:class="${pageCouranteReservation}==${status.index}?'page-item active':'page-item'"
+                                 th:each="p,status:${pagesReservation}">
+                                <a class="page-link" th:href="@{/utilisateur/profil/reservations/emises(pageReservation=${status.index})}"
+                                   th:text="${status.index}"></a>
+                            </li>
+                        </ul>
+                        <br/>
+                    </div>
                 </div>
-                <div class="container">
-                    <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerTopo>1}">
-                        <li  th:class="${pageCouranteTopo}==${status.index}?'page-item active':'page-item'"
-                             th:each="p,status:${pagesTopo}">
-                            <a class="page-link" th:href="@{/utilisateur/profil(pageTopo=${status.index})}"
-                               th:text="${status.index}"></a>
-                        </li>
-                    </ul>
-                    <br/>
-                </div>
-                <div class="card-body justify-content-center" th:if="${paginationEnablerTopo==0}">
-                    <p>Vous n'avez pas encore de Topos, pensez à en ajouter.</p>
+                <div class="card-body justify-content-center" th:if="${paginationEnablerResa==0} and ${demandeResaBool}==true">
+                    <p>Vous n'avez pas encore fait de réservation de Topo.</p>
+                    <a class=" btn btn-primary " th:href="@{/topo/search}" ><i class="fa fa-search"></i>  Trouver un Topo</a>
                 </div>
             </div>
         </div>
+    </div>
 </body>
 </html>

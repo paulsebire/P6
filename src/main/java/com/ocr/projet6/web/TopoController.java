@@ -2,8 +2,10 @@ package com.ocr.projet6.web;
 
 import com.ocr.projet6.Metier.ClimbMetierImpl;
 import com.ocr.projet6.Metier.IClimbMetier;
+import com.ocr.projet6.dao.ReservationRepository;
 import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.TopoRepository;
+import com.ocr.projet6.entities.Reservation;
 import com.ocr.projet6.entities.Site;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.entities.Utilisateur;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -29,6 +32,8 @@ public class TopoController {
     private TopoRepository topoRepository;
     @Autowired
     private SiteRepository siteRepository;
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @GetMapping(value = "/topo/search")
     public String topos(Model model,
@@ -105,6 +110,22 @@ public class TopoController {
         return "addFormTopo";
     }
 
+    @GetMapping(value = "/topo/{idTopo}/delete")
+    public String deleteTopo(@PathVariable(value = "idTopo")Long idTopo){
+        Optional<Topo> t=topoRepository.findById(idTopo);
+        Utilisateur utilisateurConnecte=userConnected();
+        Topo topo=null;
+        if (t.isPresent()){
+            topo=t.get();
+            if (utilisateurConnecte.getIdUser()==topo.getUtilisateur().getIdUser()){
+                topoRepository.deleteById(idTopo);
+            } else return "403";
+        }
+
+
+        return "profile";
+    }
+
     @PostMapping(value = "/topo/save")
     public String saveNewTopo(Model model, @Valid Topo topo,@RequestParam("idSiteNew") Long idSiteNew, BindingResult bindingResult){
 
@@ -127,17 +148,20 @@ public class TopoController {
     @GetMapping(path = "/topo/{id}/consult")
     public String consulter(Model model,
                             @PathVariable(name = "id") Long id){
-        try {
+
             Optional<Topo> t=topoRepository.findById(id);
             Topo topo=null;
             if(t.isPresent()) {
                 topo=t.get();
+                model.addAttribute("topo", topo);
+                Utilisateur utilisateurConnecte=userConnected();
+                model.addAttribute("utilisateurConnecte",utilisateurConnecte);
+                boolean demandeEnCours=iClimbMetier.demandeEnCours(utilisateurConnecte.getUsername(),topo.getId());
+                System.out.println("demandeencours="+demandeEnCours);
+                model.addAttribute("demandeEnCours",demandeEnCours);
+                return "topoDisplay";
             }
-            model.addAttribute("topo", topo);
-        }catch (Exception e){
-            model.addAttribute("exception",e);
-        }
-        return "topoDisplay";
+        return "sites";
     }
 
     @GetMapping (value = "/topo/{id}/edit")
@@ -178,6 +202,27 @@ public class TopoController {
         model.addAttribute("topo",topo);
         topoRepository.save(topo);
         return "confirmationTopo";
+    }
+
+    @GetMapping(value = "/topo/{idTopo}/reservation")
+    public String DemandedeReservation(Model model,@PathVariable("idTopo")Long idTopo){
+        Optional<Topo> t=topoRepository.findById(idTopo);
+        Topo topo=null;
+        Utilisateur demandeur=userConnected();
+        if (t.isPresent()){
+            topo=t.get();
+            Reservation reservation=new Reservation(false,true,demandeur.getUsername(),topo.getUtilisateur().getUsername(),topo);
+            reservation.setDate(new Date());
+            reservationRepository.save(reservation);
+            model.addAttribute("topo", topo);
+            model.addAttribute("utilisateurConnecte",demandeur);
+            boolean demandeEnCours=iClimbMetier.demandeEnCours(demandeur.getUsername(),topo.getId());
+            System.out.println("demandeencours="+demandeEnCours);
+            model.addAttribute("demandeEnCours",demandeEnCours);
+            return "topoDisplay";
+        }
+
+        return "redirect:/topo/"+idTopo+"/consult";
     }
 
     public static Utilisateur userConnected(){

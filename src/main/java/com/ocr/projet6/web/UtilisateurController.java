@@ -3,12 +3,14 @@ package com.ocr.projet6.web;
 import com.ocr.projet6.Metier.ClimbMetierImpl;
 import com.ocr.projet6.Metier.IClimbMetier;
 import com.ocr.projet6.dao.TopoRepository;
+import com.ocr.projet6.entities.Reservation;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.dao.UtilisateurRepository;
 import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.security.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -57,17 +59,14 @@ public class UtilisateurController {
         return "confirmationUtilisateur";
     }
 
-    @GetMapping(value = "/utilisateur/profil" )
-    public String userProfile (Model model,Principal principal,
+    @GetMapping(value = "/utilisateur/profil/topos" )
+    public String userProfiletopo (Model model,
                                @RequestParam(name="pageTopo",defaultValue = "0") int pageTopo,
                                @RequestParam(name = "sizeTopo",defaultValue = "2") int sizeTopo){
-        String userName = principal.getName();
-        Utilisateur utilisateurConnecte=(Utilisateur)utilisateurService.loadUserByUsername(userName);
-        model.addAttribute("utilisateur",utilisateurConnecte);
 
-
+        Utilisateur utilisateurConnecte=userConnected();
+        model.addAttribute("utilisateurConnecte",utilisateurConnecte);
         Page<Topo> pageTopos = iClimbMetier.listTopoByUtilisateur(utilisateurConnecte.getIdUser(),pageTopo,sizeTopo);
-        System.out.println("listtopos = " + pageTopos.getContent());
         model.addAttribute("listTopo",pageTopos.getContent());
         int[] pagesTopo=new int[pageTopos.getTotalPages()];
         int paginationEnablerTopo=pagesTopo.length;
@@ -75,20 +74,52 @@ public class UtilisateurController {
         model.addAttribute("pagesTopo",pagesTopo);
         model.addAttribute("pageCouranteTopo",pageTopo);
         model.addAttribute("sizeTopo",sizeTopo);
+        boolean demandeResaBool=false;
+        model.addAttribute("demandeResaBool",demandeResaBool);
+        boolean topoBool=true;
+        model.addAttribute("topoBool",topoBool);
         return "profile";
     }
 
+
+    @GetMapping(value = "/utilisateur/profil/reservations/emises" )
+    public String userProfileResaEmises (Model model,
+                               @RequestParam(name="pageReservation",defaultValue = "0") int pageReservation,
+                               @RequestParam(name = "sizeReservation",defaultValue = "2") int sizeReservation){
+
+        Utilisateur utilisateurConnecte=userConnected();
+        model.addAttribute("utilisateurConnecte",utilisateurConnecte);
+        Page<Reservation> pageReservations = iClimbMetier.listResaDemande(utilisateurConnecte.getUsername(),pageReservation,sizeReservation);
+        model.addAttribute("listResaEmise",pageReservations.getContent());
+        int[] pagesReservation=new int[pageReservations.getTotalPages()];
+        int paginationEnablerResa=pagesReservation.length;
+        model.addAttribute("paginationEnablerResa",paginationEnablerResa);
+        model.addAttribute("pagesReservation",pagesReservation);
+        model.addAttribute("pageCouranteReservation",pageReservation);
+        model.addAttribute("sizeReservation",sizeReservation);
+        boolean demandeResaBool=true;
+        boolean topoBool=false;
+        model.addAttribute("demandeResaBool",demandeResaBool);
+        model.addAttribute("topoBool",topoBool);
+        return "profile";
+    }
 
     @GetMapping(value = "/utilisateur/{idUser}/edit")
     public String editUser(Model model,
                            @PathVariable(value = "idUser")Long idUser){
         Optional<Utilisateur> u=utilisateurRepository.findById(idUser);
         Utilisateur utilisateur=null;
+        Utilisateur utilisateurConnecte=userConnected();
+        model.addAttribute("utilisateurConnecte",utilisateurConnecte);
         if(u.isPresent()) {
             utilisateur=u.get();
             model.addAttribute("utilisateur",utilisateur);
+            if (utilisateur.getIdUser()==utilisateurConnecte.getIdUser()){
+                return "editFormUtilisateur";
+            }else return "403";
         }
-        return "editFormUtilisateur";
+        return "profile";
+
     }
 
     @PostMapping(value = "/utilisateur/{idUser}/save")
@@ -103,5 +134,8 @@ public class UtilisateurController {
         utilisateurRepository.save(utilisateur);
         return "confirmationEditedUtilisateur";
     }
-
+    public static Utilisateur userConnected(){
+        Utilisateur utilisateurConnecte= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return utilisateurConnecte;
+    }
 }

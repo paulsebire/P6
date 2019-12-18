@@ -5,11 +5,10 @@ import com.ocr.projet6.Metier.IClimbMetier;
 import com.ocr.projet6.dao.LongueurRepository;
 import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.VoieRepository;
-import com.ocr.projet6.entities.Longueur;
-import com.ocr.projet6.entities.Site;
-import com.ocr.projet6.entities.Voie;
+import com.ocr.projet6.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,7 +43,16 @@ public class VoieController {
                              @PathVariable("idSite")Long idSite,
                              @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                              @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie){
-            voieRepository.deleteById(idVoie);
+        Optional<Voie> v=voieRepository.findById(idVoie);
+        Utilisateur utilisateurConnecte=userConnected();
+        Voie voie=null;
+        if (v.isPresent()){
+            voie=v.get();
+            if (utilisateurConnecte.getIdUser()==voie.getSite().getUtilisateur().getIdUser()){
+                voieRepository.deleteById(idVoie);
+            } else return "403";
+        }
+
         return "redirect:/site/"+idSite+"/consult?pageVoie="+pageVoie+"&sizeVoie="+sizeVoie;}
 
 
@@ -108,6 +116,10 @@ public class VoieController {
         String formatedSecteur= ClimbMetierImpl.formatString(voie.getSecteur());
         voie.setSecteur(formatedSecteur);
         return;
+    }
+    public static Utilisateur userConnected(){
+        Utilisateur utilisateurConnecte= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return utilisateurConnecte;
     }
 
 

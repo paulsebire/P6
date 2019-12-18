@@ -5,11 +5,13 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
 public class Topo implements Serializable {
     @Id @GeneratedValue
+    @Column(name = "id_topo")
     private Long id;
     private String nom;
     private String description;
@@ -22,6 +24,9 @@ public class Topo implements Serializable {
     @ManyToOne
     @JoinColumn(name ="id_site" )
     private Site site;
+
+    @OneToMany(mappedBy = "topo",fetch = FetchType.LAZY)
+    private Collection<Reservation> reservations;
 
     public Topo() { super(); }
 
@@ -84,5 +89,13 @@ public class Topo implements Serializable {
 
     public void setDate(Date date) {
         this.date=date;
+    }
+
+    public Collection<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Collection<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

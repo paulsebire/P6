@@ -7,9 +7,11 @@ import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.VoieRepository;
 import com.ocr.projet6.entities.Longueur;
 import com.ocr.projet6.entities.Site;
+import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.entities.Voie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,7 +53,16 @@ public class LongueurController {
                                  @RequestParam(name="pageLongueur",defaultValue = "0") int pageLongueur,
                                  @RequestParam(name = "sizeLongueur",defaultValue = "2") int sizeLongueur,
                                  @PathVariable("idSite") Long idSite){
-        longueurRepository.deleteById(idLongueur);
+        Optional<Longueur> l=longueurRepository.findById(idLongueur);
+        Utilisateur utilisateurConnecte=userConnected();
+        Longueur longueur=null;
+        if (l.isPresent()){
+            longueur=l.get();
+            if (utilisateurConnecte.getIdUser()==longueur.getVoie().getSite().getUtilisateur().getIdUser()){
+                longueurRepository.deleteById(idLongueur);
+            } else return "403";
+        }
+
         return "redirect:/site/"+idSite+"/consult&pageLongueur="+pageLongueur+"&sizeLongueur="+sizeLongueur;}
 
 
@@ -123,5 +134,8 @@ public class LongueurController {
         longueur.setNomLongueur(formatedName);
         return;
     }
-
+    public static Utilisateur userConnected(){
+        Utilisateur utilisateurConnecte= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return utilisateurConnecte;
+    }
 }

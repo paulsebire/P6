@@ -17,4 +17,6 @@ public interface IClimbMetier {
     public Page<Topo> listTopoBySite(Long idSite, int page, int size);
     public Page<Commentaire> listCommentaireBySite(Long idSite, int page, int size);
     public List<Commentaire> listCommentaireBySiteByUser(Long idSite, Long idUser);
+    public Page<Reservation> listResaDemande(String username, int page, int size);
+    public boolean demandeEnCours (String username, Long idTopo);
 }

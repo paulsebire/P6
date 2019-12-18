@@ -22,6 +22,8 @@ public class ClimbMetierImpl implements IClimbMetier {
     private TopoRepository topoRepository;
     @Autowired
     private CommentaireRepository commentaireRepository;
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @Override
     public Page<Site> listSite(int page, int size) {
@@ -67,4 +69,19 @@ public class ClimbMetierImpl implements IClimbMetier {
     public List<Commentaire> listCommentaireBySiteByUser(Long idSite, Long idUser){
         return commentaireRepository.listCommentaireBySiteByUser(idSite,idUser);
     }
+
+    @Override
+    public Page<Reservation> listResaDemande(String username, int page, int size){
+        return reservationRepository.listResaDemande(username,PageRequest.of(page, size));
+    }
+    @Override
+    public boolean demandeEnCours (String username, Long idTopo){
+            List<Reservation> lr= reservationRepository.demandeEnCours(username,idTopo,true);
+            if (lr.isEmpty()){
+                return false;
+            }else {
+                return true;
+            }
+    }
+
 }

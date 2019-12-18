@@ -4,10 +4,7 @@ import com.ocr.projet6.Metier.IClimbMetier;
 import com.ocr.projet6.dao.CommentaireRepository;
 import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.UtilisateurRepository;
-import com.ocr.projet6.entities.Commentaire;
-import com.ocr.projet6.entities.Site;
-import com.ocr.projet6.entities.Utilisateur;
-import com.ocr.projet6.entities.Voie;
+import com.ocr.projet6.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Date;
 import java.util.Optional;
 
@@ -55,8 +53,20 @@ public class CommentaireController {
 
     @GetMapping(value = "/site/{idSite}/commentaire/{idCommentaire}/delete")
     public String deleteCommentaire(@PathVariable("idCommentaire")Long idCommentaire,
+                             Principal principal,
                              @PathVariable("idSite")Long idSite){
-        commentaireRepository.deleteById(idCommentaire);
+        Optional<Commentaire> c=commentaireRepository.findById(idCommentaire);
+        Utilisateur utilisateurConnecte=userConnected();
+        boolean admin =SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().contains("ADMIN");
+        Commentaire commentaire=null;
+        if (c.isPresent()){
+            commentaire=c.get();
+
+            if (utilisateurConnecte.getIdUser()==commentaire.getUtilisateur().getIdUser()||admin==true){
+                commentaireRepository.deleteById(idCommentaire);
+            } else return "403";
+        }
+
         return "redirect:/site/"+idSite+"/consult";}
 
 

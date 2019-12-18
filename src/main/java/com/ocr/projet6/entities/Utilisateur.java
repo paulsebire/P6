@@ -71,6 +71,9 @@ public class Utilisateur implements UserDetails {
     @OneToMany(mappedBy = "utilisateur",fetch = FetchType.LAZY)
     private Collection<Site> sites;
 
+    @OneToOne
+    @JoinColumn(name ="ID_RESERVATION" )
+    private Reservation reservation;
 
     @OneToMany(mappedBy = "utilisateur",fetch = FetchType.LAZY)
     private Collection<Topo> topos;
@@ -105,6 +108,14 @@ public class Utilisateur implements UserDetails {
 
     public void setCommentaires(Collection<Commentaire> commentaires) {
         this.commentaires = commentaires;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
     public Collection<Site> getSites() {
