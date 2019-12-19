@@ -211,7 +211,8 @@ public class TopoController {
         Utilisateur demandeur=userConnected();
         if (t.isPresent()){
             topo=t.get();
-            Reservation reservation=new Reservation(false,true,demandeur.getUsername(),topo.getUtilisateur().getUsername(),topo);
+            System.out.println("propri ="+topo.getUtilisateur().getUsername());
+            Reservation reservation=new Reservation(false,true,demandeur,topo);
             reservation.setDate(new Date());
             reservationRepository.save(reservation);
             model.addAttribute("topo", topo);

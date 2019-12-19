@@ -17,13 +17,11 @@ public class Reservation implements Serializable {
 
     private boolean demandeEnCours;
 
-    private String usernameDemandeur;
-    private String usernameProprietaire;
     private Date date;
 
-    @OneToOne(mappedBy = "reservation",fetch = FetchType.LAZY)
-    @JoinColumn(name ="ID_USER" )
-    private Utilisateur demandeur;
+    @OneToOne
+    @JoinColumn(name ="id_user" )
+    private Utilisateur utilisateur;
 
 
     @ManyToOne
@@ -32,12 +30,12 @@ public class Reservation implements Serializable {
 
     public Reservation() {super();}
 
-    public Reservation(boolean acceptation,boolean demandeEnCours,String usernameDemandeur, String usernameProprietaire, Topo topo){
+    public Reservation(boolean acceptation,boolean demandeEnCours,Utilisateur utilisateur, Topo topo){
         this.acceptation=acceptation;
         this.demandeEnCours=demandeEnCours;
         this.topo=topo;
-        this.usernameDemandeur=usernameDemandeur;
-        this.usernameProprietaire=usernameProprietaire;
+        this.utilisateur=utilisateur;
+
 
     }
 
@@ -65,28 +63,12 @@ public class Reservation implements Serializable {
         this.demandeEnCours = demandeEnCours;
     }
 
-    public String getUsernameDemandeur() {
-        return usernameDemandeur;
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
     }
 
-    public void setUsernameDemandeur(String usernameDemandeur) {
-        this.usernameDemandeur = usernameDemandeur;
-    }
-
-    public String getUsernameProprietaire() {
-        return usernameProprietaire;
-    }
-
-    public void setUsernameProprietaire(String usernameProprietaire) {
-        this.usernameProprietaire = usernameProprietaire;
-    }
-
-    public Utilisateur getDemandeur() {
-        return demandeur;
-    }
-
-    public void setDemandeur(Utilisateur demandeur) {
-        this.demandeur = demandeur;
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
     }
 
     public Topo getTopo() {

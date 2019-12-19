@@ -74,35 +74,18 @@ public class UtilisateurController {
         model.addAttribute("pagesTopo",pagesTopo);
         model.addAttribute("pageCouranteTopo",pageTopo);
         model.addAttribute("sizeTopo",sizeTopo);
-        boolean demandeResaBool=false;
-        model.addAttribute("demandeResaBool",demandeResaBool);
         boolean topoBool=true;
         model.addAttribute("topoBool",topoBool);
+        boolean demandeRecuesBool=false;
+        model.addAttribute("demandeRecueBool",demandeRecuesBool);
+        boolean demandeEmisesBool=false;
+        model.addAttribute("demandeEmisesBool",demandeEmisesBool);
+        boolean demandeAccepteesBool=false;
+        model.addAttribute("demandeAccepteesBool",demandeAccepteesBool);
         return "profile";
     }
 
 
-    @GetMapping(value = "/utilisateur/profil/reservations/emises" )
-    public String userProfileResaEmises (Model model,
-                               @RequestParam(name="pageReservation",defaultValue = "0") int pageReservation,
-                               @RequestParam(name = "sizeReservation",defaultValue = "2") int sizeReservation){
-
-        Utilisateur utilisateurConnecte=userConnected();
-        model.addAttribute("utilisateurConnecte",utilisateurConnecte);
-        Page<Reservation> pageReservations = iClimbMetier.listResaDemande(utilisateurConnecte.getUsername(),pageReservation,sizeReservation);
-        model.addAttribute("listResaEmise",pageReservations.getContent());
-        int[] pagesReservation=new int[pageReservations.getTotalPages()];
-        int paginationEnablerResa=pagesReservation.length;
-        model.addAttribute("paginationEnablerResa",paginationEnablerResa);
-        model.addAttribute("pagesReservation",pagesReservation);
-        model.addAttribute("pageCouranteReservation",pageReservation);
-        model.addAttribute("sizeReservation",sizeReservation);
-        boolean demandeResaBool=true;
-        boolean topoBool=false;
-        model.addAttribute("demandeResaBool",demandeResaBool);
-        model.addAttribute("topoBool",topoBool);
-        return "profile";
-    }
 
     @GetMapping(value = "/utilisateur/{idUser}/edit")
     public String editUser(Model model,

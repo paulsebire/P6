@@ -37,7 +37,7 @@
                         <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
                            th:if="${utilisateurConnecte.idUser}!=${topo.utilisateur.idUser}  and ${demandeEnCours}==true"
                            th:href="@{/utilisateur/profil/reservations/emises}">
-                            <i class="far fa-clock"></i> Demande<br/> en cours </a>
+                            <i class="far fa-clock"></i>Voir mes<br/> Demandes en cours </a>
                     </h3></div>
                     <div class="card-body text-center" >
                         <div>

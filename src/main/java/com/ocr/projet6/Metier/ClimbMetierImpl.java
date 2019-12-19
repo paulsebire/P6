@@ -5,11 +5,12 @@ import com.ocr.projet6.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 @Service
 public class ClimbMetierImpl implements IClimbMetier {
     @Autowired
@@ -76,12 +77,28 @@ public class ClimbMetierImpl implements IClimbMetier {
     }
     @Override
     public boolean demandeEnCours (String username, Long idTopo){
-            List<Reservation> lr= reservationRepository.demandeEnCours(username,idTopo,true);
+            List<Reservation> lr= reservationRepository.demandeEnCours(username,idTopo);
             if (lr.isEmpty()){
                 return false;
             }else {
                 return true;
             }
+    }
+
+    @Override
+    public Page<Reservation> demandeEnAttenteAcceptation (String usernameProprietaire, int page, int size){
+        Page <Reservation> pr= reservationRepository.demandeEnAttenteAcceptation(usernameProprietaire,PageRequest.of(page,size));
+        if (pr.isEmpty()){
+            return pr;
+        } else return reservationRepository.demandeEnAttenteAcceptation(usernameProprietaire,PageRequest.of(page,size));
+    }
+
+    @Override
+    public Page<Reservation> demandeAcceptees (String username, int page, int size){
+        Page <Reservation> pr= reservationRepository.demandeAcceptees(username,PageRequest.of(page,size));
+        if (pr.isEmpty()){
+            return pr;
+        } else return reservationRepository.demandeAcceptees(username,PageRequest.of(page,size));
     }
 
 }
