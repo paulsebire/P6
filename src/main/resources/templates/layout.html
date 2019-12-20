@@ -26,22 +26,22 @@
 </head>
 <body>
 <header>
-    <div class="navbar-inverse navbar navbar-default bg-dark fixed-top navbar-expand-sm" >
-        <div class="container-fluid">
-            <ul class="nav ml-1">
-                <li class="justify-content-center mr-1"><a class="btn btn-primary "  th:href="@{/site/search}" ><i class="fa fa-search"></i> Trouver<br/>un site</a></li>
-                <li class="justify-content-center mr-1"><a class=" btn btn-primary " th:href="@{/site/add}" sec:authorize="hasRole('ROLE_USER')" th:if="${#request.userPrincipal != null}"><i class="fa fa-plus"></i>  Ajouter<br/>nouveau site</a></li>
-                <li class="justify-content-center mr-1"><a class=" btn btn-primary " th:href="@{/topo/search}" sec:authorize="hasRole('ROLE_USER')" ><i class="fa fa-search"></i>  Trouver<br/>un Topo</a></li>
-                <li class="justify-content-center mr-1"><a class=" btn btn-primary " th:href="@{/utilisateur/profil/topos}" th:if="${#request.userPrincipal != null}" sec:authorize="hasRole('ROLE_USER')" ><i class="fa fa-user"></i><br/>Mon Profil</a></li>
+    <div class="navbar-inverse navbar navbar-default bg-dark navbar-expand-sm" >
+        <div class="container-fluid align-items-end ">
+            <ul class="nav ml-1 col-4 " th:align="align-self-bottom">
+                <li class="mr-1"  ><a class="btn btn-primary "  th:href="@{/site/search}" ><i class="fa fa-search"></i> Trouver<br/>un site</a></li>
+                <li class="mr-1"><a class=" btn btn-primary " th:href="@{/site/add}" sec:authorize="hasRole('ROLE_USER')" th:if="${#request.userPrincipal != null}"><i class="fa fa-plus"></i>  Ajouter<br/>nouveau site</a></li>
+                <li class="mr-1"><a class=" btn btn-primary " th:href="@{/topo/search}" sec:authorize="hasRole('ROLE_USER')" ><i class="fa fa-search"></i>  Trouver<br/>un Topo</a></li>
+                <li class="mr-1"><a class=" btn btn-primary " th:href="@{/utilisateur/profil/topos}" th:if="${#request.userPrincipal != null}" sec:authorize="hasRole('ROLE_USER')" ><i class="fa fa-user"></i><br/>Mon Profil</a></li>
                 <!--<div sec:authorize="hasRole('ROLE_ADMIN')" >
                 <li class="justify-content-center" ><a class="btn btn-primary" th:href="@{/administration}" ><i class="fa fa-users"></i><br/>Administration</a></li>
                 </div>-->
             </ul>
-            <a class="navbar-brand ml-auto mr-auto" th:align="center">
-                <img class="rounded mx-auto d-block"  height="60" alt="Les amis de l'escalade" src="/css/images/logo.jpg">
+            <a class="navbar-brand ml-auto mr-auto col-4" th:align="center">
+                <img class="rounded mx-auto d-block" alt="Les amis de l'escalade" src="/css/images/logo.jpg">
             </a>
-            <ul class="navbar-nav float-right">
-                <li class="justify-content-center" th:if="${#request.userPrincipal == null}"><a class="btn btn-primary" th:href="@{/utilisateur/login}" th:inline="text"><i class="fa fa-user-circle"></i><br/>Connexion </a></li>
+            <ul class=" nav col-4 offset justify-content-end">
+                <li  class="justify-content-center" th:if="${#request.userPrincipal == null}"><a class="btn btn-primary" th:href="@{/utilisateur/login}" th:inline="text"><i class="fa fa-user-circle"></i><br/>Connexion </a></li>
                 <li class="justify-content-center" th:if="${#request.userPrincipal != null}"><a class="btn btn-primary" th:href="@{/utilisateur/login?logout}" onclick="return confirm('Etes vous sûr de vouloir vous déconnecter')" th:inline="text"><i class="fa fa-user-circle"></i>  [[${#httpServletRequest.remoteUser}]]<br/>Déconnexion </a></li>
             </ul>
         </div>
