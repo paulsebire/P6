@@ -41,8 +41,8 @@
                 <img class="rounded mx-auto d-block" alt="Les amis de l'escalade" src="/css/images/logo.jpg">
             </a>
             <ul class=" nav col-4 offset justify-content-end">
-                <li  class="justify-content-center" th:if="${#request.userPrincipal == null}"><a class="btn btn-primary" th:href="@{/utilisateur/login}" th:inline="text"><i class="fa fa-user-circle"></i><br/>Connexion </a></li>
-                <li class="justify-content-center" th:if="${#request.userPrincipal != null}"><a class="btn btn-primary" th:href="@{/utilisateur/login?logout}" onclick="return confirm('Etes vous sûr de vouloir vous déconnecter')" th:inline="text"><i class="fa fa-user-circle"></i>  [[${#httpServletRequest.remoteUser}]]<br/>Déconnexion </a></li>
+                <li  class="justify-content-center" th:if="${#request.userPrincipal == null}"><a class="btn btn-primary" th:href="@{/login}" th:inline="text"><i class="fa fa-user-circle"></i><br/>Connexion </a></li>
+                <li class="justify-content-center" th:if="${#request.userPrincipal != null}"><a class="btn btn-primary" th:href="@{/logout}" onclick="return confirm('Etes vous sûr de vouloir vous déconnecter')" th:inline="text"><i class="fa fa-user-circle"></i>  [[${#httpServletRequest.remoteUser}]]<br/>Déconnexion </a></li>
             </ul>
         </div>
     </div>
