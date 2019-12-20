@@ -139,10 +139,14 @@ public class SiteController {
 
     @GetMapping(value = "/site/add")
     public String addSite(Model model){
-        Site site=new Site();
-        site.setOfficiel(false);
-        model.addAttribute("site",site);
-        return "addFormSite";
+        Utilisateur utilisateur=userConnected();
+        if (utilisateur.getRoles().toString().contains("USER")){
+            Site site=new Site();
+            site.setOfficiel(false);
+            model.addAttribute("site",site);
+            return "addFormSite";
+        }
+        return "403";
     }
 
     @PostMapping(value = "/site/save")
@@ -150,13 +154,15 @@ public class SiteController {
         if (bindingResult.hasErrors()){
             return "addFormSite";
         }
-
         Utilisateur utilisateur=userConnected();
+        if (utilisateur.getRoles().toString().contains("USER")){
         site.setUtilisateur(utilisateur);
         formatField(site);
         siteRepository.save(site);
         model.addAttribute("site",site);
         return "confirmationSite";
+        }
+        return "403";
     }
 
     @PostMapping(value = "/site/{idSite}/save")
@@ -166,22 +172,30 @@ public class SiteController {
         if (bindingResult.hasErrors()){
             return "editFormVoie";
         }
+        Utilisateur utilisateur=userConnected();
+        if (utilisateur.getRoles().toString().contains("USER") && utilisateur.getIdUser()==site.getUtilisateur().getIdUser()){
         site.setIdSite(idSite);
         model.addAttribute("site",site);
         siteRepository.save(site);
         return "confirmationSite";
+        }
+        return "403";
     }
 
     @GetMapping(value = "/site/{idSite}/edit/officiel")
     public String rendreOfficiel(@PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
         Site site=null;
-        if(s.isPresent()) {
-            site=s.get();
+        Utilisateur utilisateur=userConnected();
+        if (utilisateur.getRoles().toString().contains("ADMIN")){
+            if(s.isPresent()) {
+                site=s.get();
+                site.setOfficiel(!site.isOfficiel());
+                siteRepository.save(site);
+            }
+            return "redirect:/site/"+idSite+"/consult";
         }
-        site.setOfficiel(!site.isOfficiel());
-        siteRepository.save(site);
-        return "redirect:/site/"+idSite+"/consult";
+        return "403";
     }
 
 
@@ -189,12 +203,16 @@ public class SiteController {
     public String editSite(Model model,
                            @PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
-        Site sit=null;
-        if(s.isPresent()) {
-            sit=s.get();
-            model.addAttribute("site",sit);
+        Site site=null;
+        Utilisateur utilisateur=userConnected();
+        if (utilisateur.getRoles().toString().contains("USER") && utilisateur.getIdUser()==site.getUtilisateur().getIdUser()) {
+            if (s.isPresent()) {
+                site = s.get();
+                model.addAttribute("site", site);
+            }
+            return "editFormSite";
         }
-        return "editFormSite";
+        return "403";
     }
 
     public Utilisateur userConnected(){

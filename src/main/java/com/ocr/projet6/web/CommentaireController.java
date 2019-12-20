@@ -91,8 +91,7 @@ public class CommentaireController {
     public String saveEditedCommentaire(Model model, @Valid Commentaire commentaire,
                                         @PathVariable("idSite") Long idSite,
                                         @PathVariable("idCommentaire") Long idCommentaire,
-
-                                 BindingResult bindingResult){
+                                        BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return "editFormCommentaire";
         }
@@ -100,16 +99,20 @@ public class CommentaireController {
         Commentaire com=null;
         Optional<Site> s=siteRepository.findById(idSite);
         Site site=null;
+        Utilisateur utilisateur=userConnected();
         if(s.isPresent()&&c.isPresent()) {
             com=c.get();
             site=s.get();
-            com.setContenu(commentaire.getContenu());
-            commentaire.setSite(site);
-            System.out.println(com.getDate());
-            model.addAttribute("site",site);
-            model.addAttribute("commentaire",com);
-            commentaireRepository.save(com);
-            return "confirmationCommentaire";
+            if (utilisateur.getIdUser()==com.getSite().getUtilisateur().getIdUser()||utilisateur.getRoles().toString().contains("ADMIN")){
+                com.setContenu(commentaire.getContenu());
+                commentaire.setSite(site);
+                System.out.println(com.getDate());
+                model.addAttribute("site",site);
+                model.addAttribute("commentaire",com);
+                commentaireRepository.save(com);
+                return "confirmationCommentaire";
+            }
+            return "403";
         }
         return "redirect:/site/"+idSite+"/consult";
     }

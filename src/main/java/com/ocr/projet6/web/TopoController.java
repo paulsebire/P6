@@ -170,14 +170,19 @@ public class TopoController {
                             @RequestParam(name = "sizeSite",defaultValue = "2") int sizeSite){
         Optional<Topo> t=topoRepository.findById(id);
         Topo topo=null;
+        Utilisateur utilisateur=userConnected();
         if(t.isPresent()) {
             topo=t.get();
-            model.addAttribute("topo",topo);
+            if (utilisateur.getIdUser()==topo.getUtilisateur().getIdUser()){
+                model.addAttribute("topo",topo);
+                Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
+                model.addAttribute("listSite",pageSites.getContent());
+                System.out.println("topo.site.nameSite="+topo.getSite().getNameSite());
+                return "editFormTopo";
+            }
+            return "403";
         }
-        Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
-        model.addAttribute("listSite",pageSites.getContent());
-        System.out.println("topo.site.nameSite="+topo.getSite().getNameSite());
-        return "editFormTopo";
+        return "redirect:/topo/"+id+"/consult";
     }
 
     @PostMapping(value = "/topo/{id}/save")
@@ -190,18 +195,22 @@ public class TopoController {
         }
         Optional<Site> s=siteRepository.findById(idSite);
         Site site=null;
+        Utilisateur utilisateur=userConnected();
         if(s.isPresent()) {
             site=s.get();
+            if (utilisateur.getRoles().toString().contains("USER")){
+                topo.setSite(site);
+                topo.setUtilisateur(utilisateur);
+                model.addAttribute("site", site);
+                topo.setId(id);
+                topo.setDate(new Date());
+                model.addAttribute("topo",topo);
+                topoRepository.save(topo);
+                return "confirmationTopo";
+            }
+            return "403";
         }
-        topo.setSite(site);
-        Utilisateur utilisateur=userConnected();
-        topo.setUtilisateur(utilisateur);
-        model.addAttribute("site", site);
-        topo.setId(id);
-        topo.setDate(new Date());
-        model.addAttribute("topo",topo);
-        topoRepository.save(topo);
-        return "confirmationTopo";
+        return "editFormTopo";
     }
 
     @GetMapping(value = "/topo/{idTopo}/reservation")
@@ -210,19 +219,21 @@ public class TopoController {
         Topo topo=null;
         Utilisateur demandeur=userConnected();
         if (t.isPresent()){
-            topo=t.get();
-            System.out.println("propri ="+topo.getUtilisateur().getUsername());
-            Reservation reservation=new Reservation(false,true,demandeur,topo);
-            reservation.setDate(new Date());
-            reservationRepository.save(reservation);
-            model.addAttribute("topo", topo);
-            model.addAttribute("utilisateurConnecte",demandeur);
-            boolean demandeEnCours=iClimbMetier.demandeEnCours(demandeur.getUsername(),topo.getId());
-            System.out.println("demandeencours="+demandeEnCours);
-            model.addAttribute("demandeEnCours",demandeEnCours);
-            return "topoDisplay";
+            if (demandeur.getRoles().toString().contains("USER")){
+                topo=t.get();
+                System.out.println("propri ="+topo.getUtilisateur().getUsername());
+                Reservation reservation=new Reservation(false,true,demandeur,topo);
+                reservation.setDate(new Date());
+                reservationRepository.save(reservation);
+                model.addAttribute("topo", topo);
+                model.addAttribute("utilisateurConnecte",demandeur);
+                boolean demandeEnCours=iClimbMetier.demandeEnCours(demandeur.getUsername(),topo.getId());
+                System.out.println("demandeencours="+demandeEnCours);
+                model.addAttribute("demandeEnCours",demandeEnCours);
+                return "redirect:/topo/"+idTopo+"/consult";
+            }
+            return "403";
         }
-
         return "redirect:/topo/"+idTopo+"/consult";
     }
 

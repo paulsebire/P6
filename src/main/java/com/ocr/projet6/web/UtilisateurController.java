@@ -52,9 +52,7 @@ public class UtilisateurController {
                 return "inscription"+"&error="+bindingResult.getGlobalError();
         }
         utilisateur.setRoles(userRole);
-        System.out.println("usernameController= "+utilisateur.getUsername());
         utilisateurRepository.save(utilisateur);
-
         model.addAttribute("utilisateur",utilisateur);
         return "confirmationUtilisateur";
     }

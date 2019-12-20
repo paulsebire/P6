@@ -35,17 +35,20 @@ public class LongueurController {
     public String addLongueur(Model model,@PathVariable("idSite") Long idSite,
                               @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                               @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie){
-
-        Optional<Site> s=siteRepository.findById(idSite);
-        Site sit=s.get();
-        model.addAttribute("site",sit);
-        Page<Voie> pageVoies= iClimbMetier.listVoie(idSite,pageVoie,sizeVoie);
-        model.addAttribute("listVoie",pageVoies.getContent());
-        Longueur longueur=new Longueur();
-        model.addAttribute("longueur",longueur);
-        Long idVoieNew=null;
-        model.addAttribute("idVoieNew",idVoieNew);
-        return "addFormLongueur";
+        Utilisateur utilisateur=userConnected();
+        if (utilisateur.getRoles().toString().contains("USER")) {
+            Optional<Site> s = siteRepository.findById(idSite);
+            Site sit = s.get();
+            model.addAttribute("site", sit);
+            Page<Voie> pageVoies = iClimbMetier.listVoie(idSite, pageVoie, sizeVoie);
+            model.addAttribute("listVoie", pageVoies.getContent());
+            Longueur longueur = new Longueur();
+            model.addAttribute("longueur", longueur);
+            Long idVoieNew = null;
+            model.addAttribute("idVoieNew", idVoieNew);
+            return "addFormLongueur";
+        }
+        return "403";
     }
 
     @GetMapping(value = "/site/{idSite}/longueur/{idLongueur}/delete")
@@ -58,7 +61,7 @@ public class LongueurController {
         Longueur longueur=null;
         if (l.isPresent()){
             longueur=l.get();
-            if (utilisateurConnecte.getIdUser()==longueur.getVoie().getSite().getUtilisateur().getIdUser()){
+            if (utilisateurConnecte.getIdUser()==longueur.getVoie().getSite().getUtilisateur().getIdUser()&&utilisateurConnecte.getRoles().toString().contains("USER")){
                 longueurRepository.deleteById(idLongueur);
             } else return "403";
         }
@@ -72,20 +75,26 @@ public class LongueurController {
                                  @PathVariable("idLongueur") Long idLongueur ,
                                  @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                                  @RequestParam(name = "sizevoie",defaultValue = "2") int sizeVoie){
+        Utilisateur utilisateur=userConnected();
         Optional<Site> s=siteRepository.findById(idSite);
-        Site sit=s.get();
-        model.addAttribute("site",sit);
-        Page<Voie> pageVoies= iClimbMetier.listVoie(idSite,pageVoie,sizeVoie);
-        model.addAttribute("listVoie",pageVoies.getContent());
-        Long idVoieNew=null;
-        model.addAttribute("idVoieNew",idVoieNew);
-        Optional<Longueur> l=longueurRepository.findById(idLongueur);
-        Longueur lg=null;
-        if(l.isPresent()) {
-            lg=l.get();
-            model.addAttribute("longueur",lg);
-        }
-        return "editFormLongueur";
+        if (s.isPresent()) {
+            Site sit = s.get();
+            if (utilisateur.getRoles().toString().contains("USER") && utilisateur.getIdUser() == sit.getUtilisateur().getIdUser()) {
+                model.addAttribute("site", sit);
+                Page<Voie> pageVoies = iClimbMetier.listVoie(idSite, pageVoie, sizeVoie);
+                model.addAttribute("listVoie", pageVoies.getContent());
+                Long idVoieNew = null;
+                model.addAttribute("idVoieNew", idVoieNew);
+                Optional<Longueur> l = longueurRepository.findById(idLongueur);
+                Longueur lg = null;
+                if (l.isPresent()) {
+                    lg = l.get();
+                    model.addAttribute("longueur", lg);
+                }
+                return "editFormLongueur";
+            }
+            return "403";
+        }return "redirect:/site/"+idSite+"/consult";
     }
 
     @PostMapping(value = "/longueur/{idLongueur}/save")
@@ -97,14 +106,21 @@ public class LongueurController {
         if (bindingResult.hasErrors()){
             return "editFormLongueur";
         }
+        Utilisateur utilisateur=userConnected();
         Optional<Voie> v=voieRepository.findById(idVoieNew);
-        Voie voi=v.get();
-        longueur.setVoie(voi);
-        longueur.setIdLongueur(idLongueur);
-        formatField(longueur);
-        longueurRepository.save(longueur);
-        model.addAttribute("longueur",longueur);
-        return "confirmationLongueur";
+        if (v.isPresent()){
+            Voie voi=v.get();
+            if (utilisateur.getIdUser()==voi.getSite().getUtilisateur().getIdUser()){
+                longueur.setVoie(voi);
+                longueur.setIdLongueur(idLongueur);
+                formatField(longueur);
+                longueurRepository.save(longueur);
+                model.addAttribute("longueur",longueur);
+                return "confirmationLongueur";
+            }
+            return "403";
+        }
+        return "editFormLongueur";
     }
 
     @PostMapping(value = "/site/{idSite}/voie/longueur/save")
@@ -117,15 +133,22 @@ public class LongueurController {
             return "editFormLongueur";
         }
         Optional<Site> s=siteRepository.findById(idSite);
-        Site sit=s.get();
         Optional<Voie> v=voieRepository.findById(idVoieNew);
-        Voie voi=v.get();
-        voi.setSite(sit);
-        longueur.setVoie(voi);
-        formatField(longueur);
-        longueurRepository.save(longueur);
-        model.addAttribute("longueur",longueur);
-        return "confirmationLongueur";
+        Utilisateur utilisateur=userConnected();
+        if (s.isPresent()&&v.isPresent()){
+            Site sit=s.get();
+            Voie voi=v.get();
+            if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
+                voi.setSite(sit);
+                longueur.setVoie(voi);
+                formatField(longueur);
+                longueurRepository.save(longueur);
+                model.addAttribute("longueur",longueur);
+                return "confirmationLongueur";
+            }
+             return "403";
+        }
+        return "redirect:/site/"+idSite+"/consult";
     }
 
 

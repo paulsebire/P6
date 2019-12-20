@@ -31,11 +31,17 @@ public class VoieController {
     @GetMapping(value = "/site/{idSite}/voie/add")
     public String addVoie(Model model,@PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
-        Site sit=s.get();
+        Utilisateur utilisateur=userConnected();
         Voie voie=new Voie();
-        voie.setSite(sit);
-        model.addAttribute("voie",voie);
-        return "addFormVoie";
+        if (s.isPresent()){
+            Site sit=s.get();
+            if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
+                voie.setSite(sit);
+                model.addAttribute("voie",voie);
+                return "addFormVoie";
+            } return "403";
+        }
+        return "redirect:/site/"+idSite+"/consult";
     }
 
     @GetMapping(value = "/site/{idSite}/voie/{idVoie}/delete")
@@ -62,15 +68,19 @@ public class VoieController {
                            @PathVariable("idVoie") Long idVoie) {
         Optional<Voie> v=voieRepository.findById(idVoie);
         Optional<Site> s=siteRepository.findById(idSite);
+        Utilisateur utilisateur=userConnected();
         Site sit=null;
         Voie voi = null;
         if(v.isPresent()&&s.isPresent()) {
             voi = v.get();
             sit=s.get();
             voi.setSite(sit);
-            model.addAttribute("voie", voi);
+            if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
+                model.addAttribute("voie", voi);
+                return "editFormVoie";
+            }return "403";
         }
-        return "editFormVoie";
+        return "redirect:/site/"+idSite+"/consult";
     }
 
     @PostMapping(value = "/site/{idSite}/voie/{idVoie}/save")
@@ -82,15 +92,20 @@ public class VoieController {
             return "editFormVoie";
         }
         Optional<Site> s=siteRepository.findById(idSite);
-        Site sit=s.get();
-        voie.setSite(sit);
-        if (idVoie!=null) voie.setIdVoie(idVoie);
+        Utilisateur utilisateur= userConnected();
+        if (s.isPresent()){
+            Site sit=s.get();
+            voie.setSite(sit);
+            if (idVoie!=null) voie.setIdVoie(idVoie);
+            formatField(voie);
+            if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
+                voieRepository.save(voie);
+                model.addAttribute("voie",voie);
+                return "confirmationVoie";
+            }return "403";
 
-        formatField(voie);
-
-        voieRepository.save(voie);
-        model.addAttribute("voie",voie);
-        return "confirmationVoie";
+        }
+        return "redirect:/site/"+idSite+"/consult";
     }
     @PostMapping(value = "/site/{idSite}/voie/save")
     public String saveNewVoie(Model model, @Valid Voie voie,
@@ -100,13 +115,18 @@ public class VoieController {
             return "editFormVoie";
         }
         Optional<Site> s=siteRepository.findById(idSite);
-        Site sit=s.get();
-        voie.setSite(sit);
-
-
-        voieRepository.save(voie);
-        model.addAttribute("voie",voie);
-        return "confirmationVoie";
+        Utilisateur utilisateur=userConnected();
+        if (s.isPresent()){
+            Site sit=s.get();
+            if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
+                voie.setSite(sit);
+                voieRepository.save(voie);
+                model.addAttribute("voie",voie);
+                return "confirmationVoie";
+            }
+            return "403";
+        }
+        return "redirect:/site/"+idSite+"/consult";
     }
 
     public void formatField(Voie voie){

@@ -24,7 +24,7 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
             countQuery = "select count (r) from Reservation r inner join r.topo t inner join t.utilisateur proprio where proprio.username=:username and r.demandeEnCours=true and r.acceptation=false ")
     public Page<Reservation> demandeEnAttenteAcceptation (@Param("username")String username, Pageable pageable);
 
-    @Query(value = "select r from Reservation r inner join fetch r.topo t inner join fetch t.utilisateur propio inner join fetch r.utilisateur d where (propio.username=:username or d.username=:username ) and r.demandeEnCours=false and r.acceptation=true ",
-            countQuery = "select count (r) from Reservation r inner join  r.topo t inner join  t.utilisateur propio inner join r.utilisateur d where (propio.username=:username or d.username=:username ) and r.demandeEnCours=false and r.acceptation=true ")
+    @Query(value = "select r from Reservation r inner join fetch r.topo t inner join fetch t.utilisateur propio  where propio.username=:username  and r.demandeEnCours=false and r.acceptation=true ",
+            countQuery = "select count (r) from Reservation r inner join  r.topo t inner join  t.utilisateur propio where propio.username=:username  and r.demandeEnCours=false and r.acceptation=true ")
     public Page<Reservation> demandeAcceptees (@Param("username")String username, Pageable pageable);
 }

@@ -26,7 +26,7 @@
 </head>
 <body>
 <header>
-    <div class="navbar-inverse navbar navbar-default bg-dark fixed-top" >
+    <div class="navbar-inverse navbar navbar-default bg-dark fixed-top navbar-expand-sm" >
         <div class="container-fluid">
             <ul class="nav ml-1">
                 <li class="justify-content-center mr-1"><a class="btn btn-primary "  th:href="@{/site/search}" ><i class="fa fa-search"></i> Trouver<br/>un site</a></li>
@@ -37,14 +37,17 @@
                 <li class="justify-content-center" ><a class="btn btn-primary" th:href="@{/administration}" ><i class="fa fa-users"></i><br/>Administration</a></li>
                 </div>-->
             </ul>
-            <ul class="navbar-nav ml-auto">
+            <a class="navbar-brand ml-auto mr-auto" th:align="center">
+                <img class="rounded mx-auto d-block"  height="60" alt="Les amis de l'escalade" src="/css/images/logo.jpg">
+            </a>
+            <ul class="navbar-nav float-right">
                 <li class="justify-content-center" th:if="${#request.userPrincipal == null}"><a class="btn btn-primary" th:href="@{/utilisateur/login}" th:inline="text"><i class="fa fa-user-circle"></i><br/>Connexion </a></li>
                 <li class="justify-content-center" th:if="${#request.userPrincipal != null}"><a class="btn btn-primary" th:href="@{/utilisateur/login?logout}" onclick="return confirm('Etes vous sûr de vouloir vous déconnecter')" th:inline="text"><i class="fa fa-user-circle"></i>  [[${#httpServletRequest.remoteUser}]]<br/>Déconnexion </a></li>
             </ul>
         </div>
     </div>
 </header>
-<section layout:fragment="content" class="spacer botspacer"></section>
+<section layout:fragment="content" class="spacer"></section>
 <aside layout:fragment="aside" class="spacer float-left" ></aside>
 <footer class="container-fluid bg-dark text-light fixed-bottom" >
     <div class="container justify-content-top">

@@ -32,3 +32,6 @@ body{
 .fixed-top-3 {
     margin-top: 130px;
 }
+image{
+    margin-block: auto;
+}
