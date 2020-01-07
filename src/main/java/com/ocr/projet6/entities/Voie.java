@@ -2,6 +2,7 @@ package com.ocr.projet6.entities;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -12,13 +13,17 @@ public class Voie implements Serializable {
 
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idVoie;
-
+    @NotNull
+    @Column(name = "nomVoie", nullable = false)
     private String nomVoie;
-
+    @NotNull
+    @Column(name = "secteur", nullable = false)
     private String secteur;
-
+    @NotNull
+    @Column(name = "difficulte", nullable = false)
     private  String difficulte;
-
+    @NotNull
+    @Column(name = "hauteurVoie", nullable = false)
     private double hauteurVoie;
 
     @ManyToOne

@@ -4,6 +4,7 @@ import net.bytebuddy.implementation.bind.annotation.Default;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -13,8 +14,14 @@ public class Topo implements Serializable {
     @Id @GeneratedValue
     @Column(name = "id_topo")
     private Long id;
+    @NotNull
+    @Column(name = "nom", nullable = false)
     private String nom;
+    @NotNull
+    @Column(name = "description", nullable = false)
     private String description;
+    @NotNull
+    @Column(name = "disponibilite", nullable = false)
     private boolean disponibilite = true;
     private Date date;
     @ManyToOne

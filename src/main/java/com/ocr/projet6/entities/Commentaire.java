@@ -1,6 +1,7 @@
 package com.ocr.projet6.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,7 +9,11 @@ import java.util.Date;
 public class Commentaire implements Serializable {
     @Id @GeneratedValue
     private Long id;
+    @NotNull
+    @Column(name = "contenu", nullable = false)
     private String contenu;
+    @NotNull
+    @Column(name = "date", nullable = false)
     private Date date;
     @ManyToOne
     @JoinColumn(name ="id_user" )

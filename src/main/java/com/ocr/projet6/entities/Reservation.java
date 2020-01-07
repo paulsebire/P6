@@ -3,6 +3,7 @@ package com.ocr.projet6.entities;
 import com.sun.xml.bind.v2.TODO;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -12,11 +13,14 @@ public class Reservation implements Serializable {
 
     @Id @GeneratedValue
     private Long id;
-
+    @NotNull
+    @Column(name = "acceptation", nullable = false)
     private boolean acceptation;
-
+    @NotNull
+    @Column(name = "demandeEnCours", nullable = false)
     private boolean demandeEnCours;
-
+    @NotNull
+    @Column(name = "date", nullable = false)
     private Date date;
 
     @OneToOne

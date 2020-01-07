@@ -2,15 +2,18 @@ package com.ocr.projet6.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 @Entity
 public class Longueur implements Serializable {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idLongueur;
-
+    @NotNull
+    @Column(name = "nomLongueur", nullable = false)
     private String nomLongueur;
-
+    @NotNull
+    @Column(name = "hauteurLongueur", nullable = false)
     private double hauteurLongueur;
     @ManyToOne
     @JoinColumn(name = "ID_VOIE")

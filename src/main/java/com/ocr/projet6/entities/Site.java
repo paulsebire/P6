@@ -1,6 +1,7 @@
 package com.ocr.projet6.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -9,13 +10,17 @@ import java.util.Collection;
 public class Site implements Serializable {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idSite;
-
+    @NotNull
+    @Column(name = "nameSite", nullable = false)
     private String nameSite;
-
+    @NotNull
+    @Column(name = "localisation", nullable = false)
     private String localisation;
-
+    @NotNull
+    @Column(name = "officiel", nullable = false)
     private boolean officiel;
-
+    @NotNull
+    @Column(name = "urlImg", nullable = false)
     private String urlImg;
 
     @OneToMany (mappedBy = "site",fetch = FetchType.LAZY, cascade = CascadeType.ALL )
