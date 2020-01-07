@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Les amis de l'escalade</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous" />
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+            crossorigin="anonymous"></script>
+</head>
+<body  layout:fragment="content">
+<aside>
+    <div class="justify-content-center spacer">
+        <div class=" card">
+            <div class="card-header ">
+                <h3 class="card-title">Pourquoi s'inscrire:</h3>
+            </div>
+            <div class="card-body">
+                <div>
+                    <p>
+                        Une fois inscrit vous pourrez:
+                        <ul>
+                            <li> proposer de nouveaux spots aux autres membres</li>
+                            <li> commenter les différents spots</li>
+                            <li> proposer vos topos</li>
+                            <li> réserver les topos d'autres membres</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+    <div>
+        <div class=" container h-100 spacer">
+            <div class="card-deck">
+                <div class="card" th:each="ls:${listSite}">
+                    <img class="card-img-top" th:src="${ls.urlImg}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${ls.nameSite}"></h5>
+                        <p class="card-text" th:text="${ls.localisation}"></p>
+                        <p  th:if="${ls.isOfficiel()}==true" > Site officiel: <i class="fa fa-check-circle" style="color: green"></i></p>
+                        <p  th:if="${ls.isOfficiel()}==false"> Site officiel: <i class="fa fa-times-circle" style="color: grey"></i></p>
+                        <p class="card-text"><small class="text-muted" >posté par:  [[${ls.utilisateur.username}]] </small></p>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+</div>
+</body>
+</html>

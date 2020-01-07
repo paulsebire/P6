@@ -41,11 +41,13 @@ public class Projet6Application implements CommandLineRunner {
         Site site1 = new Site("site1","nord");
         site1.setUtilisateur(admin);
         site1.setOfficiel(true);
+        site1.setUrlImg("http://culles.les.roches.free.fr/Photos/Accro/Site-escalade.jpg");
         siteRepository.save(site1);
 
         Site site2 = new Site("site2","sud");
         site2.setUtilisateur(user);
         site2.setOfficiel(false);
+        site2.setUrlImg("http://culles.les.roches.free.fr/Photos/Accro/Site-escalade-enfants.jpg");
         siteRepository.save(site2);
 
 

@@ -214,6 +214,20 @@ public class SiteController {
         }
         return "403";
     }
+    @RequestMapping(value = "/home")
+    public String home(Model model,
+                        @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
+                        @RequestParam(name = "sizeSite",defaultValue = "4") int sizeSite){
+        Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
+        model.addAttribute("listSite",pageSites.getContent());
+        int[] pagesSite=new int[pageSites.getTotalPages()];
+        int paginationEnablerSite=pagesSite.length;
+        model.addAttribute("paginationEnablerSite",paginationEnablerSite);
+        model.addAttribute("pagesSite",pagesSite);
+        model.addAttribute("pageCouranteSite",pageSite);
+        model.addAttribute("sizeSite",sizeSite);
+        return "home";
+    }
 
     public Utilisateur userConnected(){
         Utilisateur utilisateurConnecte= (Utilisateur)SecurityContextHolder.getContext().getAuthentication().getPrincipal();

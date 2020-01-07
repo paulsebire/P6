@@ -16,6 +16,8 @@ public class Site implements Serializable {
 
     private boolean officiel;
 
+    private String urlImg;
+
     @OneToMany (mappedBy = "site",fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Collection<Voie> voies;
 
@@ -78,4 +80,11 @@ public class Site implements Serializable {
         this.voies = voies;
     }
 
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
 }
