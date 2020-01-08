@@ -8,7 +8,6 @@ import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.entities.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +27,7 @@ private IClimbMetier iClimbMetier;
 
     @GetMapping(value = "/topo/{id}/reservation/accepter")
     public String accepterReservation(Model model, @PathVariable(value = "id")Long idReservation){
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         Optional<Reservation> r=reservationRepository.findById(idReservation) ;
         Topo topo=null;
         Reservation reservation=null;
@@ -50,7 +49,7 @@ private IClimbMetier iClimbMetier;
     }
     @GetMapping(value = "/topo/{id}/reservation/refuser")
     public String refuserReservation(Model model, @PathVariable(value = "id")Long idReservation){
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         Optional<Reservation> r=reservationRepository.findById(idReservation) ;
         Topo topo=null;
         Reservation reservation=null;
@@ -75,7 +74,7 @@ private IClimbMetier iClimbMetier;
                                          @RequestParam(name="pageReservation",defaultValue = "0") int pageReservation,
                                          @RequestParam(name = "sizeReservation",defaultValue = "2") int sizeReservation){
 
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         model.addAttribute("utilisateurConnecte",utilisateurConnecte);
         Page<Reservation> pageReservations = iClimbMetier.listResaDemande(utilisateurConnecte.getUsername(),pageReservation,sizeReservation);
         model.addAttribute("listResaEmise",pageReservations.getContent());
@@ -103,7 +102,7 @@ private IClimbMetier iClimbMetier;
                                          @RequestParam(name="pageReservation",defaultValue = "0") int pageReservation,
                                          @RequestParam(name = "sizeReservation",defaultValue = "2") int sizeReservation){
 
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         model.addAttribute("utilisateurConnecte",utilisateurConnecte);
         Page<Reservation> pageReservations = iClimbMetier.demandeEnAttenteAcceptation(utilisateurConnecte.getUsername(),pageReservation,sizeReservation);
         model.addAttribute("listResaRecue",pageReservations.getContent());
@@ -128,7 +127,7 @@ private IClimbMetier iClimbMetier;
                                          @RequestParam(name="pageReservation",defaultValue = "0") int pageReservation,
                                          @RequestParam(name = "sizeReservation",defaultValue = "2") int sizeReservation){
 
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         model.addAttribute("utilisateurConnecte",utilisateurConnecte);
         Page<Reservation> pageReservations = iClimbMetier.demandeAcceptees(utilisateurConnecte.getUsername(),pageReservation,sizeReservation);
         model.addAttribute("listResaRecue",pageReservations.getContent());
@@ -151,9 +150,5 @@ private IClimbMetier iClimbMetier;
 
         return "profile";
     }
-    //
-    public Utilisateur userConnected(){
-        Utilisateur utilisateurConnecte= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return utilisateurConnecte;
-    }
+
 }

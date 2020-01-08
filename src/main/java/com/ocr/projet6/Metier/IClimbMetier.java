@@ -20,5 +20,5 @@ public interface IClimbMetier {
     public Page<Reservation> demandeEnAttenteAcceptation (String usernameProprietaire, int page, int size);
     public Page<Reservation> demandeAcceptees (String username,int page, int size);
     public Page<Utilisateur> listUtilisateur(int page, int size);
-    public void insertADMIN(Long id);
+    public  Utilisateur userConnected();
 }

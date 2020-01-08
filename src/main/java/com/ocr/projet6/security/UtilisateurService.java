@@ -4,7 +4,6 @@ import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.dao.UtilisateurRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

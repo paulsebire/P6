@@ -1,14 +1,17 @@
 package com.ocr.projet6.web;
 
 
+import com.ocr.projet6.Metier.ClimbMetierImpl;
 import com.ocr.projet6.Metier.IClimbMetier;
 import com.ocr.projet6.entities.Reservation;
+import com.ocr.projet6.entities.Site;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.dao.UtilisateurRepository;
 import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.security.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,7 +65,7 @@ public class UtilisateurController {
                                @RequestParam(name="pageTopo",defaultValue = "0") int pageTopo,
                                @RequestParam(name = "sizeTopo",defaultValue = "2") int sizeTopo){
 
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         model.addAttribute("utilisateurConnecte",utilisateurConnecte);
         Page<Topo> pageTopos = iClimbMetier.listTopoByUtilisateur(utilisateurConnecte.getIdUser(),pageTopo,sizeTopo);
         model.addAttribute("listTopo",pageTopos.getContent());
@@ -92,7 +95,7 @@ public class UtilisateurController {
                            @PathVariable(value = "idUser")Long idUser){
         Optional<Utilisateur> u=utilisateurRepository.findById(idUser);
         Utilisateur utilisateur=null;
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         model.addAttribute("utilisateurConnecte",utilisateurConnecte);
         if(u.isPresent()) {
             utilisateur=u.get();
@@ -141,7 +144,7 @@ public class UtilisateurController {
                                 @RequestParam(name = "sizeUtilisateur",defaultValue = "4") int sizeUtilisateur){
         Optional<Utilisateur> u=utilisateurRepository.findById(idUser);
         Utilisateur utilisateur=null;
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         if (utilisateurConnecte.getRoles().toString().contains("ADMIN")==true){
             if (u.isPresent()){
                 utilisateur=u.get();
@@ -158,7 +161,7 @@ public class UtilisateurController {
                                 @RequestParam(name = "sizeUtilisateur",defaultValue = "4") int sizeUtilisateur){
         Optional<Utilisateur> u=utilisateurRepository.findById(idUser);
         Utilisateur utilisateur=null;
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         if (utilisateurConnecte.getRoles().toString().contains("ADMIN")==true){
             if (u.isPresent()){
                 utilisateur=u.get();
@@ -170,8 +173,29 @@ public class UtilisateurController {
         }else return "403";
     }
 
-    public static Utilisateur userConnected(){
-        Utilisateur utilisateurConnecte= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return utilisateurConnecte;
+    @GetMapping(value = "/utilisateur/find")
+    public String findUser(Model model,
+                           @RequestParam(value = "motCle", defaultValue = "")String mc,
+                           @RequestParam(name="pageUtilisateur",defaultValue = "0") int pageUtilisateur,
+                           @RequestParam(name = "sizeUtilisateur",defaultValue = "4") int sizeUtilisateur){
+        try {
+            String formatedMc = ClimbMetierImpl.formatString(mc);
+            Page<Utilisateur> pageUtilisateurs = utilisateurRepository.chercherUtilisateur("%" + formatedMc + "%", PageRequest.of(pageUtilisateur, sizeUtilisateur));
+            model.addAttribute("listUtilisateur", pageUtilisateurs.getContent());
+
+            int[] pagesUtilisateurs = new int[pageUtilisateurs.getTotalPages()];
+            model.addAttribute("pagesUtilisateur", pagesUtilisateurs);
+            int paginationEnablerUtilisateur = pagesUtilisateurs.length;
+            model.addAttribute("paginationEnablerUtilisateur", paginationEnablerUtilisateur);
+            model.addAttribute("pagesUtilisateur", pagesUtilisateurs);
+            model.addAttribute("pageCouranteUtilisateur", pageUtilisateurs);
+            model.addAttribute("sizeUtilisateur", sizeUtilisateur);
+            model.addAttribute("motCle", mc);
+        }catch (Exception e){
+            model.addAttribute("exception",e);
+            throw new RuntimeException("Utilisateur Introuvable");
+        }
+        return "administration";
     }
+
 }

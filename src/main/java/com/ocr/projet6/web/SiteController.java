@@ -112,7 +112,7 @@ public class SiteController {
             model.addAttribute("pageCouranteLongueur",pageLongueur);
             model.addAttribute("sizeLongueur",sizeLongueur);
 
-            Utilisateur utilisateur=userConnected();
+            Utilisateur utilisateur=iClimbMetier.userConnected();
             model.addAttribute("utilisateurConnecte",utilisateur);
 
             Page<Commentaire> pageCommentaires= iClimbMetier.listCommentaireBySite(site.getIdSite(),pageCommentaire,sizeCommentaire);
@@ -139,7 +139,7 @@ public class SiteController {
 
     @GetMapping(value = "/site/add")
     public String addSite(Model model){
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         if (utilisateur.getRoles().toString().contains("USER")){
             Site site=new Site();
             site.setOfficiel(false);
@@ -154,7 +154,7 @@ public class SiteController {
         if (bindingResult.hasErrors()){
             return "addFormSite";
         }
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         if (utilisateur.getRoles().toString().contains("USER")){
         site.setUtilisateur(utilisateur);
         formatField(site);
@@ -172,7 +172,7 @@ public class SiteController {
         if (bindingResult.hasErrors()){
             return "editFormVoie";
         }
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         if (utilisateur.getRoles().toString().contains("USER") && utilisateur.getIdUser()==site.getUtilisateur().getIdUser()){
         site.setIdSite(idSite);
         model.addAttribute("site",site);
@@ -186,7 +186,7 @@ public class SiteController {
     public String rendreOfficiel(@PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
         Site site=null;
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         if (utilisateur.getRoles().toString().contains("ADMIN")){
             if(s.isPresent()) {
                 site=s.get();
@@ -204,7 +204,7 @@ public class SiteController {
                            @PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
         Site site=null;
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         if (utilisateur.getRoles().toString().contains("USER") && utilisateur.getIdUser()==site.getUtilisateur().getIdUser()) {
             if (s.isPresent()) {
                 site = s.get();
@@ -229,10 +229,6 @@ public class SiteController {
         return "home";
     }
 
-    public Utilisateur userConnected(){
-        Utilisateur utilisateurConnecte= (Utilisateur)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return utilisateurConnecte;
-    }
 
     public  void formatField(Site site){
         String formatedLocalisation= ClimbMetierImpl.formatString(site.getLocalisation());

@@ -31,7 +31,7 @@ public class VoieController {
     @GetMapping(value = "/site/{idSite}/voie/add")
     public String addVoie(Model model,@PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         Voie voie=new Voie();
         if (s.isPresent()){
             Site sit=s.get();
@@ -50,7 +50,7 @@ public class VoieController {
                              @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                              @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie){
         Optional<Voie> v=voieRepository.findById(idVoie);
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         Voie voie=null;
         if (v.isPresent()){
             voie=v.get();
@@ -68,7 +68,7 @@ public class VoieController {
                            @PathVariable("idVoie") Long idVoie) {
         Optional<Voie> v=voieRepository.findById(idVoie);
         Optional<Site> s=siteRepository.findById(idSite);
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         Site sit=null;
         Voie voi = null;
         if(v.isPresent()&&s.isPresent()) {
@@ -92,7 +92,7 @@ public class VoieController {
             return "editFormVoie";
         }
         Optional<Site> s=siteRepository.findById(idSite);
-        Utilisateur utilisateur= userConnected();
+        Utilisateur utilisateur= iClimbMetier.userConnected();
         if (s.isPresent()){
             Site sit=s.get();
             voie.setSite(sit);
@@ -115,7 +115,7 @@ public class VoieController {
             return "editFormVoie";
         }
         Optional<Site> s=siteRepository.findById(idSite);
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         if (s.isPresent()){
             Site sit=s.get();
             if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
@@ -137,10 +137,7 @@ public class VoieController {
         voie.setSecteur(formatedSecteur);
         return;
     }
-    public static Utilisateur userConnected(){
-        Utilisateur utilisateurConnecte= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return utilisateurConnecte;
-    }
+
 
 
 

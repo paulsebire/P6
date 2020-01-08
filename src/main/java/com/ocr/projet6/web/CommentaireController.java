@@ -29,7 +29,7 @@ public class CommentaireController {
     @Autowired
     private CommentaireRepository commentaireRepository;
     @Autowired
-    private UtilisateurRepository utilisateurRepository;
+    private IClimbMetier iClimbMetier;
 
     @PostMapping(value = "/site/{idSite}/commentaire/save")
     public String addCommentaire (Model model, @PathVariable(value = "idSite")Long idSite, @Valid Commentaire commentaire,
@@ -42,7 +42,7 @@ public class CommentaireController {
             model.addAttribute("site",sit);
             commentaire.setDate(new Date());
             commentaire.setSite(sit);
-            Utilisateur utilisateur=userConnected();
+            Utilisateur utilisateur=iClimbMetier.userConnected();
             commentaire.setUtilisateur(utilisateur);
             model.addAttribute("utilisateurConnecte",utilisateur);
             commentaireRepository.save(commentaire);
@@ -56,7 +56,7 @@ public class CommentaireController {
                              Principal principal,
                              @PathVariable("idSite")Long idSite){
         Optional<Commentaire> c=commentaireRepository.findById(idCommentaire);
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         boolean admin =SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().contains("ADMIN");
         Commentaire commentaire=null;
         if (c.isPresent()){
@@ -99,7 +99,7 @@ public class CommentaireController {
         Commentaire com=null;
         Optional<Site> s=siteRepository.findById(idSite);
         Site site=null;
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         if(s.isPresent()&&c.isPresent()) {
             com=c.get();
             site=s.get();
@@ -117,9 +117,5 @@ public class CommentaireController {
         return "redirect:/site/"+idSite+"/consult";
     }
 
-    public Utilisateur userConnected(){
-        Utilisateur utilisateurConnecte= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return utilisateurConnecte;
-    }
 
 }

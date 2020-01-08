@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -114,12 +115,9 @@ public class ClimbMetierImpl implements IClimbMetier {
     }
 
     @Override
-    public void insertADMIN(Long id){
-        entityManager.createNativeQuery("INSERT INTO roles(id_user, role) VALUES (?, ?)")
-                .setParameter(1, id)
-                .setParameter(2, "ROLE_ADMIN")
-                .executeUpdate();
-        return;
+    public Utilisateur userConnected(){
+        Utilisateur utilisateur= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return utilisateur;
     }
 
 }

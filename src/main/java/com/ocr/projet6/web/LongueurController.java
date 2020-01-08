@@ -35,7 +35,7 @@ public class LongueurController {
     public String addLongueur(Model model,@PathVariable("idSite") Long idSite,
                               @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                               @RequestParam(name = "sizeVoie",defaultValue = "2") int sizeVoie){
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         if (utilisateur.getRoles().toString().contains("USER")) {
             Optional<Site> s = siteRepository.findById(idSite);
             Site sit = s.get();
@@ -57,7 +57,7 @@ public class LongueurController {
                                  @RequestParam(name = "sizeLongueur",defaultValue = "2") int sizeLongueur,
                                  @PathVariable("idSite") Long idSite){
         Optional<Longueur> l=longueurRepository.findById(idLongueur);
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         Longueur longueur=null;
         if (l.isPresent()){
             longueur=l.get();
@@ -75,7 +75,7 @@ public class LongueurController {
                                  @PathVariable("idLongueur") Long idLongueur ,
                                  @RequestParam(name="pageVoie",defaultValue = "0") int pageVoie,
                                  @RequestParam(name = "sizevoie",defaultValue = "2") int sizeVoie){
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         Optional<Site> s=siteRepository.findById(idSite);
         if (s.isPresent()) {
             Site sit = s.get();
@@ -106,7 +106,7 @@ public class LongueurController {
         if (bindingResult.hasErrors()){
             return "editFormLongueur";
         }
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         Optional<Voie> v=voieRepository.findById(idVoieNew);
         if (v.isPresent()){
             Voie voi=v.get();
@@ -134,7 +134,7 @@ public class LongueurController {
         }
         Optional<Site> s=siteRepository.findById(idSite);
         Optional<Voie> v=voieRepository.findById(idVoieNew);
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         if (s.isPresent()&&v.isPresent()){
             Site sit=s.get();
             Voie voi=v.get();
@@ -157,8 +157,5 @@ public class LongueurController {
         longueur.setNomLongueur(formatedName);
         return;
     }
-    public static Utilisateur userConnected(){
-        Utilisateur utilisateurConnecte= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return utilisateurConnecte;
-    }
+
 }

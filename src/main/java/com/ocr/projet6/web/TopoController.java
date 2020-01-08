@@ -113,7 +113,7 @@ public class TopoController {
     @GetMapping(value = "/topo/{idTopo}/delete")
     public String deleteTopo(@PathVariable(value = "idTopo")Long idTopo){
         Optional<Topo> t=topoRepository.findById(idTopo);
-        Utilisateur utilisateurConnecte=userConnected();
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         Topo topo=null;
         if (t.isPresent()){
             topo=t.get();
@@ -136,7 +136,7 @@ public class TopoController {
         Site sit=s.get();
         topo.setSite(sit);
         topo.setDisponibilite(true);
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         topo.setUtilisateur(utilisateur);
         formatField(topo);
         topo.setDate(new Date());
@@ -154,7 +154,7 @@ public class TopoController {
             if(t.isPresent()) {
                 topo=t.get();
                 model.addAttribute("topo", topo);
-                Utilisateur utilisateurConnecte=userConnected();
+                Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
                 model.addAttribute("utilisateurConnecte",utilisateurConnecte);
                 boolean demandeEnCours=iClimbMetier.demandeEnCours(utilisateurConnecte.getUsername(),topo.getId());
                 System.out.println("demandeencours="+demandeEnCours);
@@ -170,7 +170,7 @@ public class TopoController {
                             @RequestParam(name = "sizeSite",defaultValue = "2") int sizeSite){
         Optional<Topo> t=topoRepository.findById(id);
         Topo topo=null;
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         if(t.isPresent()) {
             topo=t.get();
             if (utilisateur.getIdUser()==topo.getUtilisateur().getIdUser()){
@@ -195,7 +195,7 @@ public class TopoController {
         }
         Optional<Site> s=siteRepository.findById(idSite);
         Site site=null;
-        Utilisateur utilisateur=userConnected();
+        Utilisateur utilisateur=iClimbMetier.userConnected();
         if(s.isPresent()) {
             site=s.get();
             if (utilisateur.getRoles().toString().contains("USER")){
@@ -217,7 +217,7 @@ public class TopoController {
     public String DemandedeReservation(Model model,@PathVariable("idTopo")Long idTopo){
         Optional<Topo> t=topoRepository.findById(idTopo);
         Topo topo=null;
-        Utilisateur demandeur=userConnected();
+        Utilisateur demandeur=iClimbMetier.userConnected();
         if (t.isPresent()){
             if (demandeur.getRoles().toString().contains("USER")){
                 topo=t.get();
@@ -237,10 +237,6 @@ public class TopoController {
         return "redirect:/topo/"+idTopo+"/consult";
     }
 
-    public static Utilisateur userConnected(){
-        Utilisateur utilisateurConnecte= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return utilisateurConnecte;
-    }
 
     public  void formatField(Topo topo){
         String formatedName= ClimbMetierImpl.formatString(topo.getNom());
