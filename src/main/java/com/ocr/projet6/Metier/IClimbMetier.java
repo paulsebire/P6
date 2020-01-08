@@ -2,6 +2,7 @@ package com.ocr.projet6.Metier;
 
 import com.ocr.projet6.entities.*;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface IClimbMetier {
     public boolean demandeEnCours (String username, Long idTopo);
     public Page<Reservation> demandeEnAttenteAcceptation (String usernameProprietaire, int page, int size);
     public Page<Reservation> demandeAcceptees (String username,int page, int size);
+    public Page<Utilisateur> listUtilisateur(int page, int size);
 }

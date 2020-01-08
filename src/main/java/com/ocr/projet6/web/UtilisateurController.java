@@ -1,9 +1,7 @@
 package com.ocr.projet6.web;
 
-import com.ocr.projet6.Metier.ClimbMetierImpl;
+
 import com.ocr.projet6.Metier.IClimbMetier;
-import com.ocr.projet6.dao.TopoRepository;
-import com.ocr.projet6.entities.Reservation;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.dao.UtilisateurRepository;
 import com.ocr.projet6.entities.Utilisateur;
@@ -14,17 +12,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import com.ocr.projet6.Metier.RoleDefinition;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-
-import java.security.Principal;
 import java.util.Optional;
 
+import static com.ocr.projet6.Metier.RoleDefinition.adminRole;
 import static com.ocr.projet6.Metier.RoleDefinition.userRole;
 
 
@@ -36,6 +28,7 @@ public class UtilisateurController {
     private UtilisateurService utilisateurService;
     @Autowired
     private IClimbMetier iClimbMetier;
+
 
 
     @GetMapping(value = "/utilisateur/inscription")
@@ -115,6 +108,59 @@ public class UtilisateurController {
         utilisateurRepository.save(utilisateur);
         return "confirmationEditedUtilisateur";
     }
+
+    @GetMapping(value = "/administration")
+    public String administration(Model model,
+                        @RequestParam(name="pageUtilisateur",defaultValue = "0") int pageUtilisateur,
+                        @RequestParam(name = "sizeUtilisateur",defaultValue = "4") int sizeUtilisateur){
+
+        Page<Utilisateur> pageUtilisateurs= iClimbMetier.listUtilisateur(pageUtilisateur,sizeUtilisateur);
+        model.addAttribute("listUtilisateur",pageUtilisateurs.getContent());
+        int[] pagesUtilisateur=new int[pageUtilisateurs.getTotalPages()];
+        int paginationEnablerUtilisateur=pagesUtilisateur.length;
+        model.addAttribute("paginationEnablerUtilisateur",paginationEnablerUtilisateur);
+        model.addAttribute("pagesUtilisateur",pagesUtilisateur);
+        model.addAttribute("pageCouranteUtilisateur",pageUtilisateur);
+        model.addAttribute("sizeUtilisateur",sizeUtilisateur);
+        return "administration";
+    }
+
+
+    @GetMapping(value = "/utilisateur/{idUser}/adminRight")
+    public String setRoleAdmin (Model model,@PathVariable(value = "idUser")Long idUser,
+                                @RequestParam(name="pageUtilisateur",defaultValue = "0") int pageUtilisateur,
+                                @RequestParam(name = "sizeUtilisateur",defaultValue = "4") int sizeUtilisateur){
+        Optional<Utilisateur> u=utilisateurRepository.findById(idUser);
+        Utilisateur utilisateur=null;
+        Utilisateur utilisateurConnecte=userConnected();
+        if (utilisateurConnecte.getRoles().toString().contains("ADMIN")==true){
+            if (u.isPresent()){
+                utilisateur=u.get();
+                utilisateur.setRoles(adminRole);
+                utilisateurRepository.save(utilisateur);
+                return "redirect:/administration?pageUtilisateur="+pageUtilisateur;
+            }else return "administration";
+        }else return "403";
+    }
+
+    @GetMapping(value = "/utilisateur/{idUser}/userRight")
+    public String setRoleUser (Model model,@PathVariable(value = "idUser")Long idUser,
+                                @RequestParam(name="pageUtilisateur",defaultValue = "0") int pageUtilisateur,
+                                @RequestParam(name = "sizeUtilisateur",defaultValue = "4") int sizeUtilisateur){
+        Optional<Utilisateur> u=utilisateurRepository.findById(idUser);
+        Utilisateur utilisateur=null;
+        Utilisateur utilisateurConnecte=userConnected();
+        if (utilisateurConnecte.getRoles().toString().contains("ADMIN")==true){
+            if (u.isPresent()){
+                utilisateur=u.get();
+                utilisateur.getRoles().clear();
+                utilisateur.setRoles(userRole);
+                utilisateurRepository.save(utilisateur);
+                return "redirect:/administration?pageUtilisateur="+pageUtilisateur;
+            }else return "administration";
+        }else return "403";
+    }
+
     public static Utilisateur userConnected(){
         Utilisateur utilisateurConnecte= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return utilisateurConnecte;

@@ -25,6 +25,8 @@ public class ClimbMetierImpl implements IClimbMetier {
     private CommentaireRepository commentaireRepository;
     @Autowired
     private ReservationRepository reservationRepository;
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
 
     @Override
     public Page<Site> listSite(int page, int size) {
@@ -99,6 +101,11 @@ public class ClimbMetierImpl implements IClimbMetier {
         if (pr.isEmpty()){
             return pr;
         } else return reservationRepository.demandeAcceptees(username,PageRequest.of(page,size));
+    }
+
+    @Override
+    public Page<Utilisateur> listUtilisateur(int page, int size){
+        return utilisateurRepository.listUtilisateur(PageRequest.of(page,size));
     }
 
 }

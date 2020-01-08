@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Administration</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
+    <script src="https://kit.fontawesome.com/2fe189fad4.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous" />
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class=" container h-100">
+            <div>
+                <div class="row justify-content-center spacer">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Liste des membres
+                                <div class="float-right">
+                                    <form class="form-control-sm" th:action="@{/utilisateur/find}">
+                                        <input type="text" name="motCle" placeholder="Chercher un membre" />
+                                        <button class="btn btn-primary" type="submit">Ok</button>
+                                    </form>
+                                    <div class="red" th:if="${exception}"><label>Membre introuvable</label></div>
+                                </div>
+                            </h3>
+                        </div>
+                        <div class="card-body justify-content-center" sec:authorize="hasRole('ROLE_ADMIN')">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th class="text-center">Nom</th>
+                                    <th class="text-center">Prénom</th>
+                                    <th class="text-center">Nom d'utilisateur</th>
+                                    <th class="text-center">email</th>
+                                    <th class="text-center">rôle</th>
+                                    <th class="text-center">modification <br/> du rôle</th>
+                                </tr>
+                                <tr th:each="lu:${listUtilisateur}">
+                                    <td align="center" th:text="${lu.lastname}"></td>
+                                    <td align="center" th:text="${lu.firstname}"></td>
+                                    <td align="center" th:text="${lu.username}"></td>
+                                    <td align="center" th:text="${lu.email}"></td>
+                                    <td align="center" th:text="${lu.roles.toString().contains('ADMIN')}?'ADMIN':'USER'"></td>
+                                    <td align="center" th:if="${lu.roles.toString().contains('ADMIN')}==false"><a class="btn btn-primary"
+                                        th:href="@{/utilisateur/{idUser}/adminRight(idUser=${lu.idUser})}"><i class="fas fa-user-graduate"></i>  ADMIN</a></td>
+                                    <td align="center" th:if="${lu.roles.toString().contains('ADMIN')}==true"><a class="btn btn-primary"
+                                        th:href="@{/utilisateur/{idUser}/userRight(idUser=${lu.idUser})}"><i class="fas fa-baby"></i>  USER</a></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="container">
+                            <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerUtilisateur>1}">
+                                <li  th:class="${pageCouranteUtilisateur}==${status.index}?'page-item active':'page-item'"
+                                     th:each="p,status:${pagesUtilisateur}">
+                                    <a class="page-link" th:href="@{/administration(pageUtilisateur=${status.index})}"
+                                       th:text="${status.index}"></a>
+                                </li>
+                            </ul>
+                            <br/>
+                        </div>
+                    </div>
+             </div>
+         </div>
+    </div>
+</div>
+</body>
+</html>

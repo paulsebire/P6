@@ -22,7 +22,6 @@
             integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
             crossorigin="anonymous"></script>
 </head>
-    <title>les amis de l'escalade</title>
 </head>
 <body>
 <header>
@@ -33,9 +32,9 @@
                 <li class="mr-1"><a class=" btn btn-primary " th:href="@{/site/add}" sec:authorize="hasRole('ROLE_USER')" th:if="${#request.userPrincipal != null}"><i class="fa fa-plus"></i>  Ajouter<br/>nouveau site</a></li>
                 <li class="mr-1"><a class=" btn btn-primary " th:href="@{/topo/search}" sec:authorize="hasRole('ROLE_USER')" ><i class="fa fa-search"></i>  Trouver<br/>un Topo</a></li>
                 <li class="mr-1"><a class=" btn btn-primary " th:href="@{/utilisateur/profil/topos}" th:if="${#request.userPrincipal != null}" sec:authorize="hasRole('ROLE_USER')" ><i class="fa fa-user"></i><br/>Mon Profil</a></li>
-                <!--<div sec:authorize="hasRole('ROLE_ADMIN')" >
+                <div sec:authorize="hasRole('ROLE_ADMIN')" >
                 <li class="justify-content-center" ><a class="btn btn-primary" th:href="@{/administration}" ><i class="fa fa-users"></i><br/>Administration</a></li>
-                </div>-->
+                </div>
             </ul>
             <a class="navbar-brand ml-auto mr-auto col-4" th:align="center">
                 <img class="rounded mx-auto d-block" alt="Les amis de l'escalade" src="/css/images/logo.jpg">
