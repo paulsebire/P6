@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -31,10 +32,11 @@ public class Utilisateur implements UserDetails {
 
     @NotNull
     @Column(name = "password", nullable = false)
+    @Size(min = 4)
     private String password;
 
     @NotNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @NotNull

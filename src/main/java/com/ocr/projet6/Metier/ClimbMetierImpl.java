@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.*;
 
 @Service
@@ -27,6 +29,9 @@ public class ClimbMetierImpl implements IClimbMetier {
     private ReservationRepository reservationRepository;
     @Autowired
     private UtilisateurRepository utilisateurRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Page<Site> listSite(int page, int size) {
@@ -106,6 +111,15 @@ public class ClimbMetierImpl implements IClimbMetier {
     @Override
     public Page<Utilisateur> listUtilisateur(int page, int size){
         return utilisateurRepository.listUtilisateur(PageRequest.of(page,size));
+    }
+
+    @Override
+    public void insertADMIN(Long id){
+        entityManager.createNativeQuery("INSERT INTO roles(id_user, role) VALUES (?, ?)")
+                .setParameter(1, id)
+                .setParameter(2, "ROLE_ADMIN")
+                .executeUpdate();
+        return;
     }
 
 }

@@ -7,8 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+
 public interface UtilisateurRepository extends JpaRepository<Utilisateur,Long> {
     Utilisateur findByUsername(String username);
+    Utilisateur findByEmail(String email);
+
     @Query("select u from Utilisateur u order by u.idUser asc ")
     public Page<Utilisateur> listUtilisateur(Pageable pageable);
 

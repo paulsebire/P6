@@ -63,7 +63,7 @@
                                 <a class="nav-link" th:class="${demandeEmisesBool}==true?'nav-link active':'nav-link'" th:href="@{/utilisateur/profil/reservations/emises}">Réservations de Topo émises</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:class="${demandeRecueBool}==true?'nav-link active':'nav-link'" th:href="@{/utilisateur/profil/reservations/recues}">Réservations de Topo reçues</a>
+                                <a class="nav-link" th:class="${demandeRecueBool}==true?'nav-link active':'nav-link'" th:href="@{/utilisateur/profil/reservations/recues}">Réservations de Topo reçues ([[${listResaRecue.size()}]])</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" th:class="${demandeAccepteesBool}==true?'nav-link active':'nav-link'" th:href="@{/utilisateur/profil/reservations/acceptees}">Réservations de Topo acceptées</a>
@@ -124,7 +124,6 @@
                             <th class="text-center">Site</th>
                             <th class="text-center">Lieu</th>
                             <th class="text-center">émise le</th>
-                            <th class="text-center">En cours</th>
                             <th class="text-center">Statut</th>
                             <th class="text-center">Contacter<br/> le propriétaire</th>
 
@@ -136,11 +135,9 @@
                             <td align="center" ><a th:text="${lr.topo.site.nameSite}" th:href="@{/site/{idSite}/consult(idSite=${lr.topo.site.idSite})}"></a></td>
                             <td align="center" th:text="${lr.topo.site.localisation}"></td>
                             <td align="center" th:text="${lr.date.getDate()+'/'}+${lr.date.getMonth()+1+'/'}+${lr.date.getYear()+1900}"></td>
-                            <td align="center" th:if="${lr.demandeEnCours}==true"><i class="far fa-clock" style="color: green"></i></td>
-                            <td align="center" th:if="${lr.demandeEnCours}==false">Terminée</td>
+                            <td align="center" th:if="${lr.demandeEnCours}==true">En cours <i class="far fa-clock" style="color: green"></i></td>
                             <td align="center" th:if="${lr.acceptation}==true and ${lr.demandeEnCours}==false"><i class="fa fa-check-circle" style="color: green"></i></td>
                             <td align="center" th:if="${lr.acceptation}==false and ${lr.demandeEnCours}==false"><i class="fa fa-times-circle" style="color: red"></i></td>
-                            <td align="center" th:if="${lr.demandeEnCours}==true"><i class="far fa-clock" style="color: green"></i></td>
                             <td  th:if="${lr.acceptation}==true"><a class="btn btn-primary" th:href="'mailto:' + ${lr.topo.utilisateur.email}"><i class="far fa-envelope"></i></a></td>
                         </tr>
                     </table>

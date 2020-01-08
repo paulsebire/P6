@@ -2,6 +2,7 @@ package com.ocr.projet6.web;
 
 
 import com.ocr.projet6.Metier.IClimbMetier;
+import com.ocr.projet6.entities.Reservation;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.dao.UtilisateurRepository;
 import com.ocr.projet6.entities.Utilisateur;
@@ -43,11 +44,17 @@ public class UtilisateurController {
 
         if (bindingResult.hasErrors()){
                 return "inscription"+"&error="+bindingResult.getGlobalError();
+        } else{
+            if (utilisateurRepository.findByUsername(utilisateur.getUsername())!=null || utilisateurRepository.findByEmail(utilisateur.getEmail())!=null){
+                return "inscription";
+            }else{
+                utilisateur.setRoles(userRole);
+                utilisateurRepository.save(utilisateur);
+                model.addAttribute("utilisateur",utilisateur);
+                return "confirmationUtilisateur";
+            }
+
         }
-        utilisateur.setRoles(userRole);
-        utilisateurRepository.save(utilisateur);
-        model.addAttribute("utilisateur",utilisateur);
-        return "confirmationUtilisateur";
     }
 
     @GetMapping(value = "/utilisateur/profil/topos" )
@@ -59,6 +66,8 @@ public class UtilisateurController {
         model.addAttribute("utilisateurConnecte",utilisateurConnecte);
         Page<Topo> pageTopos = iClimbMetier.listTopoByUtilisateur(utilisateurConnecte.getIdUser(),pageTopo,sizeTopo);
         model.addAttribute("listTopo",pageTopos.getContent());
+        Page<Reservation> pageReservationsRecues = iClimbMetier.demandeEnAttenteAcceptation(utilisateurConnecte.getUsername(),pageTopo,sizeTopo);
+        model.addAttribute("listResaRecue",pageReservationsRecues.getContent());
         int[] pagesTopo=new int[pageTopos.getTotalPages()];
         int paginationEnablerTopo=pagesTopo.length;
         model.addAttribute("paginationEnablerTopo",paginationEnablerTopo);
@@ -153,9 +162,9 @@ public class UtilisateurController {
         if (utilisateurConnecte.getRoles().toString().contains("ADMIN")==true){
             if (u.isPresent()){
                 utilisateur=u.get();
-                utilisateur.getRoles().clear();
                 utilisateur.setRoles(userRole);
                 utilisateurRepository.save(utilisateur);
+
                 return "redirect:/administration?pageUtilisateur="+pageUtilisateur;
             }else return "administration";
         }else return "403";
