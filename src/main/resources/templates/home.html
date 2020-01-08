@@ -40,6 +40,7 @@
                             <li> commenter les différents spots</li>
                             <li> proposer vos topos</li>
                             <li> réserver les topos d'autres membres</li>
+                            <li> devenir membre officiel</li>
                         </ul>
                     </p>
                 </div>
@@ -51,7 +52,7 @@
         <div class=" container h-100 spacer">
             <div class="card-deck">
                 <div class="card" th:each="ls:${listSite}">
-                    <img class="card-img-top" th:src="${ls.urlImg}" alt="Card image cap">
+                    <a th:href="@{/site/{idSite}/consult(idSite=${ls.idSite})}"> <img class="card-img-top" th:src="${ls.urlImg}" alt="Card image cap">  </a>
                     <div class="card-body">
                         <h5 class="card-title" th:text="${ls.nameSite}"></h5>
                         <p class="card-text" th:text="${ls.localisation}"></p>
