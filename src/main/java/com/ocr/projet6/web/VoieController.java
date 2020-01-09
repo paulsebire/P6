@@ -39,14 +39,6 @@ public class VoieController {
             if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
                 voie.setSite(sit);
                 model.addAttribute("voie",voie);
-                try {
-                    List<String> listCotation=iClimbMetier.csvCotations();
-                    model.addAttribute("listCotation",listCotation);
-                    return "addFormVoie";
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 return "addFormVoie";
             } return "403";
         }
@@ -86,14 +78,6 @@ public class VoieController {
             voi.setSite(sit);
             if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
                 model.addAttribute("voie", voi);
-                try {
-                    List<String> listCotation=iClimbMetier.csvCotations();
-                    model.addAttribute("listCotation",listCotation);
-                    return "editFormVoie";
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
             }return "403";
         }

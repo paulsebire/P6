@@ -126,11 +126,5 @@ public class ClimbMetierImpl implements IClimbMetier {
     }
 
 
-    @Override
-    public List<String> csvCotations() throws IOException {
-        String fichier="/css/csv/cotations.csv";
-        Path path = Paths.get(fichier);
-        return Files.readAllLines(path, StandardCharsets.UTF_8);
-    }
 
 }
