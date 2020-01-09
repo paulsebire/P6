@@ -8,6 +8,7 @@ import com.ocr.projet6.entities.Site;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.dao.UtilisateurRepository;
 import com.ocr.projet6.entities.Utilisateur;
+import com.ocr.projet6.enums.RoleEnum;
 import com.ocr.projet6.security.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -51,7 +52,7 @@ public class UtilisateurController {
             if (utilisateurRepository.findByUsername(utilisateur.getUsername())!=null || utilisateurRepository.findByEmail(utilisateur.getEmail())!=null){
                 return "inscription";
             }else{
-                utilisateur.setRoles(userRole);
+                utilisateur.getRoles().add(RoleEnum.ROLE_USER);
                 utilisateurRepository.save(utilisateur);
                 model.addAttribute("utilisateur",utilisateur);
                 return "confirmationUtilisateur";
@@ -145,10 +146,10 @@ public class UtilisateurController {
         Optional<Utilisateur> u=utilisateurRepository.findById(idUser);
         Utilisateur utilisateur=null;
         Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
-        if (utilisateurConnecte.getRoles().toString().contains("ADMIN")==true){
+        if (utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_ADMIN)){
             if (u.isPresent()){
                 utilisateur=u.get();
-                utilisateur.setRoles(adminRole);
+                utilisateur.getRoles().add(RoleEnum.ROLE_ADMIN);
                 utilisateurRepository.save(utilisateur);
                 return "redirect:/administration?pageUtilisateur="+pageUtilisateur;
             }else return "administration";
@@ -165,7 +166,7 @@ public class UtilisateurController {
         if (utilisateurConnecte.getRoles().toString().contains("ADMIN")==true){
             if (u.isPresent()){
                 utilisateur=u.get();
-                utilisateur.setRoles(userRole);
+                utilisateur.getRoles().remove(RoleEnum.ROLE_ADMIN);
                 utilisateurRepository.save(utilisateur);
 
                 return "redirect:/administration?pageUtilisateur="+pageUtilisateur;

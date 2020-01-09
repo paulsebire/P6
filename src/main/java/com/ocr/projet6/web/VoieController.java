@@ -7,14 +7,14 @@ import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.VoieRepository;
 import com.ocr.projet6.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -28,6 +28,7 @@ public class VoieController {
     @Autowired
     private IClimbMetier iClimbMetier;
 
+
     @GetMapping(value = "/site/{idSite}/voie/add")
     public String addVoie(Model model,@PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
@@ -38,6 +39,14 @@ public class VoieController {
             if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
                 voie.setSite(sit);
                 model.addAttribute("voie",voie);
+                try {
+                    List<String> listCotation=iClimbMetier.csvCotations();
+                    model.addAttribute("listCotation",listCotation);
+                    return "addFormVoie";
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return "addFormVoie";
             } return "403";
         }
@@ -77,7 +86,15 @@ public class VoieController {
             voi.setSite(sit);
             if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
                 model.addAttribute("voie", voi);
-                return "editFormVoie";
+                try {
+                    List<String> listCotation=iClimbMetier.csvCotations();
+                    model.addAttribute("listCotation",listCotation);
+                    return "editFormVoie";
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }return "403";
         }
         return "redirect:/site/"+idSite+"/consult";

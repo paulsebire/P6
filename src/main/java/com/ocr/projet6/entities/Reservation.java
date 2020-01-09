@@ -13,14 +13,14 @@ public class Reservation implements Serializable {
 
     @Id @GeneratedValue
     private Long id;
-    @NotNull
-    @Column(name = "acceptation", nullable = false)
+
+    @Column(name = "acceptation")
     private boolean acceptation;
-    @NotNull
-    @Column(name = "demandeEnCours", nullable = false)
+
+    @Column(name = "demandeEnCours")
     private boolean demandeEnCours;
-    @NotNull
-    @Column(name = "date", nullable = false)
+
+    @Column(name = "date")
     private Date date;
 
     @OneToOne

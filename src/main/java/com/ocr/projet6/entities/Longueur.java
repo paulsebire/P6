@@ -9,11 +9,11 @@ import java.io.Serializable;
 public class Longueur implements Serializable {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idLongueur;
-    @NotNull
-    @Column(name = "nomLongueur", nullable = false)
+
+    @Column(name = "nomLongueur")
     private String nomLongueur;
-    @NotNull
-    @Column(name = "hauteurLongueur", nullable = false)
+
+    @Column(name = "hauteurLongueur")
     private double hauteurLongueur;
     @ManyToOne
     @JoinColumn(name = "ID_VOIE")

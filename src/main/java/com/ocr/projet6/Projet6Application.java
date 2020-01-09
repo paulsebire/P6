@@ -35,6 +35,9 @@ public class Projet6Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+
+
         Utilisateur admin = utilisateurRepository.findByUsername("admin");
         Utilisateur user = utilisateurRepository.findByUsername("user");
 

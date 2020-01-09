@@ -12,6 +12,11 @@ import org.springframework.ui.Model;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Service
@@ -118,6 +123,14 @@ public class ClimbMetierImpl implements IClimbMetier {
     public Utilisateur userConnected(){
         Utilisateur utilisateur= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return utilisateur;
+    }
+
+
+    @Override
+    public List<String> csvCotations() throws IOException {
+        String fichier="/css/csv/cotations.csv";
+        Path path = Paths.get(fichier);
+        return Files.readAllLines(path, StandardCharsets.UTF_8);
     }
 
 }

@@ -151,7 +151,7 @@ public class SiteController {
 
     @PostMapping(value = "/site/save")
     public String saveSite(Model model,@Valid Site site, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
+       if (bindingResult.hasErrors()){
             return "addFormSite";
         }
         Utilisateur utilisateur=iClimbMetier.userConnected();

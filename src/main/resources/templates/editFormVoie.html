@@ -45,11 +45,14 @@
                     <input class="form-control" type="text" name="secteur" th:value="${voie.secteur}"/>
                 </div>
                 <div class="form-group">
-                    <label class="control-label " th:name="difficulte">Difficulté:
+                    <label class="control-label " th:name="difficulte">Cotation:
                         <span class="red" th:errors="${voie.difficulte}">
                         </span>
                     </label>
-                    <input class="form-control" type="text" name="difficulte" th:value="${voie.difficulte}"/>
+                    <select class="form-control"  name="difficulte">
+                        <option th:value="${voie.difficulte}" th:text="${voie.difficulte}" selected style="display: none"></option>
+                        <option th:each="lc:${listCotation}"  th:value="${voie.difficulte}" th:text="${lc.cote}"></option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label class="control-label " th:name="hauteurVoie">Hauteur:

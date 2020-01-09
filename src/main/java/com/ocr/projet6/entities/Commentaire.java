@@ -9,11 +9,11 @@ import java.util.Date;
 public class Commentaire implements Serializable {
     @Id @GeneratedValue
     private Long id;
-    @NotNull
-    @Column(name = "contenu", nullable = false)
+
+    @Column(name = "contenu")
     private String contenu;
-    @NotNull
-    @Column(name = "date", nullable = false)
+
+    @Column(name = "date")
     private Date date;
     @ManyToOne
     @JoinColumn(name ="id_user" )

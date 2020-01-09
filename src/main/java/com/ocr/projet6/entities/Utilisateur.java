@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -48,15 +50,14 @@ public class Utilisateur implements UserDetails {
     private String lastname;
 
     @ElementCollection(targetClass = RoleEnum.class, fetch = FetchType.EAGER)
-    @Cascade(value = CascadeType.REMOVE)
+    @Cascade(value = CascadeType.ALL)
     @JoinTable(
             indexes = {@Index(name = "INDEX_USER_ROLE", columnList = "id_user")},
             name = "roles",
             joinColumns = @JoinColumn(name = "id_user")
     )
-    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Collection<RoleEnum> roles;
+    private Set<RoleEnum> roles;
 
     @Column(name = "account_non_expired")
     private boolean accountNonExpired;
@@ -88,10 +89,11 @@ public class Utilisateur implements UserDetails {
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;
         this.enabled = true;
-        this.roles = Collections.singletonList(RoleEnum.ROLE_USER);
+        this.roles = new HashSet<>();
+        this.roles.add(RoleEnum.ROLE_USER);
     }
 
-    public Utilisateur(String username, String password, String firstname, String lastname,String email, Collection<RoleEnum> roles) {
+    public Utilisateur(String username, String password, String firstname, String lastname,String email, Set<RoleEnum> roles) {
         this.username = username;
         this.password = BCryptManagerUtil.passwordencoder().encode(password);
         this.firstname = firstname;
@@ -172,11 +174,11 @@ public class Utilisateur implements UserDetails {
         this.lastname = lastname;
     }
 
-    public Collection<RoleEnum> getRoles() {
+    public Set<RoleEnum> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<RoleEnum> roles) {
+    public void setRoles(Set<RoleEnum> roles) {
         this.roles = roles;
     }
 

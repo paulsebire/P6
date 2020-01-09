@@ -29,7 +29,7 @@
             <div class=" container h-100 botspacer">
                 <div class="row justify-content-center">
                     <div>
-                        <div class="bigspacer col-md-12 col-sm-12 col-lg-12">
+                        <div class="spacer col-md-12 col-sm-12 col-lg-12">
                             <div class="card" th:if="${site}">
                                 <div class="card-header ">
                                     <h3 class="card-title">Informations sur le site
@@ -65,8 +65,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row justify-content-center spacer">
-                            <div class="card mr-2" th:if="${site}">
+                        <div class="row justify-content-center ">
+                            <div class="card mr-2 spacer" th:if="${site}">
                                 <div class="card-header">
                                     <h3 class="card-title">Liste des voies
                                         <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')"
@@ -79,7 +79,7 @@
                                         <tr>
                                             <th>Nom</th>
                                             <th>Secteur</th>
-                                            <th>difficulté</th>
+                                            <th>cotation</th>
                                             <th>Hauteur</th>
                                             <th sec:authorize="hasRole('ROLE_USER')" th:if="${utilisateurConnecte.idUser}==${site.utilisateur.idUser}">Editer</th>
                                             <th sec:authorize="hasRole('ROLE_USER')" th:if="${utilisateurConnecte.idUser}==${site.utilisateur.idUser}">Supprimer</th>
@@ -110,7 +110,7 @@
                                     <br/>
                                 </div>
                             </div>
-                            <div class="card">
+                            <div class="card spacer">
                                 <div class="card-header">
                                     <h3 class="card-title">Liste des longueurs
                                         <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"

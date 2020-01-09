@@ -13,22 +13,23 @@ public class Voie implements Serializable {
 
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idVoie;
-    @NotNull
-    @Column(name = "nomVoie", nullable = false)
+
+    @Column(name = "nomVoie")
     private String nomVoie;
-    @NotNull
-    @Column(name = "secteur", nullable = false)
+
+    @Column(name = "secteur")
     private String secteur;
-    @NotNull
-    @Column(name = "difficulte", nullable = false)
+
+    @Column(name = "difficulte")
     private  String difficulte;
-    @NotNull
-    @Column(name = "hauteurVoie", nullable = false)
+
+    @Column(name = "hauteurVoie")
     private double hauteurVoie;
 
     @ManyToOne
     @JoinColumn(name ="ID_SITE" )
     private Site site;
+
 
     @OneToMany(mappedBy = "voie", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Collection<Longueur> longueurs;

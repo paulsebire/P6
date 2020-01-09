@@ -14,16 +14,19 @@ public class Topo implements Serializable {
     @Id @GeneratedValue
     @Column(name = "id_topo")
     private Long id;
-    @NotNull
-    @Column(name = "nom", nullable = false)
+
+    @Column(name = "nom")
     private String nom;
-    @NotNull
-    @Column(name = "description", nullable = false)
+
+    @Column(name = "description")
     private String description;
-    @NotNull
-    @Column(name = "disponibilite", nullable = false)
+
+    @Column(name = "disponibilite")
     private boolean disponibilite = true;
+
+    @Column(name = "date")
     private Date date;
+
     @ManyToOne
     @JoinColumn(name ="id_user" )
     private Utilisateur utilisateur;
