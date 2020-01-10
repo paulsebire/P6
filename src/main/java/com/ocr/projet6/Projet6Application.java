@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 
 
@@ -25,6 +26,8 @@ public class Projet6Application implements CommandLineRunner {
     private TopoRepository topoRepository;
     @Autowired
     private CommentaireRepository commentaireRepository;
+    @Autowired
+    private CotationRepository cotationRepository;
 
 
 
@@ -36,7 +39,8 @@ public class Projet6Application implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-
+        Cotation cot1=cotationRepository.findByCote("3");
+        Cotation cot2=cotationRepository.findByCote("4");
 
         Utilisateur admin = utilisateurRepository.findByUsername("admin");
         Utilisateur user = utilisateurRepository.findByUsername("user");
@@ -54,10 +58,10 @@ public class Projet6Application implements CommandLineRunner {
         siteRepository.save(site2);
 
 
-        Voie voie1 = voieRepository.save(new Voie("voie1","secteur1","3C",50,site1));
-        Voie voie2 = voieRepository.save(new Voie("voie2","secteur2","4C",60,site1));
-        Voie voie3 = voieRepository.save(new Voie("voie3","secteur1","5C",70,site2));
-        Voie voie4 = voieRepository.save(new Voie("voie4","secteur2","6C",80,site2));
+        Voie voie1 = voieRepository.save(new Voie("voie1","secteur1",cot1,50,site1));
+        Voie voie2 = voieRepository.save(new Voie("voie2","secteur2",cot2,60,site1));
+        Voie voie3 = voieRepository.save(new Voie("voie3","secteur1",cot1,70,site2));
+        Voie voie4 = voieRepository.save(new Voie("voie4","secteur2",cot2,80,site2));
 
        Longueur lg1 = longueurRepository.save(new Longueur("lg1",10,voie1));
         Longueur lg2 = longueurRepository.save(new Longueur("lg2",20,voie1));
@@ -147,5 +151,41 @@ public class Projet6Application implements CommandLineRunner {
         com8.setDate(new Date());
         com8.setSite(site2);
         commentaireRepository.save(com8);
+    }
+    @PostConstruct
+    private void postConstruct() {
+        if (cotationRepository.findAll().isEmpty()){
+            cotationRepository.save(new Cotation("3"));
+            cotationRepository.save(new Cotation("3+"));
+            cotationRepository.save(new Cotation("4a"));
+            cotationRepository.save(new Cotation("4b"));
+            cotationRepository.save(new Cotation("4c"));
+            cotationRepository.save(new Cotation("5a"));
+            cotationRepository.save(new Cotation("5b"));
+            cotationRepository.save(new Cotation("5c"));
+            cotationRepository.save(new Cotation("6a"));
+            cotationRepository.save(new Cotation("6a+"));
+            cotationRepository.save(new Cotation("6b"));
+            cotationRepository.save(new Cotation("6b+"));
+            cotationRepository.save(new Cotation("6c"));
+            cotationRepository.save(new Cotation("6c+"));
+            cotationRepository.save(new Cotation("7a"));
+            cotationRepository.save(new Cotation("7a+"));
+            cotationRepository.save(new Cotation("7b"));
+            cotationRepository.save(new Cotation("7b+"));
+            cotationRepository.save(new Cotation("7c"));
+            cotationRepository.save(new Cotation("7c+"));
+            cotationRepository.save(new Cotation("8a"));
+            cotationRepository.save(new Cotation("8a+"));
+            cotationRepository.save(new Cotation("8b"));
+            cotationRepository.save(new Cotation("8b+"));
+            cotationRepository.save(new Cotation("8c"));
+            cotationRepository.save(new Cotation("8c+"));
+            cotationRepository.save(new Cotation("9a"));
+            cotationRepository.save(new Cotation("9a+"));
+            cotationRepository.save(new Cotation("9b"));
+            cotationRepository.save(new Cotation("9b+"));
+            cotationRepository.save(new Cotation("9c"));
+        }
     }
 }

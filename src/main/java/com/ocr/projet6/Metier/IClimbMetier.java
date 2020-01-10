@@ -22,4 +22,5 @@ public interface IClimbMetier {
     public Page<Reservation> demandeAcceptees (String username,int page, int size);
     public Page<Utilisateur> listUtilisateur(int page, int size);
     public  Utilisateur userConnected();
+    public List<Site> listSiteWithImg();
 }

@@ -7,6 +7,7 @@ import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.UtilisateurRepository;
 import com.ocr.projet6.dao.VoieRepository;
 import com.ocr.projet6.entities.*;
+import com.ocr.projet6.enums.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -187,7 +188,7 @@ public class SiteController {
         Optional<Site> s=siteRepository.findById(idSite);
         Site site=null;
         Utilisateur utilisateur=iClimbMetier.userConnected();
-        if (utilisateur.getRoles().toString().contains("ADMIN")){
+        if (utilisateur.getRoles().contains(RoleEnum.ROLE_ADMIN)){
             if(s.isPresent()) {
                 site=s.get();
                 site.setOfficiel(!site.isOfficiel());
@@ -205,7 +206,7 @@ public class SiteController {
         Optional<Site> s=siteRepository.findById(idSite);
         Site site=null;
         Utilisateur utilisateur=iClimbMetier.userConnected();
-        if (utilisateur.getRoles().toString().contains("USER") && utilisateur.getIdUser()==site.getUtilisateur().getIdUser()) {
+        if (utilisateur.getIdUser()==site.getUtilisateur().getIdUser()) {
             if (s.isPresent()) {
                 site = s.get();
                 model.addAttribute("site", site);
@@ -215,17 +216,9 @@ public class SiteController {
         return "403";
     }
     @RequestMapping(value = "/home")
-    public String home(Model model,
-                        @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
-                        @RequestParam(name = "sizeSite",defaultValue = "4") int sizeSite){
-        Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
-        model.addAttribute("listSite",pageSites.getContent());
-        int[] pagesSite=new int[pageSites.getTotalPages()];
-        int paginationEnablerSite=pagesSite.length;
-        model.addAttribute("paginationEnablerSite",paginationEnablerSite);
-        model.addAttribute("pagesSite",pagesSite);
-        model.addAttribute("pageCouranteSite",pageSite);
-        model.addAttribute("sizeSite",sizeSite);
+    public String home(Model model){
+        List<Site> listSiteWithImg= iClimbMetier.listSiteWithImg();
+        model.addAttribute("listSite",listSiteWithImg);
         return "home";
     }
 

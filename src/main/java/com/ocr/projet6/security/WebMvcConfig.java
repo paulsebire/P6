@@ -1,6 +1,8 @@
 package com.ocr.projet6.security;
 
 
+import com.ocr.projet6.dao.CotationRepository;
+import com.ocr.projet6.entities.Cotation;
 import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.enums.RoleEnum;
 import com.ocr.projet6.dao.UtilisateurRepository;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @EnableWebMvc
@@ -35,6 +38,7 @@ public class WebMvcConfig extends WebMvcAutoConfiguration {
         utilisateurRepository.save(test);
         utilisateurRepository.save(adminUser);
     }
+
 
 
 }

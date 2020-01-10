@@ -87,7 +87,7 @@
                                         <tr th:each="v:${listVoie}">
                                             <td align="center" th:text="${v.nomVoie}"></td>
                                             <td align="center" th:text="${v.secteur}"></td>
-                                            <td align="center" th:text="${v.difficulte}"></td>
+                                            <td align="center" th:text="${v.cotation.cote}"></td>
                                             <td align="center" th:text="${v.hauteurVoie}"></td>
                                             <td align="center" sec:authorize="hasRole('ROLE_USER')" th:if="${v.site.utilisateur.idUser==utilisateurConnecte.idUser}"><a
                                                     th:href="@{/site/{idSite}/voie/{idVoie}/edit(idSite=${site.idSite},idVoie=${v.idVoie})}">    <i class="fa fa-edit "></i></a>

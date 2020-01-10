@@ -2,6 +2,7 @@ package com.ocr.projet6.web;
 
 import com.ocr.projet6.Metier.ClimbMetierImpl;
 import com.ocr.projet6.Metier.IClimbMetier;
+import com.ocr.projet6.dao.CotationRepository;
 import com.ocr.projet6.dao.LongueurRepository;
 import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.VoieRepository;
@@ -22,22 +23,24 @@ public class VoieController {
     @Autowired
     private SiteRepository siteRepository;
     @Autowired
-    private LongueurRepository longueurRepository;
-    @Autowired
     private VoieRepository voieRepository;
     @Autowired
     private IClimbMetier iClimbMetier;
+    @Autowired
+    private CotationRepository cotationRepository;
 
 
     @GetMapping(value = "/site/{idSite}/voie/add")
     public String addVoie(Model model,@PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
         Utilisateur utilisateur=iClimbMetier.userConnected();
+        List<Cotation> cotationList=cotationRepository.findAll();
         Voie voie=new Voie();
         if (s.isPresent()){
             Site sit=s.get();
             if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
                 voie.setSite(sit);
+                model.addAttribute("listCotation",cotationList);
                 model.addAttribute("voie",voie);
                 return "addFormVoie";
             } return "403";
@@ -69,6 +72,7 @@ public class VoieController {
                            @PathVariable("idVoie") Long idVoie) {
         Optional<Voie> v=voieRepository.findById(idVoie);
         Optional<Site> s=siteRepository.findById(idSite);
+        List<Cotation> cotationList=cotationRepository.findAll();
         Utilisateur utilisateur=iClimbMetier.userConnected();
         Site sit=null;
         Voie voi = null;
@@ -78,7 +82,8 @@ public class VoieController {
             voi.setSite(sit);
             if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
                 model.addAttribute("voie", voi);
-
+                model.addAttribute("listCotation",cotationList);
+                return "editFormVoie";
             }return "403";
         }
         return "redirect:/site/"+idSite+"/consult";

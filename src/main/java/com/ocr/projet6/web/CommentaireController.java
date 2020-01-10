@@ -5,6 +5,7 @@ import com.ocr.projet6.dao.CommentaireRepository;
 import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.UtilisateurRepository;
 import com.ocr.projet6.entities.*;
+import com.ocr.projet6.enums.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -57,12 +58,10 @@ public class CommentaireController {
                              @PathVariable("idSite")Long idSite){
         Optional<Commentaire> c=commentaireRepository.findById(idCommentaire);
         Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
-        boolean admin =SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().contains("ADMIN");
         Commentaire commentaire=null;
         if (c.isPresent()){
             commentaire=c.get();
-
-            if (utilisateurConnecte.getIdUser()==commentaire.getUtilisateur().getIdUser()||admin==true){
+            if (utilisateurConnecte.getIdUser()==commentaire.getUtilisateur().getIdUser()||utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_ADMIN)){
                 commentaireRepository.deleteById(idCommentaire);
             } else return "403";
         }
@@ -103,7 +102,7 @@ public class CommentaireController {
         if(s.isPresent()&&c.isPresent()) {
             com=c.get();
             site=s.get();
-            if (utilisateur.getIdUser()==com.getSite().getUtilisateur().getIdUser()||utilisateur.getRoles().toString().contains("ADMIN")){
+            if (utilisateur.getIdUser()==com.getSite().getUtilisateur().getIdUser()||utilisateur.getRoles().contains(RoleEnum.ROLE_ADMIN)){
                 com.setContenu(commentaire.getContenu());
                 commentaire.setSite(site);
                 System.out.println(com.getDate());

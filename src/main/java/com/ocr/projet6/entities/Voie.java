@@ -20,8 +20,6 @@ public class Voie implements Serializable {
     @Column(name = "secteur")
     private String secteur;
 
-    @Column(name = "difficulte")
-    private  String difficulte;
 
     @Column(name = "hauteurVoie")
     private double hauteurVoie;
@@ -30,16 +28,19 @@ public class Voie implements Serializable {
     @JoinColumn(name ="ID_SITE" )
     private Site site;
 
+    @ManyToOne
+    @JoinColumn(name ="ID_COTE" )
+    private Cotation cotation;
 
     @OneToMany(mappedBy = "voie", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Collection<Longueur> longueurs;
 
     public Voie() { super();}
 
-    public Voie(String nomVoie,String secteur,String difficulte, double hauteurVoie, Site site) {
+    public Voie(String nomVoie,String secteur,Cotation cotation, double hauteurVoie, Site site) {
         this.nomVoie = nomVoie;
         this.secteur = secteur;
-        this.difficulte = difficulte;
+        this.cotation=cotation;
         this.hauteurVoie = hauteurVoie;
         this.site=site;
     }
@@ -68,12 +69,12 @@ public class Voie implements Serializable {
         this.secteur = secteur;
     }
 
-    public String getDifficulte() {
-        return difficulte;
+    public Cotation getCotation() {
+        return cotation;
     }
 
-    public void setDifficulte(String difficulte) {
-        this.difficulte = difficulte;
+    public void setCotation(Cotation cotation) {
+        this.cotation = cotation;
     }
 
     public double getHauteurVoie() {

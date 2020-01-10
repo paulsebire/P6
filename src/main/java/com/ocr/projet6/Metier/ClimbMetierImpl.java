@@ -125,6 +125,9 @@ public class ClimbMetierImpl implements IClimbMetier {
         return utilisateur;
     }
 
-
+    @Override
+    public List<Site> listSiteWithImg(){
+        return siteRepository.listSiteWithImg();
+    }
 
 }
