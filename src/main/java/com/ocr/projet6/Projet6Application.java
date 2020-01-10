@@ -40,7 +40,7 @@ public class Projet6Application implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         Cotation cot1=cotationRepository.findByCote("3");
-        Cotation cot2=cotationRepository.findByCote("4");
+        Cotation cot2=cotationRepository.findByCote("4a");
 
         Utilisateur admin = utilisateurRepository.findByUsername("admin");
         Utilisateur user = utilisateurRepository.findByUsername("user");

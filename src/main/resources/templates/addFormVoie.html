@@ -49,8 +49,8 @@
                         <span  class="red" th:errors="${voie.cotation}">
                         </span>
                     </label>
-                    <select class="form-control"  name="difficulte">
-                        <option th:each="lc:${listCotation}"  th:value="${voie.cotation}" th:text="${lc.cote}"></option>
+                    <select class="form-control"  name="cotationId">
+                        <option th:each="lc:${listCotation}"  th:value="${lc.id}" th:text="${lc.cote}"></option>
                     </select>
                 </div>
                 <div class="form-group">
