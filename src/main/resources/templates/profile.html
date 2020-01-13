@@ -60,13 +60,16 @@
                                 <a class="nav-link" th:class="${topoBool}==true?'nav-link active':'nav-link'" th:href="@{/utilisateur/profil/topos}">Mes Topos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:class="${demandeEmisesBool}==true?'nav-link active':'nav-link'" th:href="@{/utilisateur/profil/reservations/emises}">Réservations de Topo émises</a>
+                                <a class="nav-link" th:class="${demandeEmisesBool}==true?'nav-link active':'nav-link'"
+                                   th:href="@{/utilisateur/profil/reservations/emises}">Réservations de Topo émises</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:class="${demandeRecueBool}==true?'nav-link active':'nav-link'" th:href="@{/utilisateur/profil/reservations/recues}">Réservations de Topo reçues ([[${listResaRecue.size()}]])</a>
+                                <a class="nav-link" th:class="${demandeRecueBool}==true?'nav-link active':'nav-link'"
+                                   th:href="@{/utilisateur/profil/reservations/recues}">Réservations de Topo reçues ([[${listResaRecue.size()}]])</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:class="${demandeAccepteesBool}==true?'nav-link active':'nav-link'" th:href="@{/utilisateur/profil/reservations/acceptees}">Réservations de Topo acceptées</a>
+                                <a class="nav-link" th:class="${demandeAccepteesBool}==true?'nav-link active':'nav-link'"
+                                   th:href="@{/utilisateur/profil/reservations/acceptees}">Réservations de Topo acceptées</a>
                             </li>
                         </ul>
                     </div>
