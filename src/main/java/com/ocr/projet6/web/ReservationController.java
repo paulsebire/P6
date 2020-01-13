@@ -129,9 +129,11 @@ private IClimbMetier iClimbMetier;
 
         Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         model.addAttribute("utilisateurConnecte",utilisateurConnecte);
-        Page<Reservation> pageReservations = iClimbMetier.demandeAcceptees(utilisateurConnecte.getUsername(),pageReservation,sizeReservation);
-        model.addAttribute("listResaRecue",pageReservations.getContent());
-        int[] pagesReservation=new int[pageReservations.getTotalPages()];
+        Page<Reservation> pageReservationsAcceptees = iClimbMetier.demandeAcceptees(utilisateurConnecte.getUsername(),pageReservation,sizeReservation);
+        Page<Reservation> pageReservationsRecues = iClimbMetier.demandeEnAttenteAcceptation(utilisateurConnecte.getUsername(),pageReservation,sizeReservation);
+        model.addAttribute("listResaRecue",pageReservationsRecues.getContent());
+        model.addAttribute("listResaAcceptees",pageReservationsAcceptees.getContent());
+        int[] pagesReservation=new int[pageReservationsAcceptees.getTotalPages()];
         int paginationEnablerResa=pagesReservation.length;
         model.addAttribute("paginationEnablerResa",paginationEnablerResa);
         model.addAttribute("pagesReservation",pagesReservation);
