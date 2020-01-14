@@ -2,6 +2,7 @@ package com.ocr.projet6.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,7 +11,8 @@ public class Commentaire implements Serializable {
     @Id @GeneratedValue
     private Long id;
 
-    @Column(name = "contenu")
+    @Column(name = "contenu",columnDefinition = "text")
+    @Size (min = 2, max = 1000)
     private String contenu;
 
     @Column(name = "date")

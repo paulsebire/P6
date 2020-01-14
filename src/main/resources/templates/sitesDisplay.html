@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="col-8 border rounded-right">
                                     <p th:text="${lc.contenu}"></p>
-                                    <p class="card-text"><small class="text-muted" >posté le:  [[${lc.date.getDate()+'/'}+${lc.date.getMonth()+1+'/'}+${lc.date.getYear()+1900}]] </small>
+                                    <p class="card-text"><small class="text-muted" >posté le: </small><small class="text-muted" th:text="${#dates.format(lc.date, 'dd/MM/yyyy HH:mm')}"></small>
                                         <a  class="float-right ml-2" onclick="return confirm('Etes vous sûr(e) de vouloir supprimer le commentaire')"
                                             th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} or ${#authorization.expression('hasRole(''ROLE_USER'')')} and ${lc.utilisateur.idUser}==${utilisateurConnecte.idUser}"
                                            th:href="@{/site/{idSite}/commentaire/{idCommentaire}/delete(idSite=${site.idSite},idCommentaire=${lc.getId()})}"><i class="fa fa-trash"></i></a>
@@ -206,7 +206,7 @@
                             <form th:action="@{/site/{idSite}/commentaire/save(idSite=${site.idSite})}" method="post">
                                 <div class="form-group">
                                     <label for="textarea">Votre commentaire :</label>
-                                    <textarea id="textarea" class="form-control" name="contenu" rows="4" value="écrivez votre texte en 255 caractères" maxlength="255"></textarea>
+                                    <textarea id="textarea" class="form-control" name="contenu" rows="4" value="écrivez votre texte en 1000 caractères" maxlength="1000"></textarea>
                                     <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
                                 </div>
                                 <button class="btn btn-primary" type="submit">Envoyer</button>

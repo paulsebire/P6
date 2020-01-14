@@ -25,7 +25,7 @@ private ReservationRepository reservationRepository;
 @Autowired
 private IClimbMetier iClimbMetier;
 
-    @GetMapping(value = "/topo/{id}/reservation/accepter")
+    @GetMapping(value = "/topo/reservation/{id}/accepter")
     public String accepterReservation(Model model, @PathVariable(value = "id")Long idReservation){
         Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         Optional<Reservation> r=reservationRepository.findById(idReservation) ;
@@ -37,9 +37,11 @@ private IClimbMetier iClimbMetier;
             if (t.isPresent()){
                 topo=t.get();
                 if (utilisateurConnecte.getIdUser()==topo.getUtilisateur().getIdUser()){
+                    topo.setDisponibilite(false);
                     reservation.setAcceptation(true);
                     reservation.setDemandeEnCours(false);
                     reservationRepository.save(reservation);
+                    topoRepository.save(topo);
                     return "redirect:/utilisateur/profil/reservations/recues";
                 }
             }
@@ -47,7 +49,7 @@ private IClimbMetier iClimbMetier;
         }
         return "403";
     }
-    @GetMapping(value = "/topo/{id}/reservation/refuser")
+    @GetMapping(value = "/topo/reservation/{id}/refuser")
     public String refuserReservation(Model model, @PathVariable(value = "id")Long idReservation){
         Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         Optional<Reservation> r=reservationRepository.findById(idReservation) ;
@@ -63,11 +65,10 @@ private IClimbMetier iClimbMetier;
                     reservation.setDemandeEnCours(false);
                     reservationRepository.save(reservation);
                     return "redirect:/utilisateur/profil/reservations/recues";
-                }
-            }
+                }return "403";
+            }return "redirect:/utilisateur/profil/reservations/recues";
 
-        }
-        return "403";
+        }return "redirect:/utilisateur/profil/reservations/recues";
     }
     @GetMapping(value = "/utilisateur/profil/reservations/emises" )
     public String userProfileResaEmises (Model model,
@@ -151,6 +152,27 @@ private IClimbMetier iClimbMetier;
         model.addAttribute("demandeAccepteesBool",demandeAccepteesBool);
 
         return "profile";
+    }
+    @GetMapping(value = "/topo/reservation/{id}/cloturer")
+    public String cloturerResa(Model model, @PathVariable(value = "id")Long idReservation){
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
+        Optional<Reservation> r=reservationRepository.findById(idReservation) ;
+        Topo topo=null;
+        Reservation reservation=null;
+        if (r.isPresent()){
+            reservation=r.get();
+            Optional<Topo> t=topoRepository.findById(reservation.getTopo().getId());
+            if (t.isPresent()){
+                topo=t.get();
+                if (utilisateurConnecte.getIdUser()==topo.getUtilisateur().getIdUser()){
+                    topo.setDisponibilite(true);
+                    topoRepository.save(topo);
+                    reservationRepository.deleteById(idReservation);
+                    return "redirect:/utilisateur/profil/reservations/acceptees";
+                }return "403";
+            }return "redirect:/utilisateur/profil/reservations/acceptees";
+
+        }return "redirect:/utilisateur/profil/reservations/acceptees";
     }
 
 }

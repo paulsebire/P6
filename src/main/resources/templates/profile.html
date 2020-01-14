@@ -137,7 +137,7 @@
                             <td align="center" ><a th:text="${lr.topo.nom}"  th:href="@{/topo/{id}/consult(id=${lr.topo.id})}"></a></td>
                             <td align="center" ><a th:text="${lr.topo.site.nameSite}" th:href="@{/site/{idSite}/consult(idSite=${lr.topo.site.idSite})}"></a></td>
                             <td align="center" th:text="${lr.topo.site.localisation}"></td>
-                            <td align="center" th:text="${lr.date.getDate()+'/'}+${lr.date.getMonth()+1+'/'}+${lr.date.getYear()+1900}"></td>
+                            <td align="center" th:text="${#dates.format(lr.date, 'dd/MM/yyyy')}"></td>
                             <td align="center" th:if="${lr.demandeEnCours}==true">En cours <i class="far fa-clock" style="color: green"></i></td>
                             <td align="center" th:if="${lr.acceptation}==true and ${lr.demandeEnCours}==false"><i class="fa fa-check-circle" style="color: green"></i></td>
                             <td align="center" th:if="${lr.acceptation}==false and ${lr.demandeEnCours}==false"><i class="fa fa-times-circle" style="color: red"></i></td>
@@ -183,8 +183,8 @@
                             <td align="center" th:text="${lr.topo.site.localisation}"></td>
                             <td align="center" th:text="${lr.utilisateur.username}"></td>
                             <td align="center" th:text="${#dates.format(lr.date, 'dd/MM/yyyy')}"></td>
-                            <td align="center" ><a class="btn btn-success"  th:href="@{/topo/{id}/reservation/accepter(id=${lr.id})}"><i class="fas fa-check"></i> Accepter</a></td>
-                            <td align="center" ><a class="btn btn-danger"  th:href="@{/topo/{id}/reservation/refuser(id=${lr.id})}"><i class="fas fa-times"></i> Refuser</a></td>
+                            <td align="center" ><a class="btn btn-success"  th:href="@{/topo/reservation/{id}/accepter(id=${lr.id})}"><i class="fas fa-check"></i> Accepter</a></td>
+                            <td align="center" ><a class="btn btn-danger"  th:href="@{/topo/reservatio/{id}/refuser(id=${lr.id})}"><i class="fas fa-times"></i> Refuser</a></td>
                         </tr>
                     </table>
                     <div class="container">
@@ -213,6 +213,7 @@
                             <th class="text-center">Demandeur</th>
                             <th class="text-center">date</th>
                             <th class="text-center">Contacter<br/> le demandeur</th>
+                            <th class="text-center">Clôturer<br/> la demande</th>
                         </tr>
                         <tr th:each="lr:${listResaAcceptees}">
                             <td align="center" th:text="${lr.id}"></td>
@@ -220,8 +221,9 @@
                             <td align="center" ><a th:text="${lr.topo.site.nameSite}" th:href="@{/site/{idSite}/consult(idSite=${lr.topo.site.idSite})}"></a></td>
                             <td align="center" th:text="${lr.topo.site.localisation}"></td>
                             <td align="center" th:text="${lr.utilisateur.username}"></td>
-                            <td align="center" th:text="${lr.date.getDate()+'/'}+${lr.date.getMonth()+1+'/'}+${lr.date.getYear()+1900}"></td>
+                            <td align="center" th:text="${#dates.format(lr.date, 'dd/MM/yyyy')}"></td>
                             <td><a class="btn btn-primary" th:href="'mailto:' + ${lr.utilisateur.email}"><i class="far fa-envelope"></i></a></td>
+                            <td align="center" ><a class="btn btn-danger"  th:href="@{/topo/reservation/{id}/cloturer(id=${lr.id})}"><i class="fas fa-times"></i> Clôturer</a></td>
                         </tr>
                     </table>
                     <div class="container">
