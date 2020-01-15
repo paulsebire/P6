@@ -26,11 +26,11 @@
 </head>
 <body>
     <div layout:fragment="content">
-            <div class=" container h-100 botspacer">
+            <div class="container botspacer justify-content-center">
                 <div class="row justify-content-center">
                     <div>
-                        <div class="spacer col-md-12 col-sm-12 col-lg-12">
-                            <div class="card" th:if="${site}">
+                        <div class="spacer ">
+                            <div class="card col-sm-12" th:if="${site}">
                                 <div class="card-header ">
                                     <h3 class="card-title">Informations sur le site
                                         <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
@@ -47,31 +47,31 @@
 
                                         <br/>
                                         <label>Officiel:</label>
-                                        <label align="center" th:if="${site.officiel}==true"><i class="fa fa-check-circle" style="color: green"></i></label>
-                                        <label align="center" th:if="${site.isOfficiel()}==false"><i class="fa fa-times-circle" style="color: grey"></i></i></label>
+                                        <label align="center" th:if="${site.officiel}==true"><i class="fas fa-check-circle" style="color: green"></i></label>
+                                        <label align="center" th:if="${site.isOfficiel()}==false"><i class="fas fa-times-circle" style="color: grey"></i></i></label>
 
                                     </div>
                                     <div class="ml-auto justify-content-right">
                                         <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_ADMIN')"
                                            th:if="${site.officiel==false}"
-                                           th:href="@{/site/{idSite}/edit/officiel(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Rendre officiel</a>
+                                           th:href="@{/site/{idSite}/edit/officiel(idSite=${site.idSite})}"><i class="fas fa-check-circle"></i> Rendre officiel</a>
                                         <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_ADMIN')"
                                            th:if="${site.officiel==true}"
-                                           th:href="@{/site/{idSite}/edit/officiel(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Rendre non-officiel</a>
+                                           th:href="@{/site/{idSite}/edit/officiel(idSite=${site.idSite})}"><i class="fas fa-times-circle"></i> Rendre non-officiel</a>
                                         <br/><a class="btn btn-primary float-right mt-1" sec:authorize="hasRole('ROLE_USER')"
                                                 th:if="${utilisateurConnecte.idUser}==${site.utilisateur.idUser}"
-                                                th:href="@{/site/{idSite}/edit(idSite=${site.idSite})}"><i class="fa fa-edit "></i> Modifier le site</a>
+                                                th:href="@{/site/{idSite}/edit(idSite=${site.idSite})}"><i class="fas fa-edit "></i> Modifier le site</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row justify-content-center ">
-                            <div class="card mr-2 spacer" th:if="${site}">
+                        <div class="row justify-content-center col-xs-12 ">
+                            <div class="card mr-2 spacer col-xs-12" th:if="${site}">
                                 <div class="card-header">
                                     <h3 class="card-title">Liste des voies
                                         <a class="btn btn-primary float-right" sec:authorize="hasRole('ROLE_USER')"
                                            th:if="${utilisateurConnecte.idUser}==${site.utilisateur.idUser}"
-                                           th:href="@{/site/{idSite}/voie/add(idSite=${site.idSite})}"><i class="fa fa-plus"></i> Ajouter une voie</a>
+                                           th:href="@{/site/{idSite}/voie/add(idSite=${site.idSite})}"><i class="fas fa-plus"></i> Ajouter une voie</a>
                                     </h3>
                                 </div>
                                 <div class="card-body justify-content-center" th:if="${site}">
@@ -90,11 +90,11 @@
                                             <td align="center" th:text="${v.cotation.cote}"></td>
                                             <td align="center" th:text="${v.hauteurVoie}"></td>
                                             <td align="center" sec:authorize="hasRole('ROLE_USER')" th:if="${v.site.utilisateur.idUser==utilisateurConnecte.idUser}"><a
-                                                    th:href="@{/site/{idSite}/voie/{idVoie}/edit(idSite=${site.idSite},idVoie=${v.idVoie})}">    <i class="fa fa-edit "></i></a>
+                                                    th:href="@{/site/{idSite}/voie/{idVoie}/edit(idSite=${site.idSite},idVoie=${v.idVoie})}">    <i class="fas fa-edit "></i></a>
                                             </td>
                                             <td align="center" sec:authorize="hasRole('ROLE_USER')" th:if="${v.site.utilisateur.idUser==utilisateurConnecte.idUser}">
                                                 <a onclick="return confirm('Etes vous sûr(e) de vouloir supprimer la voie'+'? \n Vous allez supprimer toutes les longueurs associées')"
-                                                   th:href="@{/site/{idSite}/voie/{idVoie}/delete(idSite=${v.site.idSite} ,idVoie=${v.idVoie},pageVoie=${pageCouranteVoie},sizeVoie=${sizeVoie})}"><i class="fa fa-trash"></i></a>
+                                                   th:href="@{/site/{idSite}/voie/{idVoie}/delete(idSite=${v.site.idSite} ,idVoie=${v.idVoie},pageVoie=${pageCouranteVoie},sizeVoie=${sizeVoie})}"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
                                     </table>
@@ -110,7 +110,7 @@
                                     <br/>
                                 </div>
                             </div>
-                            <div class="card spacer">
+                            <div class="card spacer col-xs-12">
                                 <div class="card-header">
                                     <h3 class="card-title">Liste des longueurs
                                         <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
@@ -134,11 +134,11 @@
                                             <td align="center" th:text="${ll.nomLongueur}"></td>
                                             <td align="center" th:text="${ll.hauteurLongueur}"></td>
                                             <td align="center" sec:authorize="hasRole('ROLE_USER')"th:if="${ll.voie.site.utilisateur.idUser}==${utilisateurConnecte.idUser}"><a
-                                                    th:href="@{/site/{idSite}/longueur/{idLongueur}/edit(idSite=${ll.voie.site.idSite},idLongueur=${ll.idLongueur})}"><i class="fa fa-edit"></i></a>
+                                                    th:href="@{/site/{idSite}/longueur/{idLongueur}/edit(idSite=${ll.voie.site.idSite},idLongueur=${ll.idLongueur})}"><i class="fas fa-edit"></i></a>
                                             </td>
                                             <td align="center" sec:authorize="hasRole('ROLE_USER')" th:if="${ll.voie.site.utilisateur.idUser}==${utilisateurConnecte.idUser}">
                                                 <a onclick="return confirm('Etes vous sûr(e)?')"
-                                                   th:href="@{/longueur/{idLongueur}/delete(idLongueur=${ll.idLongueur},pageLongueur=${pageCouranteLongueur},sizeLongueur=${sizeLongueur},nameSite=${site.nameSite})}"> <i class="fa fa-trash"></i></a>
+                                                   th:href="@{/longueur/{idLongueur}/delete(idLongueur=${ll.idLongueur},pageLongueur=${pageCouranteLongueur},sizeLongueur=${sizeLongueur},nameSite=${site.nameSite})}"> <i class="fas fa-trash"></i></a>
                                             </td>
 
                                         </tr>
@@ -158,7 +158,7 @@
                         </div>
                     </div>
                 </div>
-                <div sec:authorize="hasRole('ROLE_USER')">
+                <div sec:authorize="hasRole('ROLE_USER')" class=" container justify-content-center">
                     <div class="card spacer" >
                         <div class="card-header">
                             <h3 class="card-title" >Liste des commentaires</h3>
@@ -176,9 +176,9 @@
                                     <p class="card-text"><small class="text-muted" >posté le: </small><small class="text-muted" th:text="${#dates.format(lc.date, 'dd/MM/yyyy HH:mm')}"></small>
                                         <a  class="float-right ml-2" onclick="return confirm('Etes vous sûr(e) de vouloir supprimer le commentaire')"
                                             th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} or ${#authorization.expression('hasRole(''ROLE_USER'')')} and ${lc.utilisateur.idUser}==${utilisateurConnecte.idUser}"
-                                           th:href="@{/site/{idSite}/commentaire/{idCommentaire}/delete(idSite=${site.idSite},idCommentaire=${lc.getId()})}"><i class="fa fa-trash"></i></a>
+                                           th:href="@{/site/{idSite}/commentaire/{idCommentaire}/delete(idSite=${site.idSite},idCommentaire=${lc.getId()})}"><i class="fas fa-trash"></i></a>
                                         <a  class="float-right" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} or ${#authorization.expression('hasRole(''ROLE_USER'')')} and ${lc.utilisateur.idUser}==${utilisateurConnecte.idUser}"
-                                                th:href="@{/site/{idSite}/commentaire/{idCommentaire}/edit(idSite=${site.idSite},idCommentaire=${lc.getId()})}"><i class="fa fa-edit "></i></a></td>
+                                                th:href="@{/site/{idSite}/commentaire/{idCommentaire}/edit(idSite=${site.idSite},idCommentaire=${lc.getId()})}"><i class="fas fa-edit "></i></a></td>
                                     </p>
                                 </div>
 

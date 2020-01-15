@@ -206,14 +206,13 @@ public class SiteController {
         Optional<Site> s=siteRepository.findById(idSite);
         Site site=null;
         Utilisateur utilisateur=iClimbMetier.userConnected();
-        if (utilisateur.getIdUser()==site.getUtilisateur().getIdUser()) {
             if (s.isPresent()) {
                 site = s.get();
-                model.addAttribute("site", site);
-            }
-            return "editFormSite";
-        }
-        return "403";
+                if (utilisateur.getIdUser()==site.getUtilisateur().getIdUser()&& utilisateur.getRoles().contains(RoleEnum.ROLE_USER)){
+                    model.addAttribute("site", site);
+                    return "editFormSite";
+                }return "403";
+            }return "redirect:/site/"+idSite+"/consult";
     }
     @RequestMapping(value = "/home")
     public String home(Model model){

@@ -93,9 +93,9 @@
                                 <td align="center" th:if="${lto.disponibilite}==true"><i class="fa fa-check-circle" style="color: green"></i></td>
                                 <td align="center" th:if="${lto.disponibilite}==false"><i class="fa fa-times-circle" style="color: red"></i></i></td>
                                 <td align="center" ><a sec:authorize="hasRole('ROLE_USER')" th:href="@{/topo/{id}/edit(id=${lto.id})}">
-                                    <i class="fa fa-edit "></i></a></td>
+                                    <i class="fas fa-edit "></i></a></td>
                                 <td align="center" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')} and ${lto.utilisateur.idUser}==${utilisateurConnecte.idUser}" >
-                                    <a onclick="return confirm('Etes vous sûr(e) de vouloir supprimer le commentaire')" th:href="@{/topo/{idTopo}/delete(idTopo=${lto.id})}"><i class="fa fa-trash"></i></a>
+                                    <a onclick="return confirm('Etes vous sûr(e) de vouloir supprimer le commentaire')" th:href="@{/topo/{idTopo}/delete(idTopo=${lto.id})}"><i class="fas fa-trash"></i></a>
                                 </td>
                             </tr>
                         </table>
@@ -138,10 +138,13 @@
                             <td align="center" ><a th:text="${lr.topo.site.nameSite}" th:href="@{/site/{idSite}/consult(idSite=${lr.topo.site.idSite})}"></a></td>
                             <td align="center" th:text="${lr.topo.site.localisation}"></td>
                             <td align="center" th:text="${#dates.format(lr.date, 'dd/MM/yyyy')}"></td>
-                            <td align="center" th:if="${lr.demandeEnCours}==true">En cours <i class="far fa-clock" style="color: green"></i></td>
-                            <td align="center" th:if="${lr.acceptation}==true and ${lr.demandeEnCours}==false"><i class="fa fa-check-circle" style="color: green"></i></td>
-                            <td align="center" th:if="${lr.acceptation}==false and ${lr.demandeEnCours}==false"><i class="fa fa-times-circle" style="color: red"></i></td>
-                            <td  th:if="${lr.acceptation}==true"><a class="btn btn-primary" th:href="'mailto:' + ${lr.topo.utilisateur.email}"><i class="far fa-envelope"></i></a></td>
+                            <td align="center" th:if="${lr.demandeEnCours}==true and ${lr.cloturer}==false">En cours <i class="far fa-clock" style="color: green"></i></td>
+                            <td align="center" th:if="${lr.acceptation}==true and ${lr.demandeEnCours}==false and ${lr.cloturer}==false"><i class="fas fa-check-circle" style="color: green"></i></td>
+                            <td align="center" th:if="${lr.acceptation}==false and ${lr.demandeEnCours}==false and ${lr.cloturer}==false"><i class="fas fa-times-circle" style="color: red"></i></td>
+                            <td align="center" th:if="${lr.cloturer}==true">clôturée</i></td>
+                            <td  th:if="${lr.acceptation}==true"><a class="btn btn-primary" th:href="'mailto:' + ${lr.topo.utilisateur.email}
+                            +'?subject= Reservation du topo '+${lr.topo.nom}+'&body=Bonjour '+${lr.topo.utilisateur.username}+',%0D%0A' +'%0D%0AJe vous contacte pour la réservation du topo ' ${lr.topo.nom}
+                            +'Pouvons-nous convenir d%27une date et d%27un lieu de rendez-vous?%0D%0ACordialement%0D%0A'+${utilisateurConnecte.username}"><i class="far fa-envelope"></i></a></td>
                         </tr>
                     </table>
                     <div class="container">

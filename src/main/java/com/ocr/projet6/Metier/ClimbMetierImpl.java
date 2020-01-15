@@ -130,4 +130,9 @@ public class ClimbMetierImpl implements IClimbMetier {
         return siteRepository.listSiteWithImg();
     }
 
+
+    @Override
+    public List<Reservation> demandeEnCoursbyTopo (Long idTopo){
+        return reservationRepository.demandeEnCoursbyTopo(idTopo);
+    }
 }

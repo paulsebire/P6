@@ -30,10 +30,9 @@
           <div class="card-header" ><h3 class="card-title">Confirmation</h3></div>
             <div class="card-body">
                 <div class="form-group">
-                    <label>id:</label>
-                    <label th:text="${commentaire.id}"/><br/>
-                    <label>contenu:</label>
-                    <label th:text="${commentaire.contenu}"/><br/>
+                    <p>Votre Commentaire à été modifié</p>
+                    <label>contenu:</label><br/>
+                    <label th:text="${commentaire.contenu}"/>
                 </div>
                 <div>
                     <a class="btn btn-primary float-right" th:href="@{/site/{idSite}/consult(idSite=${site.idSite})}">Aller sur le site</a>

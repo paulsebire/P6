@@ -213,29 +213,7 @@ public class TopoController {
         return "editFormTopo";
     }
 
-    @GetMapping(value = "/topo/{idTopo}/reservation")
-    public String DemandedeReservation(Model model,@PathVariable("idTopo")Long idTopo){
-        Optional<Topo> t=topoRepository.findById(idTopo);
-        Topo topo=null;
-        Utilisateur demandeur=iClimbMetier.userConnected();
-        if (t.isPresent()){
-            if (demandeur.getRoles().toString().contains("USER")){
-                topo=t.get();
-                System.out.println("propri ="+topo.getUtilisateur().getUsername());
-                Reservation reservation=new Reservation(false,true,demandeur,topo);
-                reservation.setDate(new Date());
-                reservationRepository.save(reservation);
-                model.addAttribute("topo", topo);
-                model.addAttribute("utilisateurConnecte",demandeur);
-                boolean demandeEnCours=iClimbMetier.demandeEnCours(demandeur.getUsername(),topo.getId());
-                System.out.println("demandeencours="+demandeEnCours);
-                model.addAttribute("demandeEnCours",demandeEnCours);
-                return "redirect:/topo/"+idTopo+"/consult";
-            }
-            return "403";
-        }
-        return "redirect:/topo/"+idTopo+"/consult";
-    }
+
 
 
     public  void formatField(Topo topo){

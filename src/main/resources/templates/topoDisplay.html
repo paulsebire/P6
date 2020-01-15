@@ -29,16 +29,23 @@
     <div layout:fragment="content" class="vbigspacer">
         <div class=" container h-100 ">
                 <div class="vbigspacer card  mx-auto col-md-6 ">
-                    <div class="card-header "><h3 class="card-title">Informations sur le Topo
-                        <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
-                           th:if="${utilisateurConnecte.idUser}!=${topo.utilisateur.idUser} and ${topo.disponibilite}!=false and ${demandeEnCours}==false"
-                           th:href="@{/topo/{idTopo}/reservation(idTopo=${topo.id})}">
-                            <i class="fa fa-ticket"></i> Réserver Le Topo </a>
-                        <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
-                           th:if="${utilisateurConnecte.idUser}!=${topo.utilisateur.idUser}  and ${demandeEnCours}==true"
-                           th:href="@{/utilisateur/profil/reservations/emises}">
-                            <i class="far fa-clock"></i>  Voir mes<br/>Demandes en cours</a>
-                    </h3></div>
+                    <div class="card-header row justify-text-center "><h3 class="card-title">Informations sur le Topo</h3>
+
+                            <a class="btn btn-primary float-right ml-auto mr-auto" sec:authorize="hasRole('ROLE_USER')"
+                               th:if="${utilisateurConnecte.idUser}!=${topo.utilisateur.idUser} and ${topo.disponibilite}!=false and ${demandeEnCours}==false"
+                               th:href="@{/topo/{idTopo}/reservation(idTopo=${topo.id})}">
+                                <i class="fa fa-ticket"></i> Réserver</a>
+                            <a class="btn btn-primary float-right ml-auto mr-auto" sec:authorize="hasRole('ROLE_USER')"
+                               th:if="${utilisateurConnecte.idUser}!=${topo.utilisateur.idUser}  and ${demandeEnCours}==true"
+                               th:href="@{/utilisateur/profil/reservations/emises}">
+                                <i class="far fa-clock"></i>  Voir mes<br/>Demandes en cours</a>
+                        <a class="btn btn-primary float-right ml-auto mr-auto" sec:authorize="hasRole('ROLE_USER')"
+                           th:if="${utilisateurConnecte.idUser}==${topo.utilisateur.idUser}"
+                           th:href="@{/topo/{id}/edit(id=${topo.id})}">
+                            <i class="fas fa-edit "></i> Modifier</a>
+
+
+                    </div>
                     <div class="card-body text-center" >
                         <div>
                             <label>Site:</label>

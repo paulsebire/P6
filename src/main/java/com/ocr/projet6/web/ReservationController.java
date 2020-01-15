@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -37,11 +39,31 @@ private IClimbMetier iClimbMetier;
             if (t.isPresent()){
                 topo=t.get();
                 if (utilisateurConnecte.getIdUser()==topo.getUtilisateur().getIdUser()){
+
+
+
+
                     topo.setDisponibilite(false);
                     reservation.setAcceptation(true);
                     reservation.setDemandeEnCours(false);
                     reservationRepository.save(reservation);
                     topoRepository.save(topo);
+
+                    List<Reservation> demandeEnCoursbyTopo =iClimbMetier.demandeEnCoursbyTopo(topo.getId());
+                    if (!demandeEnCoursbyTopo.isEmpty()){
+                        for (int k=0;k<demandeEnCoursbyTopo.size();k++) {
+                            Long id=demandeEnCoursbyTopo.get(k).getId();
+                            Optional<Reservation> resaCommune=reservationRepository.findById(id) ;
+                            if (resaCommune.isPresent()){
+                                Reservation reservationAutres=null;
+                                reservationAutres=resaCommune.get();
+                                reservationAutres.setAcceptation(false);
+                                reservationAutres.setDemandeEnCours(false);
+                                reservationRepository.save(reservationAutres);
+                            }
+                        }
+                    }
+
                     return "redirect:/utilisateur/profil/reservations/recues";
                 }
             }
@@ -167,12 +189,35 @@ private IClimbMetier iClimbMetier;
                 if (utilisateurConnecte.getIdUser()==topo.getUtilisateur().getIdUser()){
                     topo.setDisponibilite(true);
                     topoRepository.save(topo);
-                    reservationRepository.deleteById(idReservation);
+                    reservation.setCloturer(true);
+                    reservationRepository.save(reservation);
                     return "redirect:/utilisateur/profil/reservations/acceptees";
                 }return "403";
             }return "redirect:/utilisateur/profil/reservations/acceptees";
 
         }return "redirect:/utilisateur/profil/reservations/acceptees";
     }
-
+    @GetMapping(value = "/topo/{idTopo}/reservation")
+    public String DemandedeReservation(Model model,@PathVariable("idTopo")Long idTopo){
+        Optional<Topo> t=topoRepository.findById(idTopo);
+        Topo topo=null;
+        Utilisateur demandeur=iClimbMetier.userConnected();
+        if (t.isPresent()){
+            if (demandeur.getRoles().toString().contains("USER")){
+                topo=t.get();
+                System.out.println("propri ="+topo.getUtilisateur().getUsername());
+                Reservation reservation=new Reservation(false,true,false,demandeur,topo);
+                reservation.setDate(new Date());
+                reservationRepository.save(reservation);
+                model.addAttribute("topo", topo);
+                model.addAttribute("utilisateurConnecte",demandeur);
+                boolean demandeEnCours=iClimbMetier.demandeEnCours(demandeur.getUsername(),topo.getId());
+                System.out.println("demandeencours="+demandeEnCours);
+                model.addAttribute("demandeEnCours",demandeEnCours);
+                return "redirect:/topo/"+idTopo+"/consult";
+            }
+            return "403";
+        }
+        return "redirect:/topo/"+idTopo+"/consult";
+    }
 }

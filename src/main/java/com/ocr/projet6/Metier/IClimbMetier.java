@@ -2,9 +2,7 @@ package com.ocr.projet6.Metier;
 
 import com.ocr.projet6.entities.*;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface IClimbMetier {
@@ -23,4 +21,5 @@ public interface IClimbMetier {
     public Page<Utilisateur> listUtilisateur(int page, int size);
     public  Utilisateur userConnected();
     public List<Site> listSiteWithImg();
+    public List<Reservation> demandeEnCoursbyTopo (Long idTopo);
 }

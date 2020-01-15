@@ -20,6 +20,9 @@ public class Reservation implements Serializable {
     @Column(name = "demandeEnCours")
     private boolean demandeEnCours;
 
+    @Column(name = "cloturer")
+    private boolean cloturer = false;
+
     @Column(name = "date")
     private Date date;
 
@@ -34,11 +37,12 @@ public class Reservation implements Serializable {
 
     public Reservation() {super();}
 
-    public Reservation(boolean acceptation,boolean demandeEnCours,Utilisateur utilisateur, Topo topo){
+    public Reservation(boolean acceptation,boolean demandeEnCours,boolean cloturer,Utilisateur utilisateur, Topo topo){
         this.acceptation=acceptation;
         this.demandeEnCours=demandeEnCours;
         this.topo=topo;
         this.utilisateur=utilisateur;
+        this.cloturer=cloturer;
 
 
     }
@@ -49,6 +53,14 @@ public class Reservation implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isCloturer() {
+        return cloturer;
+    }
+
+    public void setCloturer(boolean cloturer) {
+        this.cloturer = cloturer;
     }
 
     public boolean isAcceptation() {

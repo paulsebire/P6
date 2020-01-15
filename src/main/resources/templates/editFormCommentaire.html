@@ -30,20 +30,6 @@
         <div class="card-body">
             <form th:action="@{/site/{idSite}/commentaire/{idCommentaire}/save(idSite=${site.idSite},idCommentaire=${commentaire.id})}" method="post">
                 <div class="form-group">
-                    <label class="control-label">Id:
-                        <span class="red" th:errors=" ${commentaire.id}">
-                        </span>
-                    </label>
-                    <input class="form-control" readonly="readonly" type="number" name="id" th:value="${commentaire.id}"/>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Utilisateur:
-                        <span class="red" th:errors=" ${commentaire.utilisateur.username}">
-                        </span>
-                    </label>
-                    <input class="form-control" type="text" name="username" readonly="readonly" th:value="${commentaire.utilisateur.username}"/>
-                </div>
-                <div class="form-group">
                     <label class="control-label">Ancien Contenu:<br/>
                         <span class="red" th:errors=" ${commentaire.contenu}">
                         </span>
