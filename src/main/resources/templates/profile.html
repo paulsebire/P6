@@ -144,7 +144,7 @@
                             <td align="center" th:if="${lr.cloturer}==true">clôturée</i></td>
                             <td  th:if="${lr.acceptation}==true"><a class="btn btn-primary" th:href="'mailto:' + ${lr.topo.utilisateur.email}
                             +'?subject= Reservation du topo '+${lr.topo.nom}+'&body=Bonjour '+${lr.topo.utilisateur.username}+',%0D%0A' +'%0D%0AJe vous contacte pour la réservation du topo ' ${lr.topo.nom}
-                            +'Pouvons-nous convenir d%27une date et d%27un lieu de rendez-vous?%0D%0ACordialement%0D%0A'+${utilisateurConnecte.username}"><i class="far fa-envelope"></i></a></td>
+                            +'Pouvons-nous convenir d%27une date et d%27un lieu de rendez-vous?%0D%0ACordialement%0D%0A'+${#httpServletRequest.remoteUser}"><i class="far fa-envelope"></i></a></td>
                         </tr>
                     </table>
                     <div class="container">
