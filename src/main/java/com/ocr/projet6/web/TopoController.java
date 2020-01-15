@@ -80,8 +80,7 @@ public class TopoController {
                        @RequestParam(name = "sizeTopo",defaultValue = "2") int sizeTopo,
                        @RequestParam(name = "motCle", defaultValue = "")String mc){
         try {
-            String formatedMc = ClimbMetierImpl.formatString(mc);
-            Page<Topo> pageTopos = topoRepository.chercherTopo("%" + formatedMc + "%", PageRequest.of(pageTopo, sizeTopo));
+            Page<Topo> pageTopos = topoRepository.chercherTopo("%" + mc + "%", PageRequest.of(pageTopo, sizeTopo));
             model.addAttribute("listTopo", pageTopos.getContent());
 
             int[] pagesTopos = new int[pageTopos.getTotalPages()];
@@ -138,7 +137,6 @@ public class TopoController {
         topo.setDisponibilite(true);
         Utilisateur utilisateur=iClimbMetier.userConnected();
         topo.setUtilisateur(utilisateur);
-        formatField(topo);
         topo.setDate(new Date());
         topoRepository.save(topo);
         model.addAttribute("topo",topo);
@@ -216,12 +214,5 @@ public class TopoController {
 
 
 
-    public  void formatField(Topo topo){
-        String formatedName= ClimbMetierImpl.formatString(topo.getNom());
-        topo.setNom(formatedName);
 
-        String formatedDescription= ClimbMetierImpl.formatString(topo.getDescription());
-        topo.setDescription(formatedDescription);
-        return;
-    }
 }

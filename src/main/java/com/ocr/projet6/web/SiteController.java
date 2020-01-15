@@ -56,8 +56,7 @@ public class SiteController {
                        @RequestParam(name = "sizeSite",defaultValue = "2") int sizeSite,
                        @RequestParam(name = "motCle", defaultValue = "")String mc){
         try {
-            String formatedMc = ClimbMetierImpl.formatString(mc);
-            Page<Site> pageSites = siteRepository.chercher("%" + formatedMc + "%", PageRequest.of(pageSite, sizeSite));
+            Page<Site> pageSites = siteRepository.chercher("%" + mc + "%", PageRequest.of(pageSite, sizeSite));
             model.addAttribute("listSite", pageSites.getContent());
 
             int[] pagesSites = new int[pageSites.getTotalPages()];
@@ -158,7 +157,6 @@ public class SiteController {
         Utilisateur utilisateur=iClimbMetier.userConnected();
         if (utilisateur.getRoles().toString().contains("USER")){
         site.setUtilisateur(utilisateur);
-        formatField(site);
         siteRepository.save(site);
         model.addAttribute("site",site);
         return "confirmationSite";
@@ -214,21 +212,7 @@ public class SiteController {
                 }return "403";
             }return "redirect:/site/"+idSite+"/consult";
     }
-    @RequestMapping(value = "/home")
-    public String home(Model model){
-        List<Site> listSiteWithImg= iClimbMetier.listSiteWithImg();
-        model.addAttribute("listSite",listSiteWithImg);
-        return "home";
-    }
 
 
-    public  void formatField(Site site){
-        String formatedLocalisation= ClimbMetierImpl.formatString(site.getLocalisation());
-        site.setLocalisation(formatedLocalisation);
-
-        String formatedName= ClimbMetierImpl.formatString(site.getNameSite());
-        site.setNameSite(formatedName);
-        return;
-    }
 
 }

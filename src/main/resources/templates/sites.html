@@ -27,7 +27,6 @@
 <body>
     <div layout:fragment="content">
         <div class=" container h-100">
-            <div>
                 <div class="mx-auto col-lg-4 h-100 vbigspacer">
                     <div class="bigspacer card-header card border-dark mt-4" ><h3 class="card-title" >Recherche sur critères</h3></div>
                     <div class="card-body border-dark">
@@ -36,7 +35,6 @@
                             <input type="text" name="motCle"/>
                             <button class="btn btn-primary" type="submit">Ok</button>
                         </form>
-                        <div class="red" th:if="${exception}"><label>Site introuvable</label></div>
                     </div>
                 </div>
                 <div class="row justify-content-center spacer">
@@ -45,7 +43,7 @@
                             <h3 class="card-title" th:if="!${motCle}">Liste des sites</h3>
                             <h3 class="card-title" th:if="${motCle}">Liste des sites contenant: <p class="text-center" th:text="${motCle}"></p></h3>
                         </div>
-                        <div class="card-body justify-content-center">
+                        <div class="card-body justify-content-center" th:if="${!listSite.isEmpty()}">
                             <table class="table table-striped">
                                 <tr>
                                     <th class="text-center">Nom</th>
@@ -59,10 +57,9 @@
                                     <td align="center" th:if="${ls.isOfficiel()}==false"><i class="fa fa-times-circle" style="color: grey"></i></i></td>
                                 </tr>
                             </table>
-                        </div>
                         <div class="container">
                             <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerSite>1}">
-                                <li  th:class="${pageCouranteSite}==${status.index}?'page-item active':'page-item'"
+                                <li  th:class="(${pageCouranteSite}==${status.index}?'page-item active':'page-item')"
                                      th:each="p,status:${pagesSite}">
                                     <a class="page-link" th:href="@{/site/search(pageSite=${status.index})}"
                                        th:text="${status.index}"></a>
@@ -71,9 +68,12 @@
                             <br/>
                         </div>
                     </div>
-             </div>
+                        <div class="card-body" th:if="${listSite.isEmpty()}">
+                            <p>Aucun site ne correspond à vos critères</p>
+                        </div>
+                    </div>
+                </div>
          </div>
     </div>
-</div>
 </body>
 </html>

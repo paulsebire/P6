@@ -180,8 +180,7 @@ public class UtilisateurController {
                            @RequestParam(name="pageUtilisateur",defaultValue = "0") int pageUtilisateur,
                            @RequestParam(name = "sizeUtilisateur",defaultValue = "4") int sizeUtilisateur){
         try {
-            String formatedMc = ClimbMetierImpl.formatString(mc);
-            Page<Utilisateur> pageUtilisateurs = utilisateurRepository.chercherUtilisateur("%" + formatedMc + "%", PageRequest.of(pageUtilisateur, sizeUtilisateur));
+            Page<Utilisateur> pageUtilisateurs = utilisateurRepository.chercherUtilisateur("%" + mc + "%", PageRequest.of(pageUtilisateur, sizeUtilisateur));
             model.addAttribute("listUtilisateur", pageUtilisateurs.getContent());
 
             int[] pagesUtilisateurs = new int[pageUtilisateurs.getTotalPages()];

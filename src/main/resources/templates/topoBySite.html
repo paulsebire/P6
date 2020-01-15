@@ -27,64 +27,64 @@
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 </head>
 <body>
-    <div layout:fragment="content" class="vbigspacer">
+    <div layout:fragment="content" class="spacer">
         <div class=" container h-100 ">
-                <div class="vbigspacer card  mx-auto col-md-6 ">
-                    <div class="card-header "><h3 class="card-title">Le site:</h3></div>
-                        <div class="card-body">
-                            <div>
-                                <label>Nom:</label>
-                                <label th:text="${site.nameSite}" class="mr-2"></label>
-                                <label>Localisation:</label>
-                                <label th:text="${site.localisation}"></label>
+                <div class="spacer card  mx-auto col-md-6 ">
+                    <div class="card-header ">
+                        <h3 class="card-title">Le site:</h3>
+                    </div>
+                    <div class="card-body">
+                            <label>Nom:</label>
+                            <label th:text="${site.nameSite}" class="mr-2"></label>
+                            <label>Localisation:</label>
+                            <label th:text="${site.localisation}"></label>
+                    </div>
+                </div>
+                <div class="row justify-content-center spacer">
+                        <div class="card" >
+                            <div class="card-header">
+                                <h3 class="card-title" >Liste des topos
+                                    <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
+                                       th:href="@{/topo/add}"><i class="fa fa-plus"></i> Ajouter <br/> un Topo</a>
+                                </h3>
+                            </div>
+                            <div class="card-body justify-content-center" th:if="${paginationEnablerTopo>0}">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th class="text-center">Nom</th>
+                                        <th class="text-center">Description</th>
+                                        <th class="text-center">Lieu</th>
+                                        <th class="text-center">Disponibilité</th>
+                                        <th class="text-center">Date de<br/> parution</th>
+                                        <th class="text-center">Propiétaire</th>
+
+                                    </tr>
+                                    <tr th:each="lto:${listTopo}">
+                                        <td align="center" ><a th:text="${lto.nom}"  th:href="@{/topo/{id}/consult(id=${lto.id})}"></a></td>
+                                        <td align="center" th:text="${lto.description}"></td>
+                                        <td align="center" th:text="${lto.getSite().getLocalisation()}"></td>
+                                        <td align="center" th:if="${lto.disponibilite}==true"><i class="fa fa-check-circle" style="color: green"></i></td>
+                                        <td align="center" th:if="${lto.disponibilite}==false"><i class="fa fa-times-circle" style="color: red"></i></i></td>
+                                        <td align="center" th:text="${lto.date.getDate()+'/'}+${lto.date.getMonth()+1+'/'}+${lto.date.getYear()+1900}"></td>
+                                        <td align="center" th:text="${lto.getUtilisateur().getUsername()}"></td>
+                                    </tr>
+                                </table>
+                                <div class="container spacer">
+                                    <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerTopo>1}">
+                                        <li  th:class="(${pageCouranteTopo}==${status.index}?'page-item active':'page-item')"
+                                             th:each="p,status:${pagesTopo}">
+                                            <a class="page-link" th:href="@{/site/{idSite}/topo/search(idSite=${site.idSite},pageTopo=${status.index})}"
+                                               th:text="${status.index}"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body justify-content-center" th:if="${paginationEnablerTopo==0}">
+                                <p>Il n'y a pas encore de Topos, pensez à en ajouter un.</p>
                             </div>
                         </div>
                     </div>
-                </div>
-        <div class="row justify-content-center spacer">
-            <div class="card" >
-                <div class="card-header">
-                    <h3 class="card-title" >Liste des topos
-                        <a class="btn btn-primary float-right ml-2" sec:authorize="hasRole('ROLE_USER')"
-                           th:href="@{/topo/add}"><i class="fa fa-plus"></i> Ajouter <br/> un Topo</a>
-                    </h3>
-                </div>
-                <div class="card-body justify-content-center" th:if="${paginationEnablerTopo>0}">
-                    <table class="table table-striped">
-                        <tr>
-                            <th class="text-center">Nom</th>
-                            <th class="text-center">Description</th>
-                            <th class="text-center">Lieu</th>
-                            <th class="text-center">Disponibilité</th>
-                            <th class="text-center">Date de<br/> parution</th>
-                            <th class="text-center">Propiétaire</th>
-
-                        </tr>
-                        <tr th:each="lto:${listTopo}">
-                            <td align="center" ><a th:text="${lto.nom}"  th:href="@{/topo/{id}/consult(id=${lto.id})}"></a></td>
-                            <td align="center" th:text="${lto.description}"></td>
-                            <td align="center" th:text="${lto.getSite().getLocalisation()}"></td>
-                            <td align="center" th:if="${lto.disponibilite}==true"><i class="fa fa-check-circle" style="color: green"></i></td>
-                            <td align="center" th:if="${lto.disponibilite}==false"><i class="fa fa-times-circle" style="color: red"></i></i></td>
-                            <td align="center" th:text="${lto.date.getDate()+'/'}+${lto.date.getMonth()+1+'/'}+${lto.date.getYear()+1900}"></td>
-                            <td align="center" th:text="${lto.getUtilisateur().getUsername()}"></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="container">
-                    <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerTopo>1}">
-                        <li  th:class="${pageCouranteTopo}==${status.index}?'page-item active':'page-item'"
-                             th:each="p,status:${pagesTopo}">
-                            <a class="page-link" th:href="@{/site/{idSite}/topo/search(idSite=${site.idSite},pageTopo=${status.index})}"
-                               th:text="${status.index}"></a>
-                        </li>
-                    </ul>
-                    <br/>
-                </div>
-                <div class="card-body justify-content-center" th:if="${paginationEnablerTopo==0}">
-                    <p>Il n'y a pas encore de Topos, pensez à en ajouter un.</p>
-                </div>
-            </div>
         </div>
+    </div>
 </body>
 </html>

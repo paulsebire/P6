@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login")
+        http.formLogin().loginPage("/login").defaultSuccessUrl("/utilisateur/profil/topos")
                 .usernameParameter("username").passwordParameter("password").and()
                 .logout().invalidateHttpSession(true)
                 .logoutUrl("/logout")

@@ -36,8 +36,6 @@ public class ClimbMetierImpl implements IClimbMetier {
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Override
     public Page<Site> listSite(int page, int size) {
@@ -59,10 +57,6 @@ public class ClimbMetierImpl implements IClimbMetier {
         return topoRepository.listTopo(PageRequest.of(page,size));
     }
 
-    public static String formatString (String str){
-        String formatStr = str.toLowerCase();
-        return formatStr;
-    }
 
     @Override
     public Page<Topo> listTopoByUtilisateur(Long idUser, int page, int size){

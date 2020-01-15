@@ -19,7 +19,7 @@ public interface SiteRepository extends JpaRepository<Site,Long> {
     public List<Site> listSiteWithImg();
 
 
-    @Query("select s from Site s  where s.nameSite like:x or s.localisation  like:x order by s.idSite")
+    @Query("select s from Site s  where lower(s.nameSite) like lower(concat('%', :x,'%')) or lower(s.localisation)  like lower(concat('%', :x,'%')) order by s.idSite")
     public Page<Site> chercher(@Param("x") String motCle, Pageable pageable);
 
 }

@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="container">
                                     <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerVoie>1}">
-                                        <li  th:class="${pageCouranteVoie}==${status.index}?'page-item active':'page-item'"
+                                        <li  th:class="(${pageCouranteVoie}==${status.index}?'page-item active':'page-item')"
                                              th:each="p,status:${pagesVoie}">
                                             <a class="page-link" th:href="@{/site/{idSite}/consult(idSite=${site.idSite},pageVoie=${status.index})}"
                                                th:text="${status.index}"></a>
@@ -146,7 +146,7 @@
                                 </div>
                                 <div class="container">
                                     <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerLongueur>1}">
-                                        <li  th:class="${pageCouranteLongueur}==${status.index}?'page-item active':'page-item'"
+                                        <li  th:class="(${pageCouranteLongueur}==${status.index}?'page-item active':'page-item')"
                                              th:each="p,status:${pagesLongueur}">
                                             <a class="page-link" th:href="@{/site/{idSite}/consult(idSite=${site.idSite},pageLongueur=${status.index})}"
                                                th:text="${status.index}"></a>
@@ -185,7 +185,7 @@
                             </div>
                             <div class="container spacer">
                                 <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerCommentaire>1}">
-                                    <li  th:class="${pageCouranteCommentaire}==${status.index}?'page-item active':'page-item'"
+                                    <li  th:class="(${pageCouranteCommentaire}==${status.index}?'page-item active':'page-item')"
                                          th:each="p,status:${pagesCommentaire}">
                                         <a class="page-link" th:href="@{/site/{idSite}/consult(idSite=${site.idSite},pageCommentaire=${status.index})}"
                                            th:text="${status.index}"></a>

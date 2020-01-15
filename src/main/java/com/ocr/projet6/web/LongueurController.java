@@ -113,7 +113,6 @@ public class LongueurController {
             if (utilisateur.getIdUser()==voi.getSite().getUtilisateur().getIdUser()){
                 longueur.setVoie(voi);
                 longueur.setIdLongueur(idLongueur);
-                formatField(longueur);
                 longueurRepository.save(longueur);
                 model.addAttribute("longueur",longueur);
                 return "confirmationLongueur";
@@ -141,7 +140,6 @@ public class LongueurController {
             if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
                 voi.setSite(sit);
                 longueur.setVoie(voi);
-                formatField(longueur);
                 longueurRepository.save(longueur);
                 model.addAttribute("longueur",longueur);
                 return "confirmationLongueur";
@@ -152,10 +150,5 @@ public class LongueurController {
     }
 
 
-    public void formatField(Longueur longueur){
-        String formatedName= ClimbMetierImpl.formatString(longueur.getNomLongueur());
-        longueur.setNomLongueur(formatedName);
-        return;
-    }
 
 }

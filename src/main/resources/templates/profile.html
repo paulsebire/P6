@@ -29,7 +29,7 @@
 </head>
 <body sec:authorize="hasRole('ROLE_USER')">
 
-    <div layout:fragment="content" class="vbigspacer" >
+    <div layout:fragment="content" class="spacer" >
         <aside>
             <div class=" row justify-content-center ml-2">
                 <div class=" card">
@@ -101,7 +101,7 @@
                         </table>
                         <div class="container">
                             <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerTopo>1}">
-                                <li  th:class="${pageCouranteTopo}==${status.index}?'page-item active':'page-item'"
+                                <li  th:class="(${pageCouranteTopo}==${status.index}?'page-item active':'page-item')"
                                      th:each="p,status:${pagesTopo}">
                                     <a class="page-link" th:href="@{/utilisateur/profil/topos(pageTopo=${status.index})}"
                                        th:text="${status.index}"></a>
@@ -140,16 +140,16 @@
                             <td align="center" th:text="${#dates.format(lr.date, 'dd/MM/yyyy')}"></td>
                             <td align="center" th:if="${lr.demandeEnCours}==true and ${lr.cloturer}==false">En cours <i class="far fa-clock" style="color: green"></i></td>
                             <td align="center" th:if="${lr.acceptation}==true and ${lr.demandeEnCours}==false and ${lr.cloturer}==false"><i class="fas fa-check-circle" style="color: green"></i></td>
-                            <td align="center" th:if="${lr.acceptation}==false and ${lr.demandeEnCours}==false and ${lr.cloturer}==false"><i class="fas fa-times-circle" style="color: red"></i></td>
-                            <td align="center" th:if="${lr.cloturer}==true">clôturée</i></td>
-                            <td  th:if="${lr.acceptation}==true"><a class="btn btn-primary" th:href="'mailto:' + ${lr.topo.utilisateur.email}
+                            <td align="center" th:if="${lr.acceptation}==true and ${lr.demandeEnCours}==false and ${lr.cloturer}==true">cloturée</td>
+                            <td align="center" th:if="${lr.acceptation}==false and ${lr.demandeEnCours}==false"><i class="fas fa-times-circle" style="color: red"></i></td>
+                            <td ><a class="btn btn-primary" th:if="${lr.acceptation}==true and ${lr.cloturer}==false" th:href="'mailto:' + ${lr.topo.utilisateur.email}
                             +'?subject= Reservation du topo '+${lr.topo.nom}+'&body=Bonjour '+${lr.topo.utilisateur.username}+',%0D%0A' +'%0D%0AJe vous contacte pour la réservation du topo ' ${lr.topo.nom}
                             +'Pouvons-nous convenir d%27une date et d%27un lieu de rendez-vous?%0D%0ACordialement%0D%0A'+${#httpServletRequest.remoteUser}"><i class="far fa-envelope"></i></a></td>
                         </tr>
                     </table>
                     <div class="container">
                         <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerResa>1}">
-                            <li  th:class="${pageCouranteReservation}==${status.index}?'page-item active':'page-item'"
+                            <li  th:class="(${pageCouranteReservation}==${status.index}?'page-item active':'page-item')"
                                  th:each="p,status:${pagesReservation}">
                                 <a class="page-link" th:href="@{/utilisateur/profil/reservations/emises(pageReservation=${status.index})}"
                                    th:text="${status.index}"></a>
@@ -192,7 +192,7 @@
                     </table>
                     <div class="container">
                         <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerResa>1}">
-                            <li  th:class="${pageCouranteReservation}==${status.index}?'page-item active':'page-item'"
+                            <li  th:class="(${pageCouranteReservation}==${status.index}?'page-item active':'page-item')"
                                  th:each="p,status:${pagesReservation}">
                                 <a class="page-link" th:href="@{/utilisateur/profil/reservations/recues(pageReservation=${status.index})}"
                                    th:text="${status.index}"></a>
@@ -231,7 +231,7 @@
                     </table>
                     <div class="container">
                         <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerResa>1}">
-                            <li  th:class="${pageCouranteReservation}==${status.index}?'page-item active':'page-item'"
+                            <li  th:class="(${pageCouranteReservation}==${status.index}?'page-item active':'page-item')"
                                  th:each="p,status:${pagesReservation}">
                                 <a class="page-link" th:href="@{/utilisateur/profil/reservations/acceptees(pageReservation=${status.index})}"
                                    th:text="${status.index}"></a>

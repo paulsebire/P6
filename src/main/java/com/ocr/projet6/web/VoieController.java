@@ -110,7 +110,6 @@ public class VoieController {
             Site sit=s.get();
             voie.setSite(sit);
             if (idVoie!=null) voie.setIdVoie(idVoie);
-            formatField(voie);
             if (utilisateur.getIdUser()==sit.getUtilisateur().getIdUser()){
                 voie.setCotation(cote);
                 voieRepository.save(voie);
@@ -145,15 +144,6 @@ public class VoieController {
             return "403";
         }
         return "redirect:/site/"+idSite+"/consult";
-    }
-
-    public void formatField(Voie voie){
-        String formatedName= ClimbMetierImpl.formatString(voie.getNomVoie());
-        voie.setNomVoie(formatedName);
-
-        String formatedSecteur= ClimbMetierImpl.formatString(voie.getSecteur());
-        voie.setSecteur(formatedSecteur);
-        return;
     }
 
 
