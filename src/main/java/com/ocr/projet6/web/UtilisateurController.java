@@ -266,6 +266,7 @@ public class UtilisateurController {
                            @RequestParam(value = "motCle", defaultValue = "")String mc,
                            @RequestParam(name="pageUtilisateur",defaultValue = "0") int pageUtilisateur,
                            @RequestParam(name = "sizeUtilisateur",defaultValue = "4") int sizeUtilisateur){
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         try {
             Page<Utilisateur> pageUtilisateurs = utilisateurRepository.chercherUtilisateur("%" + mc + "%", PageRequest.of(pageUtilisateur, sizeUtilisateur));
             model.addAttribute("listUtilisateur", pageUtilisateurs.getContent());
@@ -282,6 +283,7 @@ public class UtilisateurController {
             model.addAttribute("exception",e);
             throw new RuntimeException("Utilisateur Introuvable");
         }
+        iClimbMetier.logger().info("L'administrateur " +utilisateurConnecte.getUsername()+ "cherche un utilisatuer contenant "+mc);
         return "administration";
     }
 

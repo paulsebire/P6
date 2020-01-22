@@ -7,6 +7,7 @@ import com.ocr.projet6.dao.TopoRepository;
 import com.ocr.projet6.entities.Site;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.entities.Utilisateur;
+import com.ocr.projet6.enums.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,80 +32,133 @@ public class TopoController {
     @Autowired
     private SiteRepository siteRepository;
 
+    /**
+     * this method display all the topos in the DB
+     * @param model
+     * @param pageTopo
+     * @param sizeTopo
+     * @return
+     */
     @GetMapping(value = "/topo/search")
     public String topos(Model model,
                         @RequestParam(name="pageTopo",defaultValue = "0") int pageTopo,
                         @RequestParam(name = "sizeTopo",defaultValue = "2") int sizeTopo){
-        Page<Topo> pageTopos= iClimbMetier.listTopo(pageTopo,sizeTopo);
-        model.addAttribute("listTopo",pageTopos.getContent());
-        int[] pagesTopo=new int[pageTopos.getTotalPages()];
-        int paginationEnablerTopo=pagesTopo.length;
-        model.addAttribute("paginationEnablerTopo",paginationEnablerTopo);
-        model.addAttribute("pagesTopo",pagesTopo);
-        model.addAttribute("pageCouranteTopo",pageTopo);
-        model.addAttribute("sizeTopo",sizeTopo);
-        return "topos";
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
+        if (utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_USER)){
+            Page<Topo> pageTopos= iClimbMetier.listTopo(pageTopo,sizeTopo);
+            model.addAttribute("listTopo",pageTopos.getContent());
+            int[] pagesTopo=new int[pageTopos.getTotalPages()];
+            int paginationEnablerTopo=pagesTopo.length;
+            model.addAttribute("paginationEnablerTopo",paginationEnablerTopo);
+            model.addAttribute("pagesTopo",pagesTopo);
+            model.addAttribute("pageCouranteTopo",pageTopo);
+            model.addAttribute("sizeTopo",sizeTopo);
+            iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" veut accèder à la page des topos");
+            return "topos";
+        }else return "403";
+
     }
 
+    /**
+     * this method display all the topos for a site
+     * @param model
+     * @param idSite
+     * @param pageTopo
+     * @param sizeTopo
+     * @return
+     */
     @GetMapping(value = "/site/{idSite}/topo/search")
     public String topoBySite (Model model,
                               @PathVariable(value = "idSite")Long idSite,
                               @RequestParam(name="pageTopo",defaultValue = "0") int pageTopo,
                               @RequestParam(name = "sizeTopo",defaultValue = "2") int sizeTopo){
-        Page<Topo> pageTopos= iClimbMetier.listTopoBySite(idSite,pageTopo,sizeTopo);
-        model.addAttribute("listTopo",pageTopos.getContent());
-        int[] pagesTopo=new int[pageTopos.getTotalPages()];
-        int paginationEnablerTopo=pagesTopo.length;
-        model.addAttribute("paginationEnablerTopo",paginationEnablerTopo);
-        model.addAttribute("pagesTopo",pagesTopo);
-        model.addAttribute("pageCouranteTopo",pageTopo);
-        model.addAttribute("sizeTopo",sizeTopo);
+        Utilisateur utilisateurConnecte = iClimbMetier.userConnected();
+        if (utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_USER)){
+            Page<Topo> pageTopos= iClimbMetier.listTopoBySite(idSite,pageTopo,sizeTopo);
+            model.addAttribute("listTopo",pageTopos.getContent());
+            int[] pagesTopo=new int[pageTopos.getTotalPages()];
+            int paginationEnablerTopo=pagesTopo.length;
+            model.addAttribute("paginationEnablerTopo",paginationEnablerTopo);
+            model.addAttribute("pagesTopo",pagesTopo);
+            model.addAttribute("pageCouranteTopo",pageTopo);
+            model.addAttribute("sizeTopo",sizeTopo);
 
-        Optional<Site> s=siteRepository.findById(idSite);
-        Site site=null;
-        if(s.isPresent()) {
-            site=s.get();
-        }
-        model.addAttribute("site",site);
-        return "topoBySite";
+            Optional<Site> s=siteRepository.findById(idSite);
+            Site site=null;
+            if(s.isPresent()) {
+                site=s.get();
+            }
+            model.addAttribute("site",site);
+            iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" veut voir les topos du site "+site.getNameSite());
+            return "topoBySite";
+        }else return "403";
+
     }
 
-
+    /**
+     * this method display a list of topos who contains the keyword mc
+     * @param model
+     * @param pageTopo
+     * @param sizeTopo
+     * @param mc
+     * @return
+     */
     @GetMapping(path = "/topo/find")
     public String findTopo(Model model,
                        @RequestParam(name="pageTopo",defaultValue = "0") int pageTopo,
                        @RequestParam(name = "sizeTopo",defaultValue = "2") int sizeTopo,
                        @RequestParam(name = "motCle", defaultValue = "")String mc){
-        try {
-            Page<Topo> pageTopos = topoRepository.chercherTopo("%" + mc + "%", PageRequest.of(pageTopo, sizeTopo));
-            model.addAttribute("listTopo", pageTopos.getContent());
+        Utilisateur utilisateurConnecte= iClimbMetier.userConnected();
+        if (utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_USER)){
+            try {
+                Page<Topo> pageTopos = topoRepository.chercherTopo("%" + mc + "%", PageRequest.of(pageTopo, sizeTopo));
+                model.addAttribute("listTopo", pageTopos.getContent());
 
-            int[] pagesTopos = new int[pageTopos.getTotalPages()];
-            model.addAttribute("pagesTopo", pagesTopos);
-            int paginationEnablerTopo = pagesTopos.length;
-            model.addAttribute("paginationEnablerTopo", paginationEnablerTopo);
-            model.addAttribute("pagesTopo", pagesTopos);
-            model.addAttribute("pageCouranteTopo", pageTopos);
-            model.addAttribute("sizeTopo", sizeTopo);
-            model.addAttribute("motCle", mc);
-        }catch (Exception e){
-            model.addAttribute("exception",e);
-            throw new RuntimeException("Topo Introuvable");
-        }
-        return "topos";
+                int[] pagesTopos = new int[pageTopos.getTotalPages()];
+                model.addAttribute("pagesTopo", pagesTopos);
+                int paginationEnablerTopo = pagesTopos.length;
+                model.addAttribute("paginationEnablerTopo", paginationEnablerTopo);
+                model.addAttribute("pagesTopo", pagesTopos);
+                model.addAttribute("pageCouranteTopo", pageTopos);
+                model.addAttribute("sizeTopo", sizeTopo);
+                model.addAttribute("motCle", mc);
+            }catch (Exception e){
+                model.addAttribute("exception",e);
+                throw new RuntimeException("Topo Introuvable");
+            }
+            iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+"cherche un topo contenant "+mc);
+            return "topos";
+        }else return "403";
+
     }
 
+    /**
+     * this method display a form to add a topo
+     * @param model
+     * @param pageSite
+     * @param sizeSite
+     * @return
+     */
     @GetMapping (value = "/topo/add")
     public String addTopo(Model model,
                           @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
                           @RequestParam(name = "sizeSite",defaultValue = "2") int sizeSite){
-        Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
-        model.addAttribute("listSite",pageSites.getContent());
-        Topo topo=new Topo();
-        model.addAttribute("topo",topo);
-        return "addFormTopo";
+        Utilisateur utilisateurConnecte =iClimbMetier.userConnected();
+        if (utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_USER)){
+            Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
+            model.addAttribute("listSite",pageSites.getContent());
+            Topo topo=new Topo();
+            model.addAttribute("topo",topo);
+            return "addFormTopo";
+        }else return "403";
+
     }
 
+    /**
+     * this method delete the corresponding topo to idTopo
+     * @param idTopo
+     * @return
+     */
     @GetMapping(value = "/topo/{idTopo}/delete")
     public String deleteTopo(@PathVariable(value = "idTopo")Long idTopo){
         Optional<Topo> t=topoRepository.findById(idTopo);
@@ -113,51 +167,85 @@ public class TopoController {
         if (t.isPresent()){
             topo=t.get();
             if (utilisateurConnecte.getIdUser()==topo.getUtilisateur().getIdUser()){
+                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" a supprimé le topo "+topo.getNom());
                 topoRepository.deleteById(idTopo);
+                return "profile";
             } else return "403";
-        }
+        }else return "home";
 
-
-        return "profile";
     }
 
+    /**
+     * this method save in DB a new topo
+     * @param model
+     * @param topo
+     * @param idSiteNew
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value = "/topo/save")
     public String saveNewTopo(Model model, @Valid Topo topo,@RequestParam("idSiteNew") Long idSiteNew, BindingResult bindingResult){
 
         if (bindingResult.hasErrors()){
             return "addFormTopo";
         }
-        Optional<Site> s=siteRepository.findById(idSiteNew);
-        Site sit=s.get();
-        topo.setSite(sit);
-        topo.setDisponibilite(true);
         Utilisateur utilisateur=iClimbMetier.userConnected();
-        topo.setUtilisateur(utilisateur);
-        topo.setDate(new Date());
-        topoRepository.save(topo);
-        model.addAttribute("topo",topo);
-        return "confirmationTopo";
+        Optional<Site> s=siteRepository.findById(idSiteNew);
+        Site sit=null;
+
+        if (utilisateur.getRoles().contains(RoleEnum.ROLE_USER)){
+            if (s.isPresent()){
+                sit=s.get();
+                topo.setSite(sit);
+                topo.setDisponibilite(true);
+                topo.setUtilisateur(utilisateur);
+                topo.setDate(new Date());
+                topoRepository.save(topo);
+                model.addAttribute("topo",topo);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a créé le nouveau topo "+topo.getNom());
+                return "confirmationTopo";
+            }else return "addFormTopo";
+
+        }else return "403";
+
     }
 
+    /**
+     * this method display the topo identified by its id
+     * @param model
+     * @param id
+     * @return
+     */
     @GetMapping(path = "/topo/{id}/consult")
     public String consulter(Model model,
                             @PathVariable(name = "id") Long id){
-
-            Optional<Topo> t=topoRepository.findById(id);
-            Topo topo=null;
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
+        Optional<Topo> t=topoRepository.findById(id);
+        Topo topo=null;
+        if (utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_USER)){
             if(t.isPresent()) {
                 topo=t.get();
                 model.addAttribute("topo", topo);
-                Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
+
                 model.addAttribute("utilisateurConnecte",utilisateurConnecte);
                 boolean demandeEnCours=iClimbMetier.demandeEnCours(utilisateurConnecte.getUsername(),topo.getId());
                 System.out.println("demandeencours="+demandeEnCours);
                 model.addAttribute("demandeEnCours",demandeEnCours);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername() +" veut consulter le topo "+topo.getNom());
                 return "topoDisplay";
-            }
-        return "sites";
+            }else return "home";
+        }else return "403";
+
     }
 
+    /**
+     * this method check if user is owner of topo then display the edit form
+     * @param model
+     * @param id
+     * @param pageSite
+     * @param sizeSite
+     * @return
+     */
     @GetMapping (value = "/topo/{id}/edit")
     public String topoEdit (Model model,@PathVariable(value = "id")Long id,
                             @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
@@ -172,13 +260,22 @@ public class TopoController {
                 Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
                 model.addAttribute("listSite",pageSites.getContent());
                 System.out.println("topo.site.nameSite="+topo.getSite().getNameSite());
+                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+"souhaite modifier le topo "+topo.getNom());
                 return "editFormTopo";
             }
             return "403";
-        }
-        return "redirect:/topo/"+id+"/consult";
+        }return "redirect:/topo/"+id+"/consult";
     }
 
+    /**
+     * this method save an edited topo
+     * @param model
+     * @param topo
+     * @param id
+     * @param idSite
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value = "/topo/{id}/save")
     public String saveEditedTopo(Model model, @Valid Topo topo,
                                  @PathVariable("id") Long id,
@@ -200,6 +297,7 @@ public class TopoController {
                 topo.setDate(new Date());
                 model.addAttribute("topo",topo);
                 topoRepository.save(topo);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a modifié le topo "+topo.getNom());
                 return "confirmationTopo";
             }
             return "403";

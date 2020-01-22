@@ -46,6 +46,7 @@ public class LoginController {
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
+            iClimbMetier.logger().info("L'utilisateur "+SecurityContextHolder.getContext().getAuthentication().getName()+" s'est déconnecté");
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/home";

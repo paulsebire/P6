@@ -18,6 +18,12 @@ public class UtilisateurService implements UserDetailsService {
         this.utilisateurRepository=utilisateurRepository;
     }
 
+    /**
+     * this method load a user by his username
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Utilisateur utilisateur = utilisateurRepository.findByUsername(username);

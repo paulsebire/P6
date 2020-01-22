@@ -24,7 +24,13 @@ public class SiteController {
     @Autowired
     private IClimbMetier iClimbMetier;
 
-
+    /**
+     * this method display the page with all sites
+     * @param model
+     * @param pageSite
+     * @param sizeSite
+     * @return
+     */
     @RequestMapping(value = "/site/search")
     public String sites(Model model,
                         @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
@@ -37,10 +43,18 @@ public class SiteController {
         model.addAttribute("pagesSite",pagesSite);
         model.addAttribute("pageCouranteSite",pageSite);
         model.addAttribute("sizeSite",sizeSite);
+        iClimbMetier.logger().info("la page des sites a été demandée");
         return "sites";
     }
 
-
+    /**
+     * this method wil display all sites containing the keyword mc
+     * @param model
+     * @param pageSite
+     * @param sizeSite
+     * @param mc
+     * @return
+     */
     @GetMapping(path = "/site/find")
     public String find(Model model,
                        @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
@@ -58,6 +72,7 @@ public class SiteController {
             model.addAttribute("pageCouranteSite", pageSites);
             model.addAttribute("sizeSite", sizeSite);
             model.addAttribute("motCle", mc);
+            iClimbMetier.logger().info("La liste des sites contenant "+mc+" a été demandée");
         }catch (Exception e){
             model.addAttribute("exception",e);
             throw new RuntimeException("Site Introuvable");
@@ -65,6 +80,18 @@ public class SiteController {
         return "sites";
     }
 
+    /**
+     * this method display all the informations about one site identified by idSite
+     * @param model
+     * @param idSite
+     * @param pageVoie
+     * @param sizeVoie
+     * @param pageLongueur
+     * @param sizeLongueur
+     * @param pageCommentaire
+     * @param sizeCommentaire
+     * @return
+     */
     @GetMapping(path = "/site/{idSite}/consult")
     public String consulter(Model model,
                             @PathVariable(name = "idSite") Long idSite,
@@ -119,6 +146,7 @@ public class SiteController {
             List<Commentaire> listComByUser = iClimbMetier.listCommentaireBySiteByUser(idSite,utilisateur.getIdUser());
             int nbCombyUser = listComByUser.size();
             model.addAttribute("nbComByUser",nbCombyUser);
+            iClimbMetier.logger().info("La page du site "+site.getNameSite()+"a été demandée par "+utilisateur.getUsername());
         }catch (Exception e){
             model.addAttribute("exception",e);
         }
@@ -127,7 +155,11 @@ public class SiteController {
     }
 
 
-
+    /**
+     * this method check the user role and display the add form for site
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/site/add")
     public String addSite(Model model){
         Utilisateur utilisateur=iClimbMetier.userConnected();
@@ -141,21 +173,37 @@ public class SiteController {
         return "403";
     }
 
+    /**
+     * this method save in DB a new site
+     * @param model
+     * @param site
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value = "/site/save")
-    public String saveSite(Model model,@Valid Site site, BindingResult bindingResult){
+    public String saveNewSite(Model model,@Valid Site site, BindingResult bindingResult){
        if (bindingResult.hasErrors()){
             return "addFormSite";
         }
         Utilisateur utilisateur=iClimbMetier.userConnected();
-        if (utilisateur.getRoles().toString().contains("USER")){
-        site.setUtilisateur(utilisateur);
-        siteRepository.save(site);
-        model.addAttribute("site",site);
-        return "confirmationSite";
+       if (utilisateur.getRoles().toString().contains("USER")){
+            site.setUtilisateur(utilisateur);
+            siteRepository.save(site);
+            model.addAttribute("site",site);
+            iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a créé le nouveau site"+site.getNameSite());
+            return "confirmationSite";
         }
         return "403";
     }
 
+    /**
+     * thids method save an edited site
+     * @param model
+     * @param site
+     * @param idSite
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value = "/site/{idSite}/save")
     public String saveEditedSite(Model model, @Valid Site site,
                                  @PathVariable("idSite") Long idSite,
@@ -168,11 +216,17 @@ public class SiteController {
         site.setIdSite(idSite);
         model.addAttribute("site",site);
         siteRepository.save(site);
+        iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a édité le site"+site.getNameSite());
         return "confirmationSite";
         }
         return "403";
     }
 
+    /**
+     * this method check if user is admin and give the status official to a site
+     * @param idSite
+     * @return
+     */
     @GetMapping(value = "/site/{idSite}/edit/officiel")
     public String rendreOfficiel(@PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
@@ -183,13 +237,19 @@ public class SiteController {
                 site=s.get();
                 site.setOfficiel(!site.isOfficiel());
                 siteRepository.save(site);
+                iClimbMetier.logger().info("L'administateur "+utilisateur.getUsername()+" a rendu le site "+site.getNameSite()+" officiel");
             }
             return "redirect:/site/"+idSite+"/consult";
         }
         return "403";
     }
 
-
+    /**
+     * this method check if user is owner of site and display the edit form for site
+     * @param model
+     * @param idSite
+     * @return
+     */
     @RequestMapping(value = "/site/{idSite}/edit")
     public String editSite(Model model,
                            @PathVariable("idSite") Long idSite){
@@ -200,6 +260,7 @@ public class SiteController {
                 site = s.get();
                 if (utilisateur.getIdUser()==site.getUtilisateur().getIdUser()&& utilisateur.getRoles().contains(RoleEnum.ROLE_USER)){
                     model.addAttribute("site", site);
+                    iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+"veut modifier le site "+site.getNameSite());
                     return "editFormSite";
                 }return "403";
             }return "redirect:/site/"+idSite+"/consult";

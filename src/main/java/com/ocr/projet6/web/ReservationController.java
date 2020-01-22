@@ -27,6 +27,12 @@ private ReservationRepository reservationRepository;
 @Autowired
 private IClimbMetier iClimbMetier;
 
+    /**
+     * this method accept a demand of reservation of topo
+     * @param model
+     * @param idReservation
+     * @return
+     */
     @GetMapping(value = "/topo/reservation/{id}/accepter")
     public String accepterReservation(Model model, @PathVariable(value = "id")Long idReservation){
         Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
@@ -39,16 +45,11 @@ private IClimbMetier iClimbMetier;
             if (t.isPresent()){
                 topo=t.get();
                 if (utilisateurConnecte.getIdUser()==topo.getUtilisateur().getIdUser()){
-
-
-
-
                     topo.setDisponibilite(false);
                     reservation.setAcceptation(true);
                     reservation.setDemandeEnCours(false);
                     reservationRepository.save(reservation);
                     topoRepository.save(topo);
-
                     List<Reservation> demandeEnCoursbyTopo =iClimbMetier.demandeEnCoursbyTopo(topo.getId());
                     if (!demandeEnCoursbyTopo.isEmpty()){
                         for (int k=0;k<demandeEnCoursbyTopo.size();k++) {
@@ -60,10 +61,12 @@ private IClimbMetier iClimbMetier;
                                 reservationAutres.setAcceptation(false);
                                 reservationAutres.setDemandeEnCours(false);
                                 reservationRepository.save(reservationAutres);
+                                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" a refusé la demande de reservation du topo "+topo.getNom()+" par "+reservation.getUtilisateur().getUsername());
+
                             }
                         }
                     }
-
+                    iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" a accepté la demande de reservation du topo "+topo.getNom()+" par "+reservation.getUtilisateur().getUsername());
                     return "redirect:/utilisateur/profil/reservations/recues";
                 }
             }
@@ -71,6 +74,13 @@ private IClimbMetier iClimbMetier;
         }
         return "403";
     }
+
+    /**
+     * this method deny a demand of reservation of topo
+     * @param model
+     * @param idReservation
+     * @return
+     */
     @GetMapping(value = "/topo/reservation/{id}/refuser")
     public String refuserReservation(Model model, @PathVariable(value = "id")Long idReservation){
         Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
@@ -86,12 +96,21 @@ private IClimbMetier iClimbMetier;
                     reservation.setAcceptation(false);
                     reservation.setDemandeEnCours(false);
                     reservationRepository.save(reservation);
+                    iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" a refusé la demande de reservation du topo "+topo.getNom()+" par "+reservation.getUtilisateur().getUsername());
                     return "redirect:/utilisateur/profil/reservations/recues";
                 }return "403";
             }return "redirect:/utilisateur/profil/reservations/recues";
 
         }return "redirect:/utilisateur/profil/reservations/recues";
     }
+
+    /**
+     * this method display all reservations emited by user
+     * @param model
+     * @param pageReservation
+     * @param sizeReservation
+     * @return
+     */
     @GetMapping(value = "/utilisateur/profil/reservations/emises" )
     public String userProfileResaEmises (Model model,
                                          @RequestParam(name="pageReservation",defaultValue = "0") int pageReservation,
@@ -117,9 +136,17 @@ private IClimbMetier iClimbMetier;
         model.addAttribute("demandeEmisesBool",demandeEmisesBool);
         boolean demandeAccepteesBool=false;
         model.addAttribute("demandeAccepteesBool",demandeAccepteesBool);
+        iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" veut accèder à toutes ses réservations émises ");
         return "profile";
     }
 
+    /**
+     * this method display all reservations received by user
+     * @param model
+     * @param pageReservation
+     * @param sizeReservation
+     * @return
+     */
     @GetMapping(value = "/utilisateur/profil/reservations/recues" )
     public String userProfileResaRecues (Model model,
                                          @RequestParam(name="pageReservation",defaultValue = "0") int pageReservation,
@@ -143,8 +170,17 @@ private IClimbMetier iClimbMetier;
         model.addAttribute("demandeEmisesBool",demandeEmisesBool);
         boolean demandeAccepteesBool=false;
         model.addAttribute("demandeAccepteesBool",demandeAccepteesBool);
+        iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" veut accèder à toutes ses réservations reçues ");
         return "profile";
     }
+
+    /**
+     * this method display all reservations accepted by user
+     * @param model
+     * @param pageReservation
+     * @param sizeReservation
+     * @return
+     */
     @GetMapping(value = "/utilisateur/profil/reservations/acceptees" )
     public String userProfileResaAcceptees (Model model,
                                          @RequestParam(name="pageReservation",defaultValue = "0") int pageReservation,
@@ -162,8 +198,6 @@ private IClimbMetier iClimbMetier;
         model.addAttribute("pagesReservation",pagesReservation);
         model.addAttribute("pageCouranteReservation",pageReservation);
         model.addAttribute("sizeReservation",sizeReservation);
-
-
         boolean topoBool=false;
         model.addAttribute("topoBool",topoBool);
         boolean demandeRecuesBool=false;
@@ -172,9 +206,16 @@ private IClimbMetier iClimbMetier;
         model.addAttribute("demandeEmisesBool",demandeEmisesBool);
         boolean demandeAccepteesBool=true;
         model.addAttribute("demandeAccepteesBool",demandeAccepteesBool);
-
+        iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" veut accèder à toutes ses réservations acceptées ");
         return "profile";
     }
+
+    /**
+     * this method close a reservation
+     * @param model
+     * @param idReservation
+     * @return
+     */
     @GetMapping(value = "/topo/reservation/{id}/cloturer")
     public String cloturerResa(Model model, @PathVariable(value = "id")Long idReservation){
         Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
@@ -191,12 +232,20 @@ private IClimbMetier iClimbMetier;
                     topoRepository.save(topo);
                     reservation.setCloturer(true);
                     reservationRepository.save(reservation);
+                    iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" a clôturer la demande de reservation du topo "+topo.getNom()+" par "+reservation.getUtilisateur().getUsername());
                     return "redirect:/utilisateur/profil/reservations/acceptees";
                 }return "403";
             }return "redirect:/utilisateur/profil/reservations/acceptees";
 
         }return "redirect:/utilisateur/profil/reservations/acceptees";
     }
+
+    /**
+     * this method create a demand of reservation
+     * @param model
+     * @param idTopo
+     * @return
+     */
     @GetMapping(value = "/topo/{idTopo}/reservation")
     public String DemandedeReservation(Model model,@PathVariable("idTopo")Long idTopo){
         Optional<Topo> t=topoRepository.findById(idTopo);
@@ -214,6 +263,7 @@ private IClimbMetier iClimbMetier;
                 boolean demandeEnCours=iClimbMetier.demandeEnCours(demandeur.getUsername(),topo.getId());
                 System.out.println("demandeencours="+demandeEnCours);
                 model.addAttribute("demandeEnCours",demandeEnCours);
+                iClimbMetier.logger().info("L'utilisateur "+demandeur.getUsername()+" a émis une demande de reservation du topo "+topo.getNom());
                 return "redirect:/topo/"+idTopo+"/consult";
             }
             return "403";

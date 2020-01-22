@@ -15,7 +15,10 @@ import java.util.Set;
 @EnableWebMvc
 @Configuration
 public class WebMvcConfig extends WebMvcAutoConfiguration {
-
+    /**
+     * this method create some users to test the application
+     * @param utilisateurRepository
+     */
     @Autowired
     public WebMvcConfig(UtilisateurRepository utilisateurRepository) {
 
