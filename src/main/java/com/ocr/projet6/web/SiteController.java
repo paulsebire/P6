@@ -21,18 +21,14 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+
 @Controller
 public class SiteController {
     @Autowired
     private SiteRepository siteRepository;
     @Autowired
-    private LongueurRepository longueurRepository;
-    @Autowired
-    private VoieRepository voieRepository;
-    @Autowired
     private IClimbMetier iClimbMetier;
-    @Autowired
-    private UtilisateurRepository utilisateurRepository;
+
 
     @RequestMapping(value = "/site/search")
     public String sites(Model model,
@@ -144,6 +140,7 @@ public class SiteController {
             Site site=new Site();
             site.setOfficiel(false);
             model.addAttribute("site",site);
+            iClimbMetier.logger().info("l'utilisateur " + utilisateur.getUsername() + " souhaite ajouter un nouveau site");
             return "addFormSite";
         }
         return "403";

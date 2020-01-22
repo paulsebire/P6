@@ -5,18 +5,10 @@ import com.ocr.projet6.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.util.*;
 
 @Service
@@ -129,4 +121,10 @@ public class ClimbMetierImpl implements IClimbMetier {
     public List<Reservation> demandeEnCoursbyTopo (Long idTopo){
         return reservationRepository.demandeEnCoursbyTopo(idTopo);
     }
+
+    @Override
+    public final Logger logger(){
+        return LogManager.getLogger();
+    }
+
 }

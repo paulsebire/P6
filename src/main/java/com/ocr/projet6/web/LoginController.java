@@ -1,5 +1,7 @@
 package com.ocr.projet6.web;
 
+import com.ocr.projet6.Metier.IClimbMetier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,15 +18,31 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LoginController {
 
+    @Autowired
+    private IClimbMetier iClimbMetier;
+
+
+    /**
+     * method used to log-in an user
+     * @return
+     */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginGet() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {
+            iClimbMetier.logger().info("connexion de l'utilisateur"+SecurityContextHolder.getContext().getAuthentication().getName());
             return new ModelAndView("redirect:/site/search");
         }
         return new ModelAndView("login");
     }
+
+    /**
+     * method used to log-out an user
+     * @param request
+     * @param response
+     * @return to home page
+     */
     @RequestMapping(value="/logout", method = RequestMethod.GET)
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

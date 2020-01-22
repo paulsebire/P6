@@ -1,6 +1,8 @@
 package com.ocr.projet6.Metier;
 
 import com.ocr.projet6.entities.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -22,4 +24,5 @@ public interface IClimbMetier {
     public  Utilisateur userConnected();
     public List<Site> listSiteWithImg();
     public List<Reservation> demandeEnCoursbyTopo (Long idTopo);
+    public Logger logger();
 }
