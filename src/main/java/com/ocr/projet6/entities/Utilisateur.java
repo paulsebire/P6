@@ -2,7 +2,6 @@ package com.ocr.projet6.entities;
 
 import com.ocr.projet6.enums.RoleEnum;
 import com.ocr.projet6.security.BCryptManagerUtil;
-
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +13,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;

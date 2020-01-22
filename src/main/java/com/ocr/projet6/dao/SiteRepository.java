@@ -1,7 +1,6 @@
 package com.ocr.projet6.dao;
 
 import com.ocr.projet6.entities.Site;
-import com.ocr.projet6.entities.Voie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

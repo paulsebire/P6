@@ -1,17 +1,12 @@
 package com.ocr.projet6.web;
 
-import com.ocr.projet6.Metier.ClimbMetierImpl;
 import com.ocr.projet6.Metier.IClimbMetier;
-import com.ocr.projet6.dao.LongueurRepository;
 import com.ocr.projet6.dao.SiteRepository;
-import com.ocr.projet6.dao.UtilisateurRepository;
-import com.ocr.projet6.dao.VoieRepository;
 import com.ocr.projet6.entities.*;
 import com.ocr.projet6.enums.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

@@ -1,7 +1,6 @@
 package com.ocr.projet6.Metier;
 
 import com.ocr.projet6.entities.*;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 

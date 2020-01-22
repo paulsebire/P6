@@ -1,7 +1,6 @@
 package com.ocr.projet6.dao;
 
 import com.ocr.projet6.entities.Topo;
-import com.ocr.projet6.entities.Utilisateur;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

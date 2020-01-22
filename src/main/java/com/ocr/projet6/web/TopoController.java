@@ -1,27 +1,25 @@
 package com.ocr.projet6.web;
 
-import com.ocr.projet6.Metier.ClimbMetierImpl;
 import com.ocr.projet6.Metier.IClimbMetier;
 import com.ocr.projet6.dao.ReservationRepository;
 import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.TopoRepository;
-import com.ocr.projet6.entities.Reservation;
 import com.ocr.projet6.entities.Site;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.entities.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -32,8 +30,6 @@ public class TopoController {
     private TopoRepository topoRepository;
     @Autowired
     private SiteRepository siteRepository;
-    @Autowired
-    private ReservationRepository reservationRepository;
 
     @GetMapping(value = "/topo/search")
     public String topos(Model model,

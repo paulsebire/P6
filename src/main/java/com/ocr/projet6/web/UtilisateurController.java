@@ -1,28 +1,25 @@
 package com.ocr.projet6.web;
 
 
-import com.ocr.projet6.Metier.ClimbMetierImpl;
 import com.ocr.projet6.Metier.IClimbMetier;
-import com.ocr.projet6.entities.Reservation;
-import com.ocr.projet6.entities.Site;
-import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.dao.UtilisateurRepository;
+import com.ocr.projet6.entities.Reservation;
+import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.enums.RoleEnum;
-import com.ocr.projet6.security.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.validation.Valid;
 import java.util.Optional;
-
-import static com.ocr.projet6.Metier.RoleDefinition.adminRole;
-import static com.ocr.projet6.Metier.RoleDefinition.userRole;
 
 
 @Controller
@@ -30,19 +27,30 @@ public class UtilisateurController {
     @Autowired
     private UtilisateurRepository utilisateurRepository;
     @Autowired
-    private UtilisateurService utilisateurService;
-    @Autowired
     private IClimbMetier iClimbMetier;
 
 
-
+    /**
+     * this method return the inscription form
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/utilisateur/inscription")
     public String inscriptionForm(Model model){
         Utilisateur utilisateur=new Utilisateur();
+        iClimbMetier.logger().info("Un visiteur veut accéder au formulaire d'inscription");
         model.addAttribute("utilisateur",utilisateur);
         return "inscription";
     }
 
+    /**
+     * this method check if username and email are available
+     * then add the new user to DB
+     * @param model
+     * @param utilisateur
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value = "/utilisateur/create")
     public String saveNewUtilisateur(Model model, @Valid Utilisateur utilisateur, BindingResult bindingResult){
 
@@ -55,12 +63,21 @@ public class UtilisateurController {
                 utilisateur.getRoles().add(RoleEnum.ROLE_USER);
                 utilisateurRepository.save(utilisateur);
                 model.addAttribute("utilisateur",utilisateur);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a été ajouté a la DB");
                 return "confirmationUtilisateur";
             }
 
         }
     }
 
+    /**
+     * this method get all the topo owned by the loged user
+     * and return to his profile page
+     * @param model
+     * @param pageTopo
+     * @param sizeTopo
+     * @return
+     */
     @GetMapping(value = "/utilisateur/profil/topos" )
     public String userProfiletopo (Model model,
                                @RequestParam(name="pageTopo",defaultValue = "0") int pageTopo,
@@ -86,11 +103,17 @@ public class UtilisateurController {
         model.addAttribute("demandeEmisesBool",demandeEmisesBool);
         boolean demandeAccepteesBool=false;
         model.addAttribute("demandeAccepteesBool",demandeAccepteesBool);
+        iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" accède à sa page de topos");
         return "profile";
     }
 
 
-
+    /**
+     * this method check the user and return the edition form for profile
+     * @param model
+     * @param idUser
+     * @return
+     */
     @GetMapping(value = "/utilisateur/{idUser}/edit")
     public String editUser(Model model,
                            @PathVariable(value = "idUser")Long idUser){
@@ -100,8 +123,9 @@ public class UtilisateurController {
         model.addAttribute("utilisateurConnecte",utilisateurConnecte);
         if(u.isPresent()) {
             utilisateur=u.get();
-            model.addAttribute("utilisateur",utilisateur);
             if (utilisateur.getIdUser()==utilisateurConnecte.getIdUser()){
+                model.addAttribute("utilisateur",utilisateur);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" accède à sa page d'édition de profile");
                 return "editFormUtilisateur";
             }else return "403";
         }
@@ -109,6 +133,15 @@ public class UtilisateurController {
 
     }
 
+    /**
+     *this method check the user and the disponibility of username and email
+     * return confirmation page
+     * @param model
+     * @param utilisateur
+     * @param idUser
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value = "/utilisateur/{idUser}/save")
     public String saveEditedUtilisateur(Model model, @Valid Utilisateur utilisateur,
                                  @PathVariable("idUser") Long idUser,
@@ -116,12 +149,36 @@ public class UtilisateurController {
         if (bindingResult.hasErrors()){
             return "editFormUtilisateur";
         }
-        utilisateur.setIdUser(idUser);
-        model.addAttribute("utilisateur",utilisateur);
-        utilisateurRepository.save(utilisateur);
-        return "confirmationEditedUtilisateur";
+        Optional<Utilisateur> u=utilisateurRepository.findById(idUser);
+        Utilisateur utilisateurDB=null;
+        Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
+        if (utilisateurRepository.findByUsername(utilisateur.getUsername())!=null && utilisateurRepository.findByEmail(utilisateur.getEmail())!=null ) {
+            if (utilisateurConnecte.getIdUser()==idUser){
+                utilisateurDB.setUsername(utilisateur.getUsername());
+                utilisateurDB.setLastname(utilisateur.getLastname());
+                utilisateurDB.setFirstname(utilisateur.getFirstname());
+                utilisateurDB.setEmail(utilisateur.getEmail());
+                utilisateurDB.setPassword(utilisateur.getPassword());
+                model.addAttribute("utilisateur",utilisateurDB);
+                utilisateurRepository.save(utilisateurDB);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte+" a modifié ses informations");
+                return "confirmationEditedUtilisateur";
+            }else return "403";
+        }else {
+            //TODO "ajouter message erreur"
+            return "editFormUtilisateur";
+        }
+
+
     }
 
+    /**
+     * this method check the role of user and display administration page
+     * @param model
+     * @param pageUtilisateur
+     * @param sizeUtilisateur
+     * @return
+     */
     @GetMapping(value = "/administration")
     public String administration(Model model,
                         @RequestParam(name="pageUtilisateur",defaultValue = "0") int pageUtilisateur,
@@ -131,14 +188,26 @@ public class UtilisateurController {
         model.addAttribute("listUtilisateur",pageUtilisateurs.getContent());
         int[] pagesUtilisateur=new int[pageUtilisateurs.getTotalPages()];
         int paginationEnablerUtilisateur=pagesUtilisateur.length;
-        model.addAttribute("paginationEnablerUtilisateur",paginationEnablerUtilisateur);
-        model.addAttribute("pagesUtilisateur",pagesUtilisateur);
-        model.addAttribute("pageCouranteUtilisateur",pageUtilisateur);
-        model.addAttribute("sizeUtilisateur",sizeUtilisateur);
-        return "administration";
+        Utilisateur utilisateurConnecte = iClimbMetier.userConnected();
+        if (utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_ADMIN)){
+            model.addAttribute("paginationEnablerUtilisateur",paginationEnablerUtilisateur);
+            model.addAttribute("pagesUtilisateur",pagesUtilisateur);
+            model.addAttribute("pageCouranteUtilisateur",pageUtilisateur);
+            model.addAttribute("sizeUtilisateur",sizeUtilisateur);
+            iClimbMetier.logger().info("L'administrateur " +utilisateurConnecte.getUsername()+ "veut accéder à la page d'administration");
+            return "administration";
+        }else return "403";
+
     }
 
-
+    /**
+     * this method check if user is admin and give admin right to another user
+     * @param model
+     * @param idUser
+     * @param pageUtilisateur
+     * @param sizeUtilisateur
+     * @return
+     */
     @GetMapping(value = "/utilisateur/{idUser}/adminRight")
     public String setRoleAdmin (Model model,@PathVariable(value = "idUser")Long idUser,
                                 @RequestParam(name="pageUtilisateur",defaultValue = "0") int pageUtilisateur,
@@ -151,11 +220,20 @@ public class UtilisateurController {
                 utilisateur=u.get();
                 utilisateur.getRoles().add(RoleEnum.ROLE_ADMIN);
                 utilisateurRepository.save(utilisateur);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" est devenu admin");
                 return "redirect:/administration?pageUtilisateur="+pageUtilisateur;
             }else return "administration";
         }else return "403";
     }
 
+    /**
+     * this method check if user is admin and give user right to another user
+     * @param model
+     * @param idUser
+     * @param pageUtilisateur
+     * @param sizeUtilisateur
+     * @return
+     */
     @GetMapping(value = "/utilisateur/{idUser}/userRight")
     public String setRoleUser (Model model,@PathVariable(value = "idUser")Long idUser,
                                 @RequestParam(name="pageUtilisateur",defaultValue = "0") int pageUtilisateur,
@@ -168,12 +246,21 @@ public class UtilisateurController {
                 utilisateur=u.get();
                 utilisateur.getRoles().remove(RoleEnum.ROLE_ADMIN);
                 utilisateurRepository.save(utilisateur);
-
+                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" est devenu utilisateur");
                 return "redirect:/administration?pageUtilisateur="+pageUtilisateur;
             }else return "administration";
         }else return "403";
     }
 
+    /**
+     * this method will try to find an user with keyword "mc"
+     * and display a list of user who contains the keyword
+     * @param model
+     * @param mc
+     * @param pageUtilisateur
+     * @param sizeUtilisateur
+     * @return
+     */
     @GetMapping(value = "/utilisateur/find")
     public String findUser(Model model,
                            @RequestParam(value = "motCle", defaultValue = "")String mc,

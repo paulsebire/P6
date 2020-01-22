@@ -1,9 +1,6 @@
 package com.ocr.projet6.entities;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-
 import java.io.Serializable;
 @Entity
 public class Longueur implements Serializable {

@@ -1,20 +1,23 @@
 package com.ocr.projet6.web;
 
-import com.ocr.projet6.Metier.ClimbMetierImpl;
 import com.ocr.projet6.Metier.IClimbMetier;
 import com.ocr.projet6.dao.CotationRepository;
-import com.ocr.projet6.dao.LongueurRepository;
 import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.dao.VoieRepository;
-import com.ocr.projet6.entities.*;
+import com.ocr.projet6.entities.Cotation;
+import com.ocr.projet6.entities.Site;
+import com.ocr.projet6.entities.Utilisateur;
+import com.ocr.projet6.entities.Voie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +32,12 @@ public class VoieController {
     @Autowired
     private CotationRepository cotationRepository;
 
-
+    /**
+     * this method check the user and return to add Voie form
+     * @param model
+     * @param idSite
+     * @return
+     */
     @GetMapping(value = "/site/{idSite}/voie/add")
     public String addVoie(Model model,@PathVariable("idSite") Long idSite){
         Optional<Site> s=siteRepository.findById(idSite);
@@ -44,12 +52,21 @@ public class VoieController {
                 model.addAttribute("listCotation",cotationList);
                 model.addAttribute("cotationId",idCotation);
                 model.addAttribute("voie",voie);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername() +" veut créer une nouvelle voie pour le site "+sit.getNameSite());
                 return "addFormVoie";
             } return "403";
         }
         return "redirect:/site/"+idSite+"/consult";
     }
 
+    /**
+     * this method check the user and delete the voie
+     * @param idVoie
+     * @param idSite
+     * @param pageVoie
+     * @param sizeVoie
+     * @return
+     */
     @GetMapping(value = "/site/{idSite}/voie/{idVoie}/delete")
     public String deleteVoie(@PathVariable("idVoie")Long idVoie,
                              @PathVariable("idSite")Long idSite,
@@ -62,12 +79,19 @@ public class VoieController {
             voie=v.get();
             if (utilisateurConnecte.getIdUser()==voie.getSite().getUtilisateur().getIdUser()){
                 voieRepository.deleteById(idVoie);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername() +" veut supprimer la voie "+voie.getNomVoie()+" du site "+voie.getSite().getNameSite());
             } else return "403";
         }
 
         return "redirect:/site/"+idSite+"/consult?pageVoie="+pageVoie+"&sizeVoie="+sizeVoie;}
 
-
+    /**
+     * his method check the user and return to edit Voie form
+     * @param model
+     * @param idSite
+     * @param idVoie
+     * @return
+     */
     @GetMapping(value = "/site/{idSite}/voie/{idVoie}/edit")
     public String editVoie(Model model,
                            @PathVariable("idSite") Long idSite,
@@ -87,12 +111,24 @@ public class VoieController {
                 model.addAttribute("voie", voi);
                 model.addAttribute("cotationId",cotationId);
                 model.addAttribute("listCotation",cotationList);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername() +" veut éditer la voie "+voi.getNomVoie()+" pour le site "+sit.getNameSite());
                 return "editFormVoie";
             }return "403";
         }
         return "redirect:/site/"+idSite+"/consult";
     }
 
+    /**
+     * this method check the user and save the edited voie in the DB
+     * return confirmation page
+     * @param model
+     * @param voie
+     * @param idSite
+     * @param idVoie
+     * @param cotationId
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value = "/site/{idSite}/voie/{idVoie}/save")
     public String saveEditedVoie(Model model, @Valid Voie voie,
                            @PathVariable("idSite") Long idSite,
@@ -114,12 +150,24 @@ public class VoieController {
                 voie.setCotation(cote);
                 voieRepository.save(voie);
                 model.addAttribute("voie",voie);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername() +" a sauvegardé l'édition de la voie "+voie.getNomVoie() +" pour le site "+sit.getNameSite());
                 return "confirmationVoie";
             }return "403";
 
         }
         return "redirect:/site/"+idSite+"/consult";
     }
+
+    /**
+     * this method check the user and save the new voie in the DB
+     * return confirmation page
+     * @param model
+     * @param voie
+     * @param idSite
+     * @param cotationId
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value = "/site/{idSite}/voie/save")
     public String saveNewVoie(Model model, @Valid Voie voie,
                            @PathVariable("idSite") Long idSite,
@@ -139,6 +187,7 @@ public class VoieController {
                 voie.setSite(sit);
                 voieRepository.save(voie);
                 model.addAttribute("voie",voie);
+                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername() +" a sauvegardé la nouvelle voie "+voie.getNomVoie() +" pour le site "+sit.getNameSite());
                 return "confirmationVoie";
             }
             return "403";

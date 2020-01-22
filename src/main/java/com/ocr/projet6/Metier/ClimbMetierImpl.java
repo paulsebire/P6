@@ -2,14 +2,15 @@ package com.ocr.projet6.Metier;
 
 import com.ocr.projet6.dao.*;
 import com.ocr.projet6.entities.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import java.util.*;
+
+import java.util.List;
 
 @Service
 public class ClimbMetierImpl implements IClimbMetier {

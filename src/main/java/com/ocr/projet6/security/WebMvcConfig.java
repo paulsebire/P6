@@ -1,20 +1,16 @@
 package com.ocr.projet6.security;
 
 
-import com.ocr.projet6.dao.CotationRepository;
-import com.ocr.projet6.entities.Cotation;
+import com.ocr.projet6.dao.UtilisateurRepository;
 import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.enums.RoleEnum;
-import com.ocr.projet6.dao.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @EnableWebMvc
 @Configuration
