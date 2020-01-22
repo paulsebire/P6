@@ -54,20 +54,24 @@ public class UtilisateurController {
     @PostMapping(value = "/utilisateur/create")
     public String saveNewUtilisateur(Model model, @Valid Utilisateur utilisateur, BindingResult bindingResult){
 
-        if (bindingResult.hasErrors()){
-                return "inscription"+"&error="+bindingResult.getGlobalError();
-        } else{
-            if (utilisateurRepository.findByUsername(utilisateur.getUsername())!=null || utilisateurRepository.findByEmail(utilisateur.getEmail())!=null){
-                return "inscription";
-            }else{
+
+            if (utilisateurRepository.findByUsernameLowcase(utilisateur.getUsername())==null || utilisateurRepository.findByEmail(utilisateur.getEmail())==null){
                 utilisateur.getRoles().add(RoleEnum.ROLE_USER);
                 utilisateurRepository.save(utilisateur);
                 model.addAttribute("utilisateur",utilisateur);
                 iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a été ajouté a la DB");
                 return "confirmationUtilisateur";
+            }else{
+                if (utilisateurRepository.findByUsernameLowcase(utilisateur.getUsername())!=null ){
+                    bindingResult.rejectValue("username", "user.pseudo", "ce pseudo est déjà utilisé :(");
+                }
+                if (utilisateurRepository.findByEmail(utilisateur.getEmail())!=null){
+                    bindingResult.rejectValue("email", "user.email", "cet e-mail est déjà associé à un autre compte :(");
+                }
+                return "redirect:/utilisateur/inscription";
             }
 
-        }
+
     }
 
     /**
