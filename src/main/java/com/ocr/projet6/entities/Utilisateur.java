@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
@@ -26,8 +28,9 @@ public class Utilisateur implements UserDetails {
     @Column(name = "id_user")
     private Long idUser;
 
-    @NotNull
     @Column(name = "username", nullable = false, unique = true)
+    @NotEmpty(message = "votre pseudo doit contenir au minimum 2 caractères")
+    @Size(min = 2)
     private String username;
 
     @NotNull
@@ -37,6 +40,7 @@ public class Utilisateur implements UserDetails {
 
     @NotNull
     @Column(name = "email", nullable = false, unique = true)
+    @Email(message = "Veuillez saisir une adresse mail valide")
     private String email;
 
     @NotNull

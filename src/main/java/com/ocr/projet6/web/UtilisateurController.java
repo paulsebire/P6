@@ -53,20 +53,18 @@ public class UtilisateurController {
      */
     @PostMapping(value = "/utilisateur/create")
     public String saveNewUtilisateur(Model model, @Valid Utilisateur utilisateur, BindingResult bindingResult){
-
-
-            if (utilisateurRepository.findByUsernameLowcase(utilisateur.getUsername())==null || utilisateurRepository.findByEmail(utilisateur.getEmail())==null){
+            if (utilisateurRepository.findByUsername(utilisateur.getUsername())==null || utilisateurRepository.findByEmail(utilisateur.getEmail())==null){
                 utilisateur.getRoles().add(RoleEnum.ROLE_USER);
                 utilisateurRepository.save(utilisateur);
                 model.addAttribute("utilisateur",utilisateur);
                 iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a été ajouté a la DB");
                 return "confirmationUtilisateur";
             }else{
-                if (utilisateurRepository.findByUsernameLowcase(utilisateur.getUsername())!=null ){
-                    bindingResult.rejectValue("username", "user.pseudo", "ce pseudo est déjà utilisé :(");
+                if (utilisateurRepository.findByUsername(utilisateur.getUsername())!=null ){
+                    bindingResult.rejectValue("utilisateur.username", "utilisateur.username", "ce pseudo est déjà utilisé :(");
                 }
                 if (utilisateurRepository.findByEmail(utilisateur.getEmail())!=null){
-                    bindingResult.rejectValue("email", "user.email", "cet e-mail est déjà associé à un autre compte :(");
+                    bindingResult.rejectValue("utilisateur.email", "utilisateur.email", "cet e-mail est déjà associé à un autre compte :(");
                 }
                 return "redirect:/utilisateur/inscription";
             }
@@ -156,7 +154,7 @@ public class UtilisateurController {
         Optional<Utilisateur> u=utilisateurRepository.findById(idUser);
         Utilisateur utilisateurDB=null;
         Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
-        if (utilisateurRepository.findByUsername(utilisateur.getUsername())!=null && utilisateurRepository.findByEmail(utilisateur.getEmail())!=null ) {
+        if (utilisateurRepository.findByUsername(utilisateur.getUsername())==null && utilisateurRepository.findByEmail(utilisateur.getEmail())==null ) {
             if (utilisateurConnecte.getIdUser()==idUser){
                 utilisateurDB.setUsername(utilisateur.getUsername());
                 utilisateurDB.setLastname(utilisateur.getLastname());
@@ -169,8 +167,13 @@ public class UtilisateurController {
                 return "confirmationEditedUtilisateur";
             }else return "403";
         }else {
-            //TODO "ajouter message erreur"
-            return "editFormUtilisateur";
+            if (utilisateurRepository.findByUsername(utilisateur.getUsername())!=null ){
+                bindingResult.rejectValue("utilisateur.username", "utilisateur.username", "ce pseudo est déjà utilisé :(");
+            }
+            if (utilisateurRepository.findByEmail(utilisateur.getEmail())!=null){
+                bindingResult.rejectValue("utilisateur.email", "utilisateur.email", "cet e-mail est déjà associé à un autre compte :(");
+            }
+            return "redirect:/utilisateur/"+idUser+"/edit";
         }
 
 

@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 
 public interface UtilisateurRepository extends JpaRepository<Utilisateur,Long> {
     Utilisateur findByUsername(String username);
@@ -19,10 +21,5 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur,Long> {
     @Query("select u from Utilisateur u  where u.username like:x or u.lastname like:x or u.firstname like:x or u.email like:x order by u.idUser")
     public Page<Utilisateur> chercherUtilisateur(@Param("x") String motCle, Pageable pageable);
 
-    @Query("select u from Utilisateur u  where lower(u.username) like lower(:x) ")
-    Utilisateur findByUsernameLowcase(String username);
-
-    @Query("select u from Utilisateur u  where lower(u.email) like lower(:x) ")
-    Utilisateur findByEmailLowcase(String username);
 }
 

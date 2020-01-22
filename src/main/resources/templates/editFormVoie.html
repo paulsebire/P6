@@ -62,6 +62,7 @@
                     <input class="form-control" type="number" name="hauteurVoie" th:value="${voie.hauteurVoie}"/>
                 </div>
                 <div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
             </form>

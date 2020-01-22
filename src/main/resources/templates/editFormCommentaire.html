@@ -44,6 +44,7 @@
                     <input class="form-control" type="text" name="contenu" th:value="${commentaire.contenu}"/>
                 </div>
                 <div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
             </form>

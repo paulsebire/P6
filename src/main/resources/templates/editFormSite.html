@@ -44,6 +44,7 @@
                     <input class="form-control" type="text" name="localisation" th:value="${site.localisation}"/>
                 </div>
                 <div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
             </form>
