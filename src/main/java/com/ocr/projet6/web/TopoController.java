@@ -34,10 +34,10 @@ public class TopoController {
 
     /**
      * this method display all the topos in the DB
-     * @param model
-     * @param pageTopo
-     * @param sizeTopo
-     * @return
+     * @param model  instance of the model
+     * @param pageTopo the number of the page of topos the user is browsing
+     * @param sizeTopo the number of topos by page
+     * @return the page with all the topos
      */
     @GetMapping(value = "/topo/search")
     public String topos(Model model,
@@ -61,11 +61,11 @@ public class TopoController {
 
     /**
      * this method display all the topos for a site
-     * @param model
-     * @param idSite
-     * @param pageTopo
-     * @param sizeTopo
-     * @return
+     * @param model instance of the model
+     * @param idSite id of site
+     * @param pageTopo the number of the page of topos the user is browsing
+     * @param sizeTopo the number of topos by page
+     * @return  display a list of topos for a corresponding site
      */
     @GetMapping(value = "/site/{idSite}/topo/search")
     public String topoBySite (Model model,
@@ -97,11 +97,11 @@ public class TopoController {
 
     /**
      * this method display a list of topos who contains the keyword mc
-     * @param model
-     * @param pageTopo
-     * @param sizeTopo
-     * @param mc
-     * @return
+     * @param model instance of the model
+     * @param pageTopo the number of the page of topos the user is browsing
+     * @param sizeTopo the number of topos by page
+     * @param mc keyword
+     * @return a list of topos containing  the keyword
      */
     @GetMapping(path = "/topo/find")
     public String findTopo(Model model,
@@ -134,10 +134,10 @@ public class TopoController {
 
     /**
      * this method display a form to add a topo
-     * @param model
-     * @param pageSite
-     * @param sizeSite
-     * @return
+     * @param model instance of the model
+     * @param pageSite param of PageRequest
+     * @param sizeSite param of PageRequest
+     * @return the form  for adding a topo
      */
     @GetMapping (value = "/topo/add")
     public String addTopo(Model model,
@@ -156,8 +156,8 @@ public class TopoController {
 
     /**
      * this method delete the corresponding topo to idTopo
-     * @param idTopo
-     * @return
+     * @param idTopo  if of topo
+     * @return the page profile with all the topo
      */
     @GetMapping(value = "/topo/{idTopo}/delete")
     public String deleteTopo(@PathVariable(value = "idTopo")Long idTopo){
@@ -177,11 +177,11 @@ public class TopoController {
 
     /**
      * this method save in DB a new topo
-     * @param model
-     * @param topo
-     * @param idSiteNew
-     * @param bindingResult
-     * @return
+     * @param model instance of  the model
+     * @param topo an object topo
+     * @param idSiteNew id of the topo's site
+     * @param bindingResult handle errors
+     * @return a confirmation page
      */
     @PostMapping(value = "/topo/save")
     public String saveNewTopo(Model model, @Valid Topo topo,@RequestParam("idSiteNew") Long idSiteNew, BindingResult bindingResult){
@@ -212,9 +212,9 @@ public class TopoController {
 
     /**
      * this method display the topo identified by its id
-     * @param model
-     * @param id
-     * @return
+     * @param model instance of the model
+     * @param id id of the topo
+     * @return the page with all informations about a topo
      */
     @GetMapping(path = "/topo/{id}/consult")
     public String consulter(Model model,
@@ -240,11 +240,11 @@ public class TopoController {
 
     /**
      * this method check if user is owner of topo then display the edit form
-     * @param model
-     * @param id
-     * @param pageSite
-     * @param sizeSite
-     * @return
+     * @param model instance of the model
+     * @param id id of the topo
+     * @param pageSite param of PageRequest
+     * @param sizeSite param of PageRequest
+     * @return a form for editing topo
      */
     @GetMapping (value = "/topo/{id}/edit")
     public String topoEdit (Model model,@PathVariable(value = "id")Long id,
@@ -269,12 +269,12 @@ public class TopoController {
 
     /**
      * this method save an edited topo
-     * @param model
-     * @param topo
-     * @param id
-     * @param idSite
-     * @param bindingResult
-     * @return
+     * @param model instance of model
+     * @param topo an object topo
+     * @param id id of the topo
+     * @param idSite id of the site
+     * @param bindingResult handle errors
+     * @return a confirmation page
      */
     @PostMapping(value = "/topo/{id}/save")
     public String saveEditedTopo(Model model, @Valid Topo topo,

@@ -32,11 +32,11 @@ public class LongueurController {
 
     /**
      * this method display the add form for longueur
-     * @param model
-     * @param idSite
-     * @param pageVoie
-     * @param sizeVoie
-     * @return
+     * @param model instance of the model
+     * @param idSite  id of the site
+     * @param pageVoie param of PageRequest
+     * @param sizeVoie param of PageRequest
+     * @return a form for adding a longueur
      */
     @GetMapping(value = "/site/{idSite}/voie/longueur/add")
     public String addLongueur(Model model,@PathVariable("idSite") Long idSite,
@@ -65,11 +65,11 @@ public class LongueurController {
 
     /**
      * this method delete the longueur identified by idLongueur
-     * @param idLongueur
-     * @param pageLongueur
-     * @param sizeLongueur
-     * @param idSite
-     * @return
+     * @param idLongueur id of the longueur
+     * @param pageLongueur the number of the page of longueurs the user is browsing
+     * @param sizeLongueur the number of longueurs by page
+     * @param idSite id of the site
+     * @return the page with all the information about a site
      */
     @GetMapping(value = "/site/{idSite}/longueur/{idLongueur}/delete")
     public String deleteLongueur(@PathVariable("idLongueur") Long idLongueur,
@@ -92,12 +92,12 @@ public class LongueurController {
 
     /**
      * this method display the form to edit a longueur
-     * @param model
-     * @param idSite
-     * @param idLongueur
-     * @param pageVoie
-     * @param sizeVoie
-     * @return
+     * @param model instance of the model
+     * @param idSite id of the site
+     * @param idLongueur id of the longueur
+     * @param pageVoie param of PageRequest
+     * @param sizeVoie param of PageRequest
+     * @return a form for editing longueur
      */
     @RequestMapping(value = "/site/{idSite}/longueur/{idLongueur}/edit")
     public  String  editLongueur(Model model,@PathVariable("idSite") Long idSite,
@@ -125,12 +125,12 @@ public class LongueurController {
 
     /**
      * this method save in Db an edited Longueur
-     * @param model
-     * @param longueur
-     * @param idVoieNew
-     * @param idLongueur
-     * @param bindingResult
-     * @return
+     * @param model instance of model
+     * @param longueur  an object longueur
+     * @param idVoieNew id of the voie
+     * @param idLongueur id of the longueur
+     * @param bindingResult handle errors
+     * @return a connfirmation page
      */
     @PostMapping(value = "/longueur/{idLongueur}/save")
     public String saveEditedLongueur(Model model,
@@ -158,12 +158,12 @@ public class LongueurController {
 
     /**
      * this method save in Db a new Longueur
-     * @param model
-     * @param longueur
-     * @param idVoieNew
-     * @param idSite
-     * @param bindingResult
-     * @return
+     * @param model  instance of the model
+     * @param longueur an object longueur
+     * @param idVoieNew id of the voie
+     * @param idSite id of the site
+     * @param bindingResult handle errors
+     * @return a confirmation page
      */
     @PostMapping(value = "/site/{idSite}/voie/longueur/save")
     public String saveNewLongueur(Model model,

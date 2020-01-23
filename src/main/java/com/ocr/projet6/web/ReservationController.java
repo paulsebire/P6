@@ -29,9 +29,9 @@ private IClimbMetier iClimbMetier;
 
     /**
      * this method accept a demand of reservation of topo
-     * @param model
-     * @param idReservation
-     * @return
+     * @param model an instance of the model
+     * @param idReservation id of the reservation
+     * @return to the user's page of all incoming reservations
      */
     @GetMapping(value = "/topo/reservation/{id}/accepter")
     public String accepterReservation(Model model, @PathVariable(value = "id")Long idReservation){
@@ -77,9 +77,9 @@ private IClimbMetier iClimbMetier;
 
     /**
      * this method deny a demand of reservation of topo
-     * @param model
-     * @param idReservation
-     * @return
+     * @param model instance  of model
+     * @param idReservation id of the reservatioon
+     * @return to the user's page of all incoming reservations
      */
     @GetMapping(value = "/topo/reservation/{id}/refuser")
     public String refuserReservation(Model model, @PathVariable(value = "id")Long idReservation){
@@ -106,10 +106,10 @@ private IClimbMetier iClimbMetier;
 
     /**
      * this method display all reservations emited by user
-     * @param model
-     * @param pageReservation
-     * @param sizeReservation
-     * @return
+     * @param model instance of model
+     * @param pageReservation the number of the page of reservation the user is browsing
+     * @param sizeReservation the number of reservations by page
+     * @return an user's page with all the reservation made by an user
      */
     @GetMapping(value = "/utilisateur/profil/reservations/emises" )
     public String userProfileResaEmises (Model model,
@@ -142,10 +142,10 @@ private IClimbMetier iClimbMetier;
 
     /**
      * this method display all reservations received by user
-     * @param model
-     * @param pageReservation
-     * @param sizeReservation
-     * @return
+     * @param model an instance of the model
+     * @param pageReservation the number of the page of reservation the user is browsing
+     * @param sizeReservation the number of reservations by page
+     * @return an user's page with all the reservation received by an user
      */
     @GetMapping(value = "/utilisateur/profil/reservations/recues" )
     public String userProfileResaRecues (Model model,
@@ -176,10 +176,10 @@ private IClimbMetier iClimbMetier;
 
     /**
      * this method display all reservations accepted by user
-     * @param model
-     * @param pageReservation
-     * @param sizeReservation
-     * @return
+     * @param model an instance of the model
+     * @param pageReservation the number of the page of reservation the user is browsing
+     * @param sizeReservation the number of reservations by page
+     * @return an user's page with all the reservation accepted by an user
      */
     @GetMapping(value = "/utilisateur/profil/reservations/acceptees" )
     public String userProfileResaAcceptees (Model model,
@@ -212,9 +212,9 @@ private IClimbMetier iClimbMetier;
 
     /**
      * this method close a reservation
-     * @param model
-     * @param idReservation
-     * @return
+     * @param model an instance of the model
+     * @param idReservation id of the reservation
+     * @return a page with all the reservations accepted by an user
      */
     @GetMapping(value = "/topo/reservation/{id}/cloturer")
     public String cloturerResa(Model model, @PathVariable(value = "id")Long idReservation){
@@ -242,9 +242,9 @@ private IClimbMetier iClimbMetier;
 
     /**
      * this method create a demand of reservation
-     * @param model
-     * @param idTopo
-     * @return
+     * @param model instance of the model
+     * @param idTopo id of a topo
+     * @return a page with all the information about a topo
      */
     @GetMapping(value = "/topo/{idTopo}/reservation")
     public String DemandedeReservation(Model model,@PathVariable("idTopo")Long idTopo){

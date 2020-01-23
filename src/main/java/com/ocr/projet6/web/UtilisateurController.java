@@ -32,8 +32,8 @@ public class UtilisateurController {
 
     /**
      * this method return the inscription form
-     * @param model
-     * @return
+     * @param model instance of model
+     * @return the form for inscription
      */
     @GetMapping(value = "/utilisateur/inscription")
     public String inscriptionForm(Model model){
@@ -46,10 +46,10 @@ public class UtilisateurController {
     /**
      * this method check if username and email are available
      * then add the new user to DB
-     * @param model
-     * @param utilisateur
-     * @param bindingResult
-     * @return
+     * @param model instance of model
+     * @param utilisateur  an object utilisateur
+     * @param bindingResult handle the errors
+     * @return a confirmation page
      */
     @PostMapping(value = "/utilisateur/create")
     public String saveNewUtilisateur(Model model, @Valid Utilisateur utilisateur, BindingResult bindingResult){
@@ -75,10 +75,10 @@ public class UtilisateurController {
     /**
      * this method get all the topo owned by the loged user
      * and return to his profile page
-     * @param model
-     * @param pageTopo
-     * @param sizeTopo
-     * @return
+     * @param model instance of the model
+     * @param pageTopo the number of the page the user  is browsing
+     * @param sizeTopo the number of topo displayed by page
+     * @return the profile page with all the topos the user own
      */
     @GetMapping(value = "/utilisateur/profil/topos" )
     public String userProfiletopo (Model model,
@@ -112,9 +112,9 @@ public class UtilisateurController {
 
     /**
      * this method check the user and return the edition form for profile
-     * @param model
-     * @param idUser
-     * @return
+     * @param model instance of th model
+     * @param idUser id of user
+     * @return  the  form for editing profile
      */
     @GetMapping(value = "/utilisateur/{idUser}/edit")
     public String editUser(Model model,
@@ -138,11 +138,11 @@ public class UtilisateurController {
     /**
      *this method check the user and the disponibility of username and email
      * return confirmation page
-     * @param model
-     * @param utilisateur
-     * @param idUser
-     * @param bindingResult
-     * @return
+     * @param model instance of the model
+     * @param utilisateur an object utilisateur
+     * @param idUser  id of the user
+     * @param bindingResult handle the errors
+     * @return a confirmation page
      */
     @PostMapping(value = "/utilisateur/{idUser}/save")
     public String saveEditedUtilisateur(Model model, @Valid Utilisateur utilisateur,
@@ -181,10 +181,10 @@ public class UtilisateurController {
 
     /**
      * this method check the role of user and display administration page
-     * @param model
-     * @param pageUtilisateur
-     * @param sizeUtilisateur
-     * @return
+     * @param model instance oof the model
+     * @param pageUtilisateur  the number of the page of user the admin is browsing
+     * @param sizeUtilisateur the number of users by page
+     * @return the administration page
      */
     @GetMapping(value = "/administration")
     public String administration(Model model,
@@ -209,11 +209,11 @@ public class UtilisateurController {
 
     /**
      * this method check if user is admin and give admin right to another user
-     * @param model
-     * @param idUser
-     * @param pageUtilisateur
-     * @param sizeUtilisateur
-     * @return
+     * @param model instance of the model
+     * @param idUser id of user
+     * @param pageUtilisateur the number of the page of user the admin is browsing
+     * @param sizeUtilisateur the number of users by page
+     * @return the administration page
      */
     @GetMapping(value = "/utilisateur/{idUser}/adminRight")
     public String setRoleAdmin (Model model,@PathVariable(value = "idUser")Long idUser,
@@ -235,11 +235,11 @@ public class UtilisateurController {
 
     /**
      * this method check if user is admin and give user right to another user
-     * @param model
-     * @param idUser
-     * @param pageUtilisateur
-     * @param sizeUtilisateur
-     * @return
+     * @param model instance of the model
+     * @param idUser id of user
+     * @param pageUtilisateur the number of the page of user the admin is browsing
+     * @param sizeUtilisateur the number of users by page
+     * @return the administration page
      */
     @GetMapping(value = "/utilisateur/{idUser}/userRight")
     public String setRoleUser (Model model,@PathVariable(value = "idUser")Long idUser,
@@ -262,11 +262,11 @@ public class UtilisateurController {
     /**
      * this method will try to find an user with keyword "mc"
      * and display a list of user who contains the keyword
-     * @param model
-     * @param mc
-     * @param pageUtilisateur
-     * @param sizeUtilisateur
-     * @return
+     * @param model instance of the model
+     * @param mc keyword
+     * @param pageUtilisateur the number of the page of user the admin is browsing
+     * @param sizeUtilisateur the number of users by page
+     * @return the administration page
      */
     @GetMapping(value = "/utilisateur/find")
     public String findUser(Model model,

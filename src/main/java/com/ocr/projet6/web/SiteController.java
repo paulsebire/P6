@@ -26,10 +26,10 @@ public class SiteController {
 
     /**
      * this method display the page with all sites
-     * @param model
-     * @param pageSite
-     * @param sizeSite
-     * @return
+     * @param model  an instance of the model
+     * @param pageSite the number of the page of site the user is browsing
+     * @param sizeSite the number of sites by page
+     * @return a page with all the sites in the DB
      */
     @RequestMapping(value = "/site/search")
     public String sites(Model model,
@@ -49,11 +49,11 @@ public class SiteController {
 
     /**
      * this method wil display all sites containing the keyword mc
-     * @param model
-     * @param pageSite
-     * @param sizeSite
-     * @param mc
-     * @return
+     * @param model instance of  the model
+     * @param pageSite the number of the page of site the user is browsing
+     * @param sizeSite the number of sites by page
+     * @param mc keyword
+     * @return a page with all the sites containing the keywword
      */
     @GetMapping(path = "/site/find")
     public String find(Model model,
@@ -82,15 +82,15 @@ public class SiteController {
 
     /**
      * this method display all the informations about one site identified by idSite
-     * @param model
-     * @param idSite
-     * @param pageVoie
-     * @param sizeVoie
-     * @param pageLongueur
-     * @param sizeLongueur
-     * @param pageCommentaire
-     * @param sizeCommentaire
-     * @return
+     * @param model instance of model
+     * @param idSite id of site
+     * @param pageVoie the number of the page of voie the user is browsing
+     * @param sizeVoie the number of voies by page
+     * @param pageLongueur the number of the page of longueur the user is browsing
+     * @param sizeLongueur the number of longueurs by page
+     * @param pageCommentaire the number of the page of comments the user is browsing
+     * @param sizeCommentaire the number of comments by page
+     * @return a page with all the informations about a site
      */
     @GetMapping(path = "/site/{idSite}/consult")
     public String consulter(Model model,
@@ -157,8 +157,8 @@ public class SiteController {
 
     /**
      * this method check the user role and display the add form for site
-     * @param model
-     * @return
+     * @param model instance of the model
+     * @return a form for adding a site
      */
     @GetMapping(value = "/site/add")
     public String addSite(Model model){
@@ -175,10 +175,10 @@ public class SiteController {
 
     /**
      * this method save in DB a new site
-     * @param model
-     * @param site
-     * @param bindingResult
-     * @return
+     * @param model instance of the model
+     * @param site an object site
+     * @param bindingResult handle errors
+     * @return a confirmation page
      */
     @PostMapping(value = "/site/save")
     public String saveNewSite(Model model,@Valid Site site, BindingResult bindingResult){
@@ -198,11 +198,11 @@ public class SiteController {
 
     /**
      * thids method save an edited site
-     * @param model
-     * @param site
-     * @param idSite
-     * @param bindingResult
-     * @return
+     * @param model an instance of the model
+     * @param site an object site
+     * @param idSite id of the site
+     * @param bindingResult handle errors
+     * @return  a confirmation page
      */
     @PostMapping(value = "/site/{idSite}/save")
     public String saveEditedSite(Model model, @Valid Site site,
@@ -224,8 +224,8 @@ public class SiteController {
 
     /**
      * this method check if user is admin and give the status official to a site
-     * @param idSite
-     * @return
+     * @param idSite id of the site
+     * @return the  page with all the information about a site
      */
     @GetMapping(value = "/site/{idSite}/edit/officiel")
     public String rendreOfficiel(@PathVariable("idSite") Long idSite){
@@ -246,9 +246,9 @@ public class SiteController {
 
     /**
      * this method check if user is owner of site and display the edit form for site
-     * @param model
-     * @param idSite
-     * @return
+     * @param model instance of the model
+     * @param idSite id of the site
+     * @return a form for editing site
      */
     @RequestMapping(value = "/site/{idSite}/edit")
     public String editSite(Model model,

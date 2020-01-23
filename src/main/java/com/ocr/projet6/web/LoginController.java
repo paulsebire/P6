@@ -23,7 +23,7 @@ public class LoginController {
 
     /**
      * method used to log-in an user
-     * @return
+     * @return a page depending on success of authentication
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginGet() {
@@ -38,8 +38,8 @@ public class LoginController {
 
     /**
      * method used to log-out an user
-     * @param request
-     * @param response
+     * @param request request  from http  server
+     * @param response response from http server
      * @return to home page
      */
     @RequestMapping(value="/logout", method = RequestMethod.GET)

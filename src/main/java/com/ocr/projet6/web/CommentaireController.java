@@ -33,7 +33,7 @@ public class CommentaireController {
 
     /**
      * this method check user and add a comment to a site identified by idSite
-     * @param model
+     * @param model 
      * @param idSite
      * @param commentaire
      * @param pageCommentaire
