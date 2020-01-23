@@ -33,17 +33,13 @@ public class CommentaireController {
 
     /**
      * this method check user and add a comment to a site identified by idSite
-     * @param model 
-     * @param idSite
-     * @param commentaire
-     * @param pageCommentaire
-     * @param sizeCommentaire
-     * @return
+     * @param model instance of the model
+     * @param idSite id of the site
+     * @param commentaire an object commentaire
+     * @return the page with all the information about a site
      */
     @PostMapping(value = "/site/{idSite}/commentaire/save")
-    public String addCommentaire (Model model, @PathVariable(value = "idSite")Long idSite, @Valid Commentaire commentaire,
-                                  @RequestParam(name="pageCommentaire",defaultValue = "0") int pageCommentaire,
-                                  @RequestParam(name = "sizeCommentaire",defaultValue = "2") int sizeCommentaire){
+    public String addCommentaire (Model model, @PathVariable(value = "idSite")Long idSite, @Valid Commentaire commentaire){
         Optional<Site> s=siteRepository.findById(idSite);
         Site sit=null;
         Utilisateur utilisateur=iClimbMetier.userConnected();
@@ -63,22 +59,21 @@ public class CommentaireController {
 
     /**
      * this method delete a comment on a site identified by idSite
-     * @param idCommentaire
-     * @param principal
-     * @param idSite
-     * @return
+     * @param idCommentaire id of the comment
+     * @param idSite id of the site
+     * @return the ppage with all the information about a site
      */
     @GetMapping(value = "/site/{idSite}/commentaire/{idCommentaire}/delete")
     public String deleteCommentaire(@PathVariable("idCommentaire")Long idCommentaire,
-                             Principal principal,
                              @PathVariable("idSite")Long idSite){
         Optional<Commentaire> c=commentaireRepository.findById(idCommentaire);
         Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
         Commentaire commentaire=null;
         if (c.isPresent()){
             commentaire=c.get();
-            if (utilisateurConnecte.getIdUser()==commentaire.getUtilisateur().getIdUser()||utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_ADMIN)){
-                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" a supprimer le commentaire "+commentaire.getId());
+            if (utilisateurConnecte.getIdUser()==commentaire.getUtilisateur().getIdUser() ||
+                    utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_ADMIN)){
+                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername() +" a supprimer le commentaire "+commentaire.getId());
                 commentaireRepository.deleteById(idCommentaire);
             } else return "403";
         }
@@ -87,10 +82,10 @@ public class CommentaireController {
 
     /**
      * this method display the form to edit a comment
-     * @param model
-     * @param idSite
-     * @param idCommentaire
-     * @return
+     * @param model instance of the mmodel
+     * @param idSite id of the site
+     * @param idCommentaire id of the comment
+     * @return a form  for editing comment
      */
     @GetMapping(value = "/site/{idSite}/commentaire/{idCommentaire}/edit")
     public String editCommentaire(Model model,
@@ -115,12 +110,12 @@ public class CommentaireController {
 
     /**
      * this method check user and save an edited comment to a site identified by idSite
-     * @param model
-     * @param commentaire
-     * @param idSite
-     * @param idCommentaire
-     * @param bindingResult
-     * @return
+     * @param model instance of the model
+     * @param commentaire an object comment
+     * @param idSite  id of the site
+     * @param idCommentaire id of the comment
+     * @param bindingResult  handle errors
+     * @return a confirmation page
      */
     @PostMapping(value = "/site/{idSite}/commentaire/{idCommentaire}/save")
     public String saveEditedCommentaire(Model model, @Valid Commentaire commentaire,

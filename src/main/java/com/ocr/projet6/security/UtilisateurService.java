@@ -20,9 +20,9 @@ public class UtilisateurService implements UserDetailsService {
 
     /**
      * this method load a user by his username
-     * @param username
-     * @return
-     * @throws UsernameNotFoundException
+     * @param username name of user
+     * @return an  object user fulfill with informations belonging to username
+     * @throws UsernameNotFoundException an exception if user not found
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

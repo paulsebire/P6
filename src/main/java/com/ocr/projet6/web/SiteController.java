@@ -143,9 +143,6 @@ public class SiteController {
             model.addAttribute("pageCouranteCommentaire",pageCommentaire);
             model.addAttribute("sizeCommentaire",sizeCommentaire);
 
-            List<Commentaire> listComByUser = iClimbMetier.listCommentaireBySiteByUser(idSite,utilisateur.getIdUser());
-            int nbCombyUser = listComByUser.size();
-            model.addAttribute("nbComByUser",nbCombyUser);
             iClimbMetier.logger().info("La page du site "+site.getNameSite()+"a été demandée par "+utilisateur.getUsername());
         }catch (Exception e){
             model.addAttribute("exception",e);

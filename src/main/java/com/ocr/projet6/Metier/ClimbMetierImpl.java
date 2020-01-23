@@ -31,9 +31,9 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method ask in DB for a list of all sites
-     * @param page
-     * @param size
-     * @return
+     * @param page param of PageRequest
+     * @param size param of PageRequest
+     * @return a page of all sites
      */
     @Override
     public Page<Site> listSite(int page, int size) {
@@ -42,10 +42,10 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method ask in DB for a list of all voies for a site
-     * @param idSite
-     * @param page
-     * @param size
-     * @return
+     * @param idSite id of the site
+     * @param page param of PageRequest
+     * @param size param of PageRequest
+     * @return a page of all voies for a site
      */
     @Override
     public Page<Voie> listVoie(Long idSite, int page, int size) {
@@ -54,10 +54,10 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method ask in DB for a list of all longueurs for a site
-     * @param idSite
-     * @param page
-     * @param size
-     * @return
+     * @param idSite id of the site
+     * @param page param of PageRequest
+     * @param size param of PageRequest
+     * @return a page of all longueurs for a site
      */
     @Override
     public Page<Longueur> listLongueur(Long idSite, int page, int size) {
@@ -66,9 +66,9 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method ask in DB for a list of all topos
-     * @param page
-     * @param size
-     * @return
+     * @param page param of PageRequest
+     * @param size param of PageRequest
+     * @return a page of all topos
      */
     @Override
     public Page<Topo> listTopo(int page, int size){
@@ -77,10 +77,10 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method ask in DB for a list of topos for one user
-     * @param idUser
-     * @param page
-     * @param size
-     * @return
+     * @param idUser id of user
+     * @param page param of PageRequest
+     * @param size param of PageRequest
+     * @return a page with all topo owned by user identified by his id
      */
     @Override
     public Page<Topo> listTopoByUtilisateur(Long idUser, int page, int size){
@@ -89,10 +89,10 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method ask in DB for a list of topos for one site
-     * @param idSite
-     * @param page
-     * @param size
-     * @return
+     * @param idSite id of the site
+     * @param page param of PageRequest
+     * @param size param of PageRequest
+     * @return a page with all topos for the identified site
      */
     @Override
     public Page<Topo> listTopoBySite(Long idSite, int page, int size){
@@ -101,33 +101,23 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method ask in DB for a list of comments for one site
-     * @param idSite
-     * @param page
-     * @param size
-     * @return
+     * @param idSite id of the site
+     * @param page param of PageRequest
+     * @param size param of PageRequest
+     * @return a page with all the comments for the identified site
      */
     @Override
     public Page<Commentaire> listCommentaireBySite(Long idSite, int page, int size){
         return commentaireRepository.listCommentaireBySite(idSite,PageRequest.of(page,size));
     }
 
-    /**
-     * this method ask in DB for a list of comments for one site from one user
-     * @param idSite
-     * @param idUser
-     * @return
-     */
-    @Override
-    public List<Commentaire> listCommentaireBySiteByUser(Long idSite, Long idUser){
-        return commentaireRepository.listCommentaireBySiteByUser(idSite,idUser);
-    }
 
     /**
      * this method ask in DB for a list of reservation emited form one user
-     * @param username
-     * @param page
-     * @param size
-     * @return
+     * @param username name of user
+     * @param page param of PageRequest
+     * @param size param of PageRequest
+     * @return a page with all the reservation emitted by user
      */
     @Override
     public Page<Reservation> listResaDemande(String username, int page, int size){
@@ -135,10 +125,10 @@ public class ClimbMetierImpl implements IClimbMetier {
     }
 
     /**
-     * this method ask in DB if one user have already a reservation on the topo
-     * @param username
-     * @param idTopo
-     * @return
+     * this method ask in DB if one user have already a reservation of the topo
+     * @param username name of user
+     * @param idTopo id of the topo
+     * @return true if the user have already a demand of reservation of the topo
      */
     @Override
     public boolean demandeEnCours (String username, Long idTopo){
@@ -152,10 +142,10 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method ask in DB for a list of reservation received for one user
-     * @param usernameProprietaire
-     * @param page
-     * @param size
-     * @return
+     * @param usernameProprietaire name of the owner of the topo
+     * @param page param of PageRequest
+     * @param size param of PageRequest
+     * @return a page of reservation received for one user
      */
     @Override
     public Page<Reservation> demandeEnAttenteAcceptation (String usernameProprietaire, int page, int size){
@@ -167,10 +157,10 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method ask in DB for a list of reservation accepted by one user
-     * @param username
-     * @param page
-     * @param size
-     * @return
+     * @param username name of user
+     * @param page param of PageRequest
+     * @param size param of PageRequest
+     * @return a page with all reservation accepted by one user
      */
     @Override
     public Page<Reservation> demandeAcceptees (String username, int page, int size){
@@ -182,9 +172,9 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method ask in DB for a list of all users
-     * @param page
-     * @param size
-     * @return
+     * @param page param of PageRequest
+     * @param size param of PageRequest
+     * @return a page with all the users
      */
     @Override
     public Page<Utilisateur> listUtilisateur(int page, int size){
@@ -193,7 +183,7 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method get all the information about the current connected user
-     * @return
+     * @return an user (entity)  with all the information about the logged  user
      */
     @Override
     public Utilisateur userConnected(){
@@ -203,7 +193,7 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * this method ask in DB for a list of site who get an image for home page
-     * @return
+     * @return list of site who get an image
      */
     @Override
     public List<Site> listSiteWithImg(){
@@ -212,8 +202,8 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      *this method ask in DB for a list of reservations received for one topo
-     * @param idTopo
-     * @return
+     * @param idTopo id of the topo
+     * @return a list with all the active reservations on one topo
      */
     @Override
     public List<Reservation> demandeEnCoursbyTopo (Long idTopo){
@@ -222,7 +212,7 @@ public class ClimbMetierImpl implements IClimbMetier {
 
     /**
      * logger
-     * @return
+     * @return the logger
      */
     @Override
     public final Logger logger(){
