@@ -7,12 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 
 public interface CommentaireRepository extends JpaRepository<Commentaire,Long> {
     @Query(value = "select c from Commentaire c inner join fetch c.site s  where s.idSite=:idSite order by c.date  desc ",
             countQuery = "select count (c) from Commentaire c inner join c.site s where s.idSite=:idSite")
-    public Page<Commentaire> listCommentaireBySite(@Param("idSite")Long idSite, Pageable pageable);
+     Page<Commentaire> listCommentaireBySite(@Param("idSite")Long idSite, Pageable pageable);
 
 
 }

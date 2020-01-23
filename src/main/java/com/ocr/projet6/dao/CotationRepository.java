@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CotationRepository extends JpaRepository<Cotation,Long> {
 
-public Cotation findByCote(String cote);
+ Cotation findByCote(String cote);
 }
