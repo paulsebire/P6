@@ -34,9 +34,9 @@ public class VoieController {
 
     /**
      * this method check the user and return to add Voie form
-     * @param model
-     * @param idSite
-     * @return
+     * @param model instance of the model
+     * @param idSite id of site
+     * @return the form to add a voie
      */
     @GetMapping(value = "/site/{idSite}/voie/add")
     public String addVoie(Model model,@PathVariable("idSite") Long idSite){
@@ -61,11 +61,11 @@ public class VoieController {
 
     /**
      * this method check the user and delete the voie
-     * @param idVoie
-     * @param idSite
-     * @param pageVoie
-     * @param sizeVoie
-     * @return
+     * @param idVoie id of voie
+     * @param idSite id  of site
+     * @param pageVoie the number of the page user is browsing
+     * @param sizeVoie the number of element  displayed by page
+     * @return the page with all informations about a site
      */
     @GetMapping(value = "/site/{idSite}/voie/{idVoie}/delete")
     public String deleteVoie(@PathVariable("idVoie")Long idVoie,
@@ -87,10 +87,10 @@ public class VoieController {
 
     /**
      * his method check the user and return to edit Voie form
-     * @param model
-     * @param idSite
-     * @param idVoie
-     * @return
+     * @param model instance of the model
+     * @param idSite id of site
+     * @param idVoie id of voie
+     * @return the form to edit a voie
      */
     @GetMapping(value = "/site/{idSite}/voie/{idVoie}/edit")
     public String editVoie(Model model,
@@ -121,13 +121,13 @@ public class VoieController {
     /**
      * this method check the user and save the edited voie in the DB
      * return confirmation page
-     * @param model
-     * @param voie
-     * @param idSite
-     * @param idVoie
-     * @param cotationId
-     * @param bindingResult
-     * @return
+     * @param model instance of the model
+     * @param voie an object  voie
+     * @param idSite id of a site
+     * @param idVoie id of a voie
+     * @param cotationId id of a cotation
+     * @param bindingResult handle the errors
+     * @return a confirmation page
      */
     @PostMapping(value = "/site/{idSite}/voie/{idVoie}/save")
     public String saveEditedVoie(Model model, @Valid Voie voie,
@@ -161,12 +161,12 @@ public class VoieController {
     /**
      * this method check the user and save the new voie in the DB
      * return confirmation page
-     * @param model
-     * @param voie
-     * @param idSite
-     * @param cotationId
-     * @param bindingResult
-     * @return
+     * @param model instance of model
+     * @param voie an object voie
+     * @param idSite id of a site
+     * @param cotationId id of a cotation
+     * @param bindingResult handle the errors
+     * @return  a confirmation page
      */
     @PostMapping(value = "/site/{idSite}/voie/save")
     public String saveNewVoie(Model model, @Valid Voie voie,
