@@ -7,6 +7,7 @@ import com.ocr.projet6.entities.Reservation;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.enums.RoleEnum;
+import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -53,27 +55,26 @@ public class UtilisateurController {
      */
     @PostMapping(value = "/utilisateur/create")
     public String saveNewUtilisateur(Model model, @Valid Utilisateur utilisateur, BindingResult bindingResult){
-            if (utilisateurRepository.findByUsername(utilisateur.getUsername())==null || utilisateurRepository.findByEmail(utilisateur.getEmail())==null){
+            if (utilisateurRepository.findByUsername(utilisateur.getUsername())==null && utilisateurRepository.findByEmail(utilisateur.getEmail())==null){
                 utilisateur.getRoles().add(RoleEnum.ROLE_USER);
                 utilisateurRepository.save(utilisateur);
                 model.addAttribute("utilisateur",utilisateur);
                 iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a été ajouté a la DB");
                 return "confirmationUtilisateur";
             }else{
-                if (utilisateurRepository.findByUsername(utilisateur.getUsername())!=null ){
-                    bindingResult.rejectValue("utilisateur.username", "utilisateur.username", "ce pseudo est déjà utilisé :(");
+                if (utilisateurRepository.findByUsername(utilisateur.getUsername().toLowerCase())!=null ){
+                    bindingResult.rejectValue("username","utilisateur.username", "ce pseudo est déjà utilisé :(");
                 }
-                if (utilisateurRepository.findByEmail(utilisateur.getEmail())!=null){
-                    bindingResult.rejectValue("utilisateur.email", "utilisateur.email", "cet e-mail est déjà associé à un autre compte :(");
+                if (utilisateurRepository.findByEmail(utilisateur.getEmail().toLowerCase())!=null){
+                    bindingResult.rejectValue("email","utilisateur.email", "cet e-mail est déjà associé à un autre compte :(");
                 }
-                return "redirect:/utilisateur/inscription";
+                model.addAttribute("utilisateur",utilisateur);
+                return "inscription";
             }
-
-
     }
 
     /**
-     * this method get all the topo owned by the loged user
+     * this method get all the topo owned by the logged user
      * and return to his profile page
      * @param model instance of the model
      * @param pageTopo the number of the page the user  is browsing
@@ -144,41 +145,43 @@ public class UtilisateurController {
      * @param bindingResult handle the errors
      * @return a confirmation page
      */
-    @PostMapping(value = "/utilisateur/{idUser}/save")
+ @PostMapping(value = "/utilisateur/{idUser}/save")
     public String saveEditedUtilisateur(Model model, @Valid Utilisateur utilisateur,
                                  @PathVariable("idUser") Long idUser,
-                                 BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            return "editFormUtilisateur";
-        }
-        Optional<Utilisateur> u=utilisateurRepository.findById(idUser);
+                                 BindingResult bindingResult,
+                                        final RedirectAttributes redirectAttributes){
         Utilisateur utilisateurDB=null;
         Utilisateur utilisateurConnecte=iClimbMetier.userConnected();
-        if (utilisateurRepository.findByUsername(utilisateur.getUsername())==null && utilisateurRepository.findByEmail(utilisateur.getEmail())==null ) {
-            if (utilisateurConnecte.getIdUser()==idUser){
-                utilisateurDB.setUsername(utilisateur.getUsername());
-                utilisateurDB.setLastname(utilisateur.getLastname());
-                utilisateurDB.setFirstname(utilisateur.getFirstname());
-                utilisateurDB.setEmail(utilisateur.getEmail());
-                utilisateurDB.setPassword(utilisateur.getPassword());
-                model.addAttribute("utilisateur",utilisateurDB);
-                utilisateurRepository.save(utilisateurDB);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte+" a modifié ses informations");
-                return "confirmationEditedUtilisateur";
-            }else return "403";
-        }else {
-            if (utilisateurRepository.findByUsername(utilisateur.getUsername())!=null ){
-                bindingResult.rejectValue("utilisateur.username", "utilisateur.username", "ce pseudo est déjà utilisé :(");
-            }
-            if (utilisateurRepository.findByEmail(utilisateur.getEmail())!=null){
-                bindingResult.rejectValue("utilisateur.email", "utilisateur.email", "cet e-mail est déjà associé à un autre compte :(");
-            }
-            return "redirect:/utilisateur/"+idUser+"/edit";
-        }
+        model.addAttribute("utilisateurConnecte",utilisateurConnecte);
+        model.addAttribute("utilisateur",utilisateur);
+       if (utilisateurConnecte.getIdUser()==idUser){
+           if (utilisateurRepository.findByUsername(utilisateur.getUsername())==null && utilisateurRepository.findByEmail(utilisateur.getEmail())==null) {
+               if (!utilisateur.getUsername().isBlank()&&!utilisateur.getFirstname().isBlank()&&!utilisateur.getLastname().isBlank()&&!utilisateur.getEmail().isBlank()
+                       && !utilisateur.getPassword().isBlank()&&utilisateur.getPassword().length()>=4&&utilisateur.getLastname().length()>=2
+                       && utilisateur.getFirstname().length()>=2 && utilisateur.getUsername().length()>=2){
+                   utilisateurDB.setUsername(utilisateur.getUsername());
+                   utilisateurDB.setLastname(utilisateur.getLastname());
+                   utilisateurDB.setFirstname(utilisateur.getFirstname());
+                   utilisateurDB.setEmail(utilisateur.getEmail());
+                   utilisateurDB.setPassword(utilisateur.getPassword());
+                   model.addAttribute("utilisateur",utilisateurDB);
+                   utilisateurRepository.save(utilisateurDB);
+                   iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte+" a modifié ses informations");
+                   return "confirmationEditedUtilisateur";
+               }else{
+                   return "editFormUtilisateur";
+               }
 
+           } else{
+               if (utilisateurRepository.findByUsername(utilisateur.getUsername())!=null ){
+                   bindingResult.rejectValue("username", "utilisateur.username", "ce pseudo est déjà utilisé :(");}
+               if (utilisateurRepository.findByEmail(utilisateur.getEmail())!=null){
+                   bindingResult.rejectValue("email", "utilisateur.email", "cet e-mail est déjà associé à un autre compte :(");}
+               return "editFormUtilisateur";
+           }
+       }else return "403";
 
     }
-
     /**
      * this method check the role of user and display administration page
      * @param model instance oof the model
@@ -277,7 +280,6 @@ public class UtilisateurController {
         try {
             Page<Utilisateur> pageUtilisateurs = utilisateurRepository.chercherUtilisateur("%" + mc + "%", PageRequest.of(pageUtilisateur, sizeUtilisateur));
             model.addAttribute("listUtilisateur", pageUtilisateurs.getContent());
-
             int[] pagesUtilisateurs = new int[pageUtilisateurs.getTotalPages()];
             model.addAttribute("pagesUtilisateur", pagesUtilisateurs);
             int paginationEnablerUtilisateur = pagesUtilisateurs.length;

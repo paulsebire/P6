@@ -44,10 +44,12 @@ public class Utilisateur implements UserDetails {
     private String email;
 
     @NotNull
+    @Size(min = 2)
     @Column(name = "firstname", nullable = false)
     private String firstname;
 
     @NotNull
+    @Size(min = 2)
     @Column(name = "lastname", nullable = false)
     private String lastname;
 
