@@ -256,14 +256,12 @@ private static final Logger logger = LogManager.getLogger(ReservationController.
         if (t.isPresent()){
             if (demandeur.getRoles().toString().contains("USER")){
                 topo=t.get();
-                System.out.println("propri ="+topo.getUtilisateur().getUsername());
                 Reservation reservation=new Reservation(false,true,false,demandeur,topo);
                 reservation.setDate(new Date());
                 reservationRepository.save(reservation);
                 model.addAttribute("topo", topo);
                 model.addAttribute("utilisateurConnecte",demandeur);
                 boolean demandeEnCours=iClimbMetier.demandeEnCours(demandeur.getUsername(),topo.getId());
-                System.out.println("demandeencours="+demandeEnCours);
                 model.addAttribute("demandeEnCours",demandeEnCours);
                 logger.info("L'utilisateur "+demandeur.getUsername()+" a émis une demande de reservation du topo "+topo.getNom());
                 return "redirect:/topo/"+idTopo+"/consult";
