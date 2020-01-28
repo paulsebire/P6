@@ -4,7 +4,7 @@ How to launch the application ?
 -
 Once the project cloned, you have to create the DataBase "amisgrimpe" in PostgreSQL
 
-From IntelliJ: you have to go start the java application.
+From IntelliJ: you have to start the java application.
 <br/>
 
 Then , go on your browser and enter  the following URL:
