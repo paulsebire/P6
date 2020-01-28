@@ -1,6 +1,8 @@
 package com.ocr.projet6.web;
 
 import com.ocr.projet6.Metier.IClimbMetier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,9 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LoginController {
 
-    @Autowired
-    private IClimbMetier iClimbMetier;
-
+    private static final Logger logger = LogManager.getLogger(LoginController.class);
 
     /**
      * method used to log-in an user
@@ -30,7 +30,7 @@ public class LoginController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {
-            iClimbMetier.logger().info("connexion de l'utilisateur"+SecurityContextHolder.getContext().getAuthentication().getName());
+            logger.info("connexion de l'utilisateur"+SecurityContextHolder.getContext().getAuthentication().getName());
             return new ModelAndView("redirect:/site/search");
         }
         return new ModelAndView("login");
@@ -46,7 +46,7 @@ public class LoginController {
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
-            iClimbMetier.logger().info("L'utilisateur "+SecurityContextHolder.getContext().getAuthentication().getName()+" s'est déconnecté");
+            logger.info("L'utilisateur "+SecurityContextHolder.getContext().getAuthentication().getName()+" s'est déconnecté");
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/home";

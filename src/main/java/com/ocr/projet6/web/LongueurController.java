@@ -9,6 +9,8 @@ import com.ocr.projet6.entities.Site;
 import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.entities.Voie;
 import com.ocr.projet6.enums.RoleEnum;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -29,7 +31,7 @@ public class LongueurController {
     private VoieRepository voieRepository;
     @Autowired
     private IClimbMetier iClimbMetier;
-
+    private static final Logger logger = LogManager.getLogger(LongueurController.class);
     /**
      * this method display the add form for longueur
      * @param model instance of the model
@@ -55,7 +57,7 @@ public class LongueurController {
                 model.addAttribute("longueur", longueur);
                 Long idVoieNew = null;
                 model.addAttribute("idVoieNew", idVoieNew);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+"veut ajouter une longueur au site "+sit.getNameSite());
+                logger.info("L'utilisateur "+utilisateur.getUsername()+"veut ajouter une longueur au site "+sit.getNameSite());
                 return "addFormLongueur";
             }else return "redirect:/site/"+idSite+"/consult";
 
@@ -82,7 +84,7 @@ public class LongueurController {
         if (l.isPresent()){
             longueur=l.get();
             if (utilisateurConnecte.getIdUser()==longueur.getVoie().getSite().getUtilisateur().getIdUser()&&utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_USER)){
-                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" a supprimé la longueur "+longueur.getNomLongueur());
+                logger.info("L'utilisateur "+utilisateurConnecte.getUsername()+" a supprimé la longueur "+longueur.getNomLongueur());
                 longueurRepository.deleteById(idLongueur);
             } else return "403";
         }
@@ -117,7 +119,7 @@ public class LongueurController {
                 Long idVoieNew = null;
                 model.addAttribute("idVoieNew", idVoieNew);
                 model.addAttribute("longueur", lg);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" veut modifier la longueur "+ lg.getNomLongueur());
+                logger.info("L'utilisateur "+utilisateur.getUsername()+" veut modifier la longueur "+ lg.getNomLongueur());
                 return "editFormLongueur";
             }else return "403";
         }return "redirect:/site/"+idSite+"/consult";
@@ -150,7 +152,7 @@ public class LongueurController {
                 longueur.setIdLongueur(idLongueur);
                 longueurRepository.save(longueur);
                 model.addAttribute("longueur",longueur);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a modifié la longueur "+longueur.getNomLongueur());
+                logger.info("L'utilisateur "+utilisateur.getUsername()+" a modifié la longueur "+longueur.getNomLongueur());
                 return "confirmationLongueur";
             } else  return "403";
         } else return "editFormLongueur";
@@ -185,7 +187,7 @@ public class LongueurController {
                 longueur.setVoie(voi);
                 longueurRepository.save(longueur);
                 model.addAttribute("longueur",longueur);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a ajouté une longueur à la voie "+voi.getNomVoie()+" du site "+sit.getNameSite());
+                logger.info("L'utilisateur "+utilisateur.getUsername()+" a ajouté une longueur à la voie "+voi.getNomVoie()+" du site "+sit.getNameSite());
                 return "confirmationLongueur";
             }
              return "403";

@@ -8,6 +8,8 @@ import com.ocr.projet6.entities.Site;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.enums.RoleEnum;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +33,7 @@ public class TopoController {
     private TopoRepository topoRepository;
     @Autowired
     private SiteRepository siteRepository;
+    private static final Logger logger = LogManager.getLogger(TopoController.class);
 
     /**
      * this method display all the topos in the DB
@@ -53,7 +56,7 @@ public class TopoController {
             model.addAttribute("pagesTopo",pagesTopo);
             model.addAttribute("pageCouranteTopo",pageTopo);
             model.addAttribute("sizeTopo",sizeTopo);
-            iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" veut accèder à la page des topos");
+            logger.info("L'utilisateur "+utilisateurConnecte.getUsername()+" veut accèder à la page des topos");
             return "topos";
         }else return "403";
 
@@ -89,7 +92,7 @@ public class TopoController {
                 site=s.get();
             }
             model.addAttribute("site",site);
-            iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" veut voir les topos du site "+site.getNameSite());
+            logger.info("L'utilisateur "+utilisateurConnecte.getUsername()+" veut voir les topos du site "+site.getNameSite());
             return "topoBySite";
         }else return "403";
 
@@ -126,7 +129,7 @@ public class TopoController {
                 model.addAttribute("exception",e);
                 throw new RuntimeException("Topo Introuvable");
             }
-            iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+"cherche un topo contenant "+mc);
+            logger.info("L'utilisateur "+utilisateurConnecte.getUsername()+"cherche un topo contenant "+mc);
             return "topos";
         }else return "403";
 
@@ -167,7 +170,7 @@ public class TopoController {
         if (t.isPresent()){
             topo=t.get();
             if (utilisateurConnecte.getIdUser()==topo.getUtilisateur().getIdUser()){
-                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" a supprimé le topo "+topo.getNom());
+                logger.info("L'utilisateur "+utilisateurConnecte.getUsername()+" a supprimé le topo "+topo.getNom());
                 topoRepository.deleteById(idTopo);
                 return "profile";
             } else return "403";
@@ -202,7 +205,7 @@ public class TopoController {
                 topo.setDate(new Date());
                 topoRepository.save(topo);
                 model.addAttribute("topo",topo);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a créé le nouveau topo "+topo.getNom());
+                logger.info("L'utilisateur "+utilisateur.getUsername()+" a créé le nouveau topo "+topo.getNom());
                 return "confirmationTopo";
             }else return "addFormTopo";
 
@@ -231,7 +234,7 @@ public class TopoController {
                 boolean demandeEnCours=iClimbMetier.demandeEnCours(utilisateurConnecte.getUsername(),topo.getId());
                 System.out.println("demandeencours="+demandeEnCours);
                 model.addAttribute("demandeEnCours",demandeEnCours);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername() +" veut consulter le topo "+topo.getNom());
+                logger.info("L'utilisateur "+utilisateurConnecte.getUsername() +" veut consulter le topo "+topo.getNom());
                 return "topoDisplay";
             }else return "home";
         }else return "403";
@@ -260,7 +263,7 @@ public class TopoController {
                 Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);
                 model.addAttribute("listSite",pageSites.getContent());
                 System.out.println("topo.site.nameSite="+topo.getSite().getNameSite());
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+"souhaite modifier le topo "+topo.getNom());
+                logger.info("L'utilisateur "+utilisateur.getUsername()+"souhaite modifier le topo "+topo.getNom());
                 return "editFormTopo";
             }
             return "403";
@@ -297,7 +300,7 @@ public class TopoController {
                 topo.setDate(new Date());
                 model.addAttribute("topo",topo);
                 topoRepository.save(topo);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a modifié le topo "+topo.getNom());
+                logger.info("L'utilisateur "+utilisateur.getUsername()+" a modifié le topo "+topo.getNom());
                 return "confirmationTopo";
             }
             return "403";

@@ -210,13 +210,5 @@ public class ClimbMetierImpl implements IClimbMetier {
         return reservationRepository.demandeEnCoursbyTopo(idTopo);
     }
 
-    /**
-     * logger
-     * @return the logger
-     */
-    @Override
-    public final Logger logger(){
-        return LogManager.getLogger();
-    }
 
 }

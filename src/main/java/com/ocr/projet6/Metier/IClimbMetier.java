@@ -22,5 +22,5 @@ public interface IClimbMetier {
     Utilisateur userConnected();
     List<Site> listSiteWithImg();
     List<Reservation> demandeEnCoursbyTopo (Long idTopo);
-    Logger logger();
+
 }

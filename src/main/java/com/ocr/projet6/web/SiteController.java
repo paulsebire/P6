@@ -4,6 +4,8 @@ import com.ocr.projet6.Metier.IClimbMetier;
 import com.ocr.projet6.dao.SiteRepository;
 import com.ocr.projet6.entities.*;
 import com.ocr.projet6.enums.RoleEnum;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +26,7 @@ public class SiteController {
     @Autowired
     private IClimbMetier iClimbMetier;
 
+    private static final Logger logger = LogManager.getLogger(SiteController.class);
     /**
      * this method display the page with all sites
      * @param model  an instance of the model
@@ -43,7 +46,7 @@ public class SiteController {
         model.addAttribute("pagesSite",pagesSite);
         model.addAttribute("pageCouranteSite",pageSite);
         model.addAttribute("sizeSite",sizeSite);
-        iClimbMetier.logger().info("la page des sites a été demandée");
+        logger.info("la page des sites a été demandée");
         return "sites";
     }
 
@@ -72,7 +75,7 @@ public class SiteController {
             model.addAttribute("pageCouranteSite", pageSites);
             model.addAttribute("sizeSite", sizeSite);
             model.addAttribute("motCle", mc);
-            iClimbMetier.logger().info("La liste des sites contenant "+mc+" a été demandée");
+            logger.info("La liste des sites contenant "+mc+" a été demandée");
         }catch (Exception e){
             model.addAttribute("exception",e);
             throw new RuntimeException("Site Introuvable");
@@ -143,7 +146,7 @@ public class SiteController {
             model.addAttribute("pageCouranteCommentaire",pageCommentaire);
             model.addAttribute("sizeCommentaire",sizeCommentaire);
 
-            iClimbMetier.logger().info("La page du site "+site.getNameSite()+"a été demandée par "+utilisateur.getUsername());
+            logger.info("La page du site "+site.getNameSite()+"a été demandée par "+utilisateur.getUsername());
         }catch (Exception e){
             model.addAttribute("exception",e);
         }
@@ -164,7 +167,7 @@ public class SiteController {
             Site site=new Site();
             site.setOfficiel(false);
             model.addAttribute("site",site);
-            iClimbMetier.logger().info("l'utilisateur " + utilisateur.getUsername() + " souhaite ajouter un nouveau site");
+            logger.info("l'utilisateur " + utilisateur.getUsername() + " souhaite ajouter un nouveau site");
             return "addFormSite";
         }
         return "403";
@@ -187,7 +190,7 @@ public class SiteController {
             site.setUtilisateur(utilisateur);
             siteRepository.save(site);
             model.addAttribute("site",site);
-            iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a créé le nouveau site"+site.getNameSite());
+            logger.info("L'utilisateur "+utilisateur.getUsername()+" a créé le nouveau site"+site.getNameSite());
             return "confirmationSite";
         }
         return "403";
@@ -213,7 +216,7 @@ public class SiteController {
         site.setIdSite(idSite);
         model.addAttribute("site",site);
         siteRepository.save(site);
-        iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a édité le site"+site.getNameSite());
+        logger.info("L'utilisateur "+utilisateur.getUsername()+" a édité le site"+site.getNameSite());
         return "confirmationSite";
         }
         return "403";
@@ -234,7 +237,7 @@ public class SiteController {
                 site=s.get();
                 site.setOfficiel(!site.isOfficiel());
                 siteRepository.save(site);
-                iClimbMetier.logger().info("L'administateur "+utilisateur.getUsername()+" a rendu le site "+site.getNameSite()+" officiel");
+                logger.info("L'administateur "+utilisateur.getUsername()+" a rendu le site "+site.getNameSite()+" officiel");
             }
             return "redirect:/site/"+idSite+"/consult";
         }
@@ -257,7 +260,7 @@ public class SiteController {
                 site = s.get();
                 if (utilisateur.getIdUser()==site.getUtilisateur().getIdUser()&& utilisateur.getRoles().contains(RoleEnum.ROLE_USER)){
                     model.addAttribute("site", site);
-                    iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+"veut modifier le site "+site.getNameSite());
+                    logger.info("L'utilisateur "+utilisateur.getUsername()+"veut modifier le site "+site.getNameSite());
                     return "editFormSite";
                 }return "403";
             }return "redirect:/site/"+idSite+"/consult";
