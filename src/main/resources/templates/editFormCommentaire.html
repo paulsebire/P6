@@ -30,18 +30,16 @@
         <div class="card-body">
             <form th:action="@{/site/{idSite}/commentaire/{idCommentaire}/save(idSite=${site.idSite},idCommentaire=${commentaire.id})}" method="post">
                 <div class="form-group">
-                    <label class="control-label">Ancien Contenu:<br/>
+                    <label class="control-label">Ancien Commentaire:<br/>
                         <span class="red" th:errors=" ${commentaire.contenu}">
                         </span>
                     </label>
                     <p th:text="${commentaire.contenu}"/>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Nouveau Contenu:
-                        <span class="red" th:errors=" ${commentaire.contenu}">
-                        </span>
-                    </label>
-                    <input class="form-control" type="text" name="contenu" th:value="${commentaire.contenu}"/>
+                    <label for="textarea">Votre commentaire :</label>
+                    <textarea id="textarea" class="form-control" name="contenu" rows="4" value="écrivez votre texte en 1000 caractères" maxlength="1000"></textarea>
+                    <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
                 </div>
                 <div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
