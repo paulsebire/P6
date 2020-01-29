@@ -195,7 +195,7 @@ public class UtilisateurController {
     public String administration(Model model,
                         @RequestParam(name="pageUtilisateur",defaultValue = "0") int pageUtilisateur,
                         @RequestParam(name = "sizeUtilisateur",defaultValue = "4") int sizeUtilisateur){
-
+        model.addAttribute("RoleAdmin",RoleEnum.ROLE_ADMIN);
         Page<Utilisateur> pageUtilisateurs= iClimbMetier.listUtilisateur(pageUtilisateur,sizeUtilisateur);
         model.addAttribute("listUtilisateur",pageUtilisateurs.getContent());
         int[] pagesUtilisateur=new int[pageUtilisateurs.getTotalPages()];

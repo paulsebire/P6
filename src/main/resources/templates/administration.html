@@ -56,10 +56,10 @@
                                     <td align="center" th:text="${lu.firstname}"></td>
                                     <td align="center" th:text="${lu.username}"></td>
                                     <td align="center" th:text="${lu.email}"></td>
-                                    <td align="center" th:text="${lu.roles.contains('ADMIN')}?'ADMIN':'USER'"></td>
-                                    <td align="center" th:if="${lu.roles.contains('ADMIN')}==false"><a class="btn btn-primary"
+                                    <td align="center" th:text="${lu.roles.contains(RoleAdmin)}?'ADMIN':'USER'"></td>
+                                    <td align="center" th:if="${lu.roles.contains(RoleAdmin)}==false"><a class="btn btn-primary"
                                         th:href="@{/utilisateur/{idUser}/adminRight(idUser=${lu.idUser})}"><i class="fas fa-user-graduate"></i>  ADMIN</a></td>
-                                    <td align="center" th:if="${lu.roles.contains('ADMIN')}==true"><a class="btn btn-primary"
+                                    <td align="center" th:if="${lu.roles.contains(RoleAdmin)}==true"><a class="btn btn-primary"
                                         th:href="@{/utilisateur/{idUser}/userRight(idUser=${lu.idUser})}"><i class="fas fa-baby"></i>  USER</a></td>
                                 </tr>
                             </table>
