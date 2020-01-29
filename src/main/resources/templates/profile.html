@@ -202,8 +202,7 @@
                     </div>
                 </div>
                 <div class="card-body justify-content-center" th:if="${paginationEnablerResa==0} and ${demandeRecueBool}==true">
-                    <p>Vous n'avez pas encore fait de réservation de Topo.</p>
-                    <a class=" btn btn-primary " th:href="@{/topo/search}" ><i class="fa fa-search"></i>  Trouver un Topo</a>
+                    <p>Vous n'avez pas encore reçu de réservation de Topo.</p>
                 </div>
                 <div class="card-body justify-content-center" th:if="${paginationEnablerResa>0} and ${demandeAccepteesBool}==true">
 
@@ -241,8 +240,7 @@
                     </div>
                 </div>
                 <div class="card-body justify-content-center" th:if="${paginationEnablerResa==0} and ${demandeAccepteesBool}==true">
-                    <p>Vous n'avez pas encore fait de réservation de Topo.</p>
-                    <a class=" btn btn-primary " th:href="@{/topo/search}" ><i class="fa fa-search"></i>  Trouver un Topo</a>
+                    <p>Vous n'avez pas encore accepté de réservation de Topo.</p>
                 </div>
             </div>
         </div>

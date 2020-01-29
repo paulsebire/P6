@@ -8,6 +8,8 @@ import com.ocr.projet6.entities.Cotation;
 import com.ocr.projet6.entities.Site;
 import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.entities.Voie;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,8 @@ public class VoieController {
     @Autowired
     private CotationRepository cotationRepository;
 
+    private static final Logger logger = LogManager.getLogger(VoieController.class);
+
     /**
      * this method check the user and return to add Voie form
      * @param model instance of the model
@@ -52,7 +56,7 @@ public class VoieController {
                 model.addAttribute("listCotation",cotationList);
                 model.addAttribute("cotationId",idCotation);
                 model.addAttribute("voie",voie);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername() +" veut créer une nouvelle voie pour le site "+sit.getNameSite());
+                logger.info("L'utilisateur "+utilisateur.getUsername() +" veut créer une nouvelle voie pour le site "+sit.getNameSite());
                 return "addFormVoie";
             } return "403";
         }
@@ -79,7 +83,7 @@ public class VoieController {
             voie=v.get();
             if (utilisateurConnecte.getIdUser()==voie.getSite().getUtilisateur().getIdUser()){
                 voieRepository.deleteById(idVoie);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername() +" veut supprimer la voie "+voie.getNomVoie()+" du site "+voie.getSite().getNameSite());
+                logger.info("L'utilisateur "+utilisateurConnecte.getUsername() +" veut supprimer la voie "+voie.getNomVoie()+" du site "+voie.getSite().getNameSite());
             } else return "403";
         }
 
@@ -111,7 +115,7 @@ public class VoieController {
                 model.addAttribute("voie", voi);
                 model.addAttribute("cotationId",cotationId);
                 model.addAttribute("listCotation",cotationList);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername() +" veut éditer la voie "+voi.getNomVoie()+" pour le site "+sit.getNameSite());
+                logger.info("L'utilisateur "+utilisateur.getUsername() +" veut éditer la voie "+voi.getNomVoie()+" pour le site "+sit.getNameSite());
                 return "editFormVoie";
             }return "403";
         }
@@ -150,7 +154,7 @@ public class VoieController {
                 voie.setCotation(cote);
                 voieRepository.save(voie);
                 model.addAttribute("voie",voie);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername() +" a sauvegardé l'édition de la voie "+voie.getNomVoie() +" pour le site "+sit.getNameSite());
+                logger.info("L'utilisateur "+utilisateur.getUsername() +" a sauvegardé l'édition de la voie "+voie.getNomVoie() +" pour le site "+sit.getNameSite());
                 return "confirmationVoie";
             }return "403";
 
@@ -187,7 +191,7 @@ public class VoieController {
                 voie.setSite(sit);
                 voieRepository.save(voie);
                 model.addAttribute("voie",voie);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername() +" a sauvegardé la nouvelle voie "+voie.getNomVoie() +" pour le site "+sit.getNameSite());
+                logger.info("L'utilisateur "+utilisateur.getUsername() +" a sauvegardé la nouvelle voie "+voie.getNomVoie() +" pour le site "+sit.getNameSite());
                 return "confirmationVoie";
             }
             return "403";

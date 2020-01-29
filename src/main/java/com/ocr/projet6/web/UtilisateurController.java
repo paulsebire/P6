@@ -7,7 +7,8 @@ import com.ocr.projet6.entities.Reservation;
 import com.ocr.projet6.entities.Topo;
 import com.ocr.projet6.entities.Utilisateur;
 import com.ocr.projet6.enums.RoleEnum;
-import org.hibernate.mapping.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +31,7 @@ public class UtilisateurController {
     private UtilisateurRepository utilisateurRepository;
     @Autowired
     private IClimbMetier iClimbMetier;
+    private static final Logger logger = LogManager.getLogger(UtilisateurController.class);
 
 
     /**
@@ -40,7 +42,7 @@ public class UtilisateurController {
     @GetMapping(value = "/utilisateur/inscription")
     public String inscriptionForm(Model model){
         Utilisateur utilisateur=new Utilisateur();
-        iClimbMetier.logger().info("Un visiteur veut accéder au formulaire d'inscription");
+        logger.info("Un visiteur veut accéder au formulaire d'inscription");
         model.addAttribute("utilisateur",utilisateur);
         return "inscription";
     }
@@ -59,7 +61,7 @@ public class UtilisateurController {
                 utilisateur.getRoles().add(RoleEnum.ROLE_USER);
                 utilisateurRepository.save(utilisateur);
                 model.addAttribute("utilisateur",utilisateur);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" a été ajouté a la DB");
+                logger.info("L'utilisateur "+utilisateur.getUsername()+" a été ajouté a la DB");
                 return "confirmationUtilisateur";
             }else{
                 if (utilisateurRepository.findByUsername(utilisateur.getUsername().toLowerCase())!=null ){
@@ -106,7 +108,7 @@ public class UtilisateurController {
         model.addAttribute("demandeEmisesBool",demandeEmisesBool);
         boolean demandeAccepteesBool=false;
         model.addAttribute("demandeAccepteesBool",demandeAccepteesBool);
-        iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" accède à sa page de topos");
+        logger.info("L'utilisateur "+utilisateurConnecte.getUsername()+" accède à sa page de topos");
         return "profile";
     }
 
@@ -128,7 +130,7 @@ public class UtilisateurController {
             utilisateur=u.get();
             if (utilisateur.getIdUser()==utilisateurConnecte.getIdUser()){
                 model.addAttribute("utilisateur",utilisateur);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte.getUsername()+" accède à sa page d'édition de profile");
+                logger.info("L'utilisateur "+utilisateurConnecte.getUsername()+" accède à sa page d'édition de profile");
                 return "editFormUtilisateur";
             }else return "403";
         }
@@ -166,7 +168,7 @@ public class UtilisateurController {
                    utilisateurDB.setPassword(utilisateur.getPassword());
                    model.addAttribute("utilisateur",utilisateurDB);
                    utilisateurRepository.save(utilisateurDB);
-                   iClimbMetier.logger().info("L'utilisateur "+utilisateurConnecte+" a modifié ses informations");
+                   logger.info("L'utilisateur "+utilisateurConnecte+" a modifié ses informations");
                    return "confirmationEditedUtilisateur";
                }else{
                    return "editFormUtilisateur";
@@ -204,7 +206,7 @@ public class UtilisateurController {
             model.addAttribute("pagesUtilisateur",pagesUtilisateur);
             model.addAttribute("pageCouranteUtilisateur",pageUtilisateur);
             model.addAttribute("sizeUtilisateur",sizeUtilisateur);
-            iClimbMetier.logger().info("L'administrateur " +utilisateurConnecte.getUsername()+ "veut accéder à la page d'administration");
+            logger.info("L'administrateur " +utilisateurConnecte.getUsername()+ "veut accéder à la page d'administration");
             return "administration";
         }else return "403";
 
@@ -230,7 +232,7 @@ public class UtilisateurController {
                 utilisateur=u.get();
                 utilisateur.getRoles().add(RoleEnum.ROLE_ADMIN);
                 utilisateurRepository.save(utilisateur);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" est devenu admin");
+                logger.info("L'utilisateur "+utilisateur.getUsername()+" est devenu admin");
                 return "redirect:/administration?pageUtilisateur="+pageUtilisateur;
             }else return "administration";
         }else return "403";
@@ -256,7 +258,7 @@ public class UtilisateurController {
                 utilisateur=u.get();
                 utilisateur.getRoles().remove(RoleEnum.ROLE_ADMIN);
                 utilisateurRepository.save(utilisateur);
-                iClimbMetier.logger().info("L'utilisateur "+utilisateur.getUsername()+" est devenu utilisateur");
+                logger.info("L'utilisateur "+utilisateur.getUsername()+" est devenu utilisateur");
                 return "redirect:/administration?pageUtilisateur="+pageUtilisateur;
             }else return "administration";
         }else return "403";
@@ -292,7 +294,7 @@ public class UtilisateurController {
             model.addAttribute("exception",e);
             throw new RuntimeException("Utilisateur Introuvable");
         }
-        iClimbMetier.logger().info("L'administrateur " +utilisateurConnecte.getUsername()+ "cherche un utilisatuer contenant "+mc);
+        logger.info("L'administrateur " +utilisateurConnecte.getUsername()+ "cherche un utilisatuer contenant "+mc);
         return "administration";
     }
 

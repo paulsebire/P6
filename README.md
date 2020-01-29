@@ -2,7 +2,7 @@ DA Java EE Project 6 - JDK 11
 ==
 How to launch the application ?
 -
-Once the project cloned, you have to create the DataBase "amisgrimpe" in PostgreSQL
+Once the project cloned, you have to create the DataBase "amisgrimpe" in PostgreSQL on port 5433
 
 From IntelliJ: you have to start the java application.
 <br/>
