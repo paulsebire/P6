@@ -143,8 +143,8 @@
                             <td align="center" th:if="${lr.acceptation}==true and ${lr.demandeEnCours}==false and ${lr.cloturer}==true">cloturée</td>
                             <td align="center" th:if="${lr.acceptation}==false and ${lr.demandeEnCours}==false"><i class="fas fa-times-circle" style="color: red"></i></td>
                             <td ><a class="btn btn-primary" th:if="${lr.acceptation}==true and ${lr.cloturer}==false" th:href="'mailto:' + ${lr.topo.utilisateur.email}
-                            +'?subject= Reservation du topo '+${lr.topo.nom}+'&body=Bonjour '+${lr.topo.utilisateur.username}+',%0D%0A' +'%0D%0AJe vous contacte pour la réservation du topo ' ${lr.topo.nom}
-                            +'Pouvons-nous convenir d%27une date et d%27un lieu de rendez-vous?%0D%0ACordialement%0D%0A'+${#httpServletRequest.remoteUser}"><i class="far fa-envelope"></i></a></td>
+                            +'?subject= Reservation du topo '+${lr.topo.nom}+'&body=Bonjour '+${lr.topo.utilisateur.username}+'%0D%0A'+'Je vous contacte pour la réservation du topo '+${lr.topo.nom}+'%0D%0A'
+                             +'Pouvons-nous convenir d%27une date et d%27un lieu de rendez-vous?'+'%0D%0A'+'Cordialement'+'%0D%0A'+${#httpServletRequest.remoteUser}"><i class="far fa-envelope"></i></a></td>
                         </tr>
                     </table>
                     <div class="container">
