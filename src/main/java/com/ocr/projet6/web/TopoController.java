@@ -145,7 +145,7 @@ public class TopoController {
     @GetMapping (value = "/topo/add")
     public String addTopo(Model model,
                           @RequestParam(name="pageSite",defaultValue = "0") int pageSite,
-                          @RequestParam(name = "sizeSite",defaultValue = "2") int sizeSite){
+                          @RequestParam(name = "sizeSite",defaultValue = "9999") int sizeSite){
         Utilisateur utilisateurConnecte =iClimbMetier.userConnected();
         if (utilisateurConnecte.getRoles().contains(RoleEnum.ROLE_USER)){
             Page<Site> pageSites= iClimbMetier.listSite(pageSite,sizeSite);

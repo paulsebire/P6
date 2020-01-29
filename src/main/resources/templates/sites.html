@@ -60,7 +60,7 @@
                             <ul class="nav nav-pills pagination justify-content-center h-100" th:if="${paginationEnablerSite>1}">
                                 <li  th:class="(${pageCouranteSite}==${status.index}?'page-item active':'page-item')"
                                      th:each="p,status:${pagesSite}">
-                                    <a class="page-link" th:href="@{/site/search(pageSite=${status.index})}"
+                                    <a class="page-link" th:href="@{/site/search(pageSite=${status.index},motCle=${motCle})}"
                                        th:text="${status.index}"></a>
                                 </li>
                             </ul>
